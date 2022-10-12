@@ -10,8 +10,8 @@ public class user
 	    protected String adress_state;
 	    protected String adress_zip_code;
 	    protected String birthday;
-	    protected int cash_bal;
-	    protected int PPS_bal;
+	    protected int wallet;
+	    
 	 
 	    //constructors
 	    public user() {
@@ -22,14 +22,14 @@ public class user
 	        this.email = email;
 	    }
 	    
-	    public user(String email,String firstName, String lastName, String password,String birthday, String adress_street_num, String adress_street, String adress_city, String adress_state,String adress_zip_code, int cash_bal,  int PPS_bal) 
+	    public user(String email,String firstName, String lastName, String password,String birthday, String adress_street_num, String adress_street, String adress_city, String adress_state,String adress_zip_code, int wallet) 
 	    {
-	    	this(firstName,lastName,password,birthday, adress_street_num,  adress_street,  adress_city,  adress_state,  adress_zip_code,cash_bal,PPS_bal);
+	    	this(firstName,lastName,password,birthday, adress_street_num,  adress_street,  adress_city,  adress_state,  adress_zip_code,wallet);
 	    	this.email = email;
 	    }
 	 
 	
-	    public user(String firstName, String lastName, String password,String birthday, String adress_street_num, String adress_street, String adress_city, String adress_state,String adress_zip_code, int cash_bal,  int PPS_bal) 
+	    public user(String firstName, String lastName, String password,String birthday, String adress_street_num, String adress_street, String adress_city, String adress_state,String adress_zip_code, int wallet) 
 	    {
 	    	this.firstName = firstName;
 	    	this.lastName = lastName;
@@ -40,8 +40,8 @@ public class user
 	        this.adress_city= adress_city;
 	        this.adress_state = adress_state;
 	        this.adress_zip_code = adress_zip_code;
-	        this.cash_bal = cash_bal;
-	        this.PPS_bal = PPS_bal;
+	        this.wallet = wallet;
+	       
 	    }
 	    
 	   //getter and setter methods
@@ -111,17 +111,12 @@ public class user
 	        this.adress_zip_code = adress_zip_code;
 	    }
 	    
-	    public int getCash_bal() {
-	    	return cash_bal;
+	    public int getWallet() {
+	    	return wallet;
 	    }
-	    public void setCash_bal(int cash_bal) {
-	    	this.cash_bal = cash_bal;
+	    public void setWallet(int wallet) {
+	    	this.wallet = wallet;
 	    }
 	    
-	    public int getPPS_bal() {
-	    	return PPS_bal;
-	    }
-	    public void setPPS_bal(int PPS_bal) {
-	    	this.PPS_bal = PPS_bal;
-	    }
+	   
 	}

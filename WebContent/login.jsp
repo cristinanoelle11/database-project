@@ -2,10 +2,7 @@
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="ISO-8859-1">
-<title>Login to Database</title>
-</head>
+
 <body>
  <center>	<h1> Welcome to ppswap Login page </h1> </center>
 	<div align="center">
