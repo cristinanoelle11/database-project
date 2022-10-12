@@ -85,8 +85,8 @@ public class userDAO
         connect_func();      
         statement = (Statement) connect.createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
-         
         while (resultSet.next()) {
+        	
             String email = resultSet.getString("email");
             String firstName = resultSet.getString("firstName");
             String lastName = resultSet.getString("lastName");
@@ -97,7 +97,6 @@ public class userDAO
             String adress_city = resultSet.getString("adress_city"); 
             String adress_state = resultSet.getString("adress_state"); 
             String adress_zip_code = resultSet.getString("adress_zip_code"); 
-            
             int wallet = resultSet.getInt("wallet");
              
             user users = new user(email,firstName, lastName, password, birthday, adress_street_num,  adress_street,  adress_city,  adress_state,  adress_zip_code, wallet);
@@ -146,10 +145,11 @@ public class userDAO
     }
      
     public boolean update(user users) throws SQLException {
-        String sql = "update User set firstName=?, lastName =?,password = ?,birthday=?,adress_street_num =?, adress_street=?,adress_city=?,adress_state=?,adress_zip_code=?, wallet=? where email = ?";
+        String sql = "update User set userID =?,firstName=?, lastName =?,password = ?,birthday=?,adress_street_num =?, adress_street=?,adress_city=?,adress_state=?,adress_zip_code=?, wallet=? where email = ?";
         connect_func();
         
         preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+        
         preparedStatement.setString(1, users.getEmail());
 		preparedStatement.setString(2, users.getFirstName());
 		preparedStatement.setString(3, users.getLastName());
@@ -180,6 +180,7 @@ public class userDAO
         ResultSet resultSet = preparedStatement.executeQuery();
          
         if (resultSet.next()) {
+        	
             String firstName = resultSet.getString("firstName");
             String lastName = resultSet.getString("lastName");
             String password = resultSet.getString("password");
@@ -190,7 +191,7 @@ public class userDAO
             String adress_state = resultSet.getString("adress_state"); 
             String adress_zip_code = resultSet.getString("adress_zip_code"); 
             int wallet = resultSet.getInt("wallet");
-            user = new user(email, firstName, lastName, password, birthday, adress_street_num,  adress_street,  adress_city,  adress_state,  adress_zip_code,wallet);
+            user = new user( email, firstName, lastName, password, birthday, adress_street_num,  adress_street,  adress_city,  adress_state,  adress_zip_code,wallet);
         }
          
         resultSet.close();
@@ -234,8 +235,7 @@ public class userDAO
         System.out.println(checks);
        	return checks;
     }
-    
-    
+
     
     public boolean isValid(String email, String password) throws SQLException
     {
@@ -269,6 +269,7 @@ public class userDAO
 					        "use testdb; ",
 					        "drop table if exists User; ",
 					        ("CREATE TABLE if not exists User( " +
+					        	
 					            "email VARCHAR(50) NOT NULL, " + 
 					            "firstName VARCHAR(10) NOT NULL, " +
 					            "lastName VARCHAR(10) NOT NULL, " +
@@ -279,8 +280,7 @@ public class userDAO
 					            "adress_city VARCHAR(20)," + 
 					            "adress_state VARCHAR(2),"+ 
 					            "adress_zip_code VARCHAR(5),"+ 
-					            "wallet INTEGER DEFAULT 100,"+ 
-					            
+					            "wallet INTEGER DEFAULT 100,"+
 					            "PRIMARY KEY (email) "+"); ")
         					};
         String[] TUPLES = {("insert into User(email, firstName, lastName, password, birthday, adress_street_num, adress_street, adress_city, adress_state, adress_zip_code, wallet)"+

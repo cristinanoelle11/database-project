@@ -1,5 +1,6 @@
 public class user 
 {
+		
 		protected String password;
 	 	protected String email;
 	    protected String firstName;
@@ -22,15 +23,16 @@ public class user
 	        this.email = email;
 	    }
 	    
-	    public user(String email,String firstName, String lastName, String password,String birthday, String adress_street_num, String adress_street, String adress_city, String adress_state,String adress_zip_code, int wallet) 
+	    public user( String email,String firstName, String lastName, String password,String birthday, String adress_street_num, String adress_street, String adress_city, String adress_state,String adress_zip_code, int wallet) 
 	    {
-	    	this(firstName,lastName,password,birthday, adress_street_num,  adress_street,  adress_city,  adress_state,  adress_zip_code,wallet);
+	    	this( firstName,lastName,password,birthday, adress_street_num,  adress_street,  adress_city,  adress_state,  adress_zip_code,wallet);
 	    	this.email = email;
 	    }
 	 
 	
-	    public user(String firstName, String lastName, String password,String birthday, String adress_street_num, String adress_street, String adress_city, String adress_state,String adress_zip_code, int wallet) 
+	    public user( String firstName, String lastName, String password,String birthday, String adress_street_num, String adress_street, String adress_city, String adress_state,String adress_zip_code, int wallet) 
 	    {
+	    	
 	    	this.firstName = firstName;
 	    	this.lastName = lastName;
 	    	this.password = password;

@@ -23,6 +23,7 @@ import java.sql.PreparedStatement;
 public class ControlServlet extends HttpServlet {
 	    private static final long serialVersionUID = 1L;
 	    private userDAO userDAO = new userDAO();
+	    private nftDAO nftDAO = new nftDAO();
 	    private String currentUser;
 	    private HttpSession session=null;
 	    
@@ -35,6 +36,7 @@ public class ControlServlet extends HttpServlet {
 	    {
 	    	userDAO = new userDAO();
 	    	currentUser= "";
+	    	nftDAO = new nftDAO();
 	    }
 	    
 	    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -55,6 +57,7 @@ public class ControlServlet extends HttpServlet {
         		break;
         	case "/initialize":
         		userDAO.init();
+        		nftDAO.init();
         		System.out.println("Database successfully initialized!");
         		rootPage(request,response,"");
         		break;
@@ -87,10 +90,22 @@ public class ControlServlet extends HttpServlet {
 	     
 	        System.out.println("listPeople finished: 111111111111111111111111111111111111");
 	    }
-	    	        
+	    
+	    private void listNFT(HttpServletRequest request, HttpServletResponse response)
+	            throws SQLException, IOException, ServletException {
+	        System.out.println("listNFT started: 00000000000000000000000000000000000");
+	        
+	        List<nft> listNFT = nftDAO.listAllNFTS();
+	        request.setAttribute("listNFT", listNFT);       
+	        RequestDispatcher dispatcher = request.getRequestDispatcher("NFTList.jsp");       
+	        dispatcher.forward(request, response);
+	     
+	        System.out.println("listPeople finished: 111111111111111111111111111111111111");
+	    }        
 	    private void rootPage(HttpServletRequest request, HttpServletResponse response, String view) throws ServletException, IOException, SQLException{
 	    	System.out.println("root view");
 			request.setAttribute("listUser", userDAO.listAllUsers());
+			request.setAttribute("listNFT", nftDAO.listAllNFTS());
 	    	request.getRequestDispatcher("rootView.jsp").forward(request, response);
 	    }
 	    
@@ -120,6 +135,7 @@ public class ControlServlet extends HttpServlet {
 	    }
 	           
 	    private void register(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+	    
 	    	String email = request.getParameter("email");
 	   	 	String firstName = request.getParameter("firstName");
 	   	 	String lastName = request.getParameter("lastName");
@@ -135,7 +151,7 @@ public class ControlServlet extends HttpServlet {
 	   	 	if (password.equals(confirm)) {
 	   	 		if (!userDAO.checkEmail(email)) {
 		   	 		System.out.println("Registration Successful! Added to database");
-		            user users = new user(email,firstName, lastName, password, birthday, adress_street_num,  adress_street,  adress_city,  adress_state,  adress_zip_code, 100);
+		            user users = new user( email,firstName, lastName, password, birthday, adress_street_num,  adress_street,  adress_city,  adress_state,  adress_zip_code, 100);
 		   	 		userDAO.insert(users);
 		   	 		response.sendRedirect("login.jsp");
 	   	 		}

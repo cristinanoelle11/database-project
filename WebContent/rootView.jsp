@@ -22,6 +22,7 @@
         <table border="1" cellpadding="6">
             <caption><h2>List of Users</h2></caption>
             <tr>
+            	
                 <th>Email</th>
                 <th>First name</th>
                 <th>Last name</th>
@@ -33,6 +34,7 @@
             </tr>
             <c:forEach var="users" items="${listUser}">
                 <tr style="text-align:center">
+               
                     <td><c:out value="${users.email}" /></td>
                     <td><c:out value="${users.firstName}" /></td>
                     <td><c:out value="${users.lastName}" /></td>
@@ -40,7 +42,25 @@
                     <td><c:out value="${users.password}" /></td>
                     <td><c:out value="${users.birthday}" /></td>
                     <td><c:out value="${users.wallet}"/></td>
-                   
+            </c:forEach>
+        </table>
+              <table border="1" cellpadding="6">
+            <caption><h2>List of NFTS</h2></caption>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Image</th>
+                <th>Owner</th>
+                
+            </tr>
+            <c:forEach var="nft" items="${listNFT}">
+                <tr style="text-align:center">
+                    <td><c:out value="${nft.nftID}" /></td>
+                    <td><c:out value="${nft.name}" /></td>
+                    <td><c:out value="${nft.description}" /></td>
+                    <td><c:out value= "${nft.image}" /></td>
+                    <td><c:out value="${nft.owner}" /></td>
             </c:forEach>
         </table>
 	</div>
