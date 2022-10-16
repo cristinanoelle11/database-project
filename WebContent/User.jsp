@@ -16,11 +16,11 @@
         <table border="1" cellpadding="6">
             <caption><h2>List of Users</h2></caption>
             <tr>
-            	
+            	<th>userID</th>
                 <th>Email</th>
                 <th>First name</th>
                 <th>Last name</th>
-                <th>Adress</th>
+                <th>Address</th>
                 <th>Password</th>
                 <th>Birthday</th>
                 <th>wallet($)</th>
@@ -28,7 +28,7 @@
             </tr>
             <c:forEach var="user" items="${get_user}">
                 <tr style="text-align:center">
-                	
+                	<td>"${user.userID}" </td>
                     <td>"${user.email}" </td>
                     <td>"${user.firstName}"</td>
                     <td>"${user.lastName}"</td>

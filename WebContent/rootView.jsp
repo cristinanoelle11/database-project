@@ -22,7 +22,7 @@
         <table border="1" cellpadding="6">
             <caption><h2>List of Users</h2></caption>
             <tr>
-            	
+            	<th>UserID</th>
                 <th>Email</th>
                 <th>First name</th>
                 <th>Last name</th>
@@ -34,7 +34,7 @@
             </tr>
             <c:forEach var="users" items="${listUser}">
                 <tr style="text-align:center">
-               
+               		<td><c:out value="${users.userID}" /></td>
                     <td><c:out value="${users.email}" /></td>
                     <td><c:out value="${users.firstName}" /></td>
                     <td><c:out value="${users.lastName}" /></td>
