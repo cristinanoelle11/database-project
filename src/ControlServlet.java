@@ -22,9 +22,13 @@ import java.sql.PreparedStatement;
 
 public class ControlServlet extends HttpServlet {
 	    private static final long serialVersionUID = 1L;
-	    private userDAO userDAO = new userDAO();
+	    private userDAO userDAO = new userDAO();	    
 	    private nftDAO nftDAO = new nftDAO();
+
+	    private historyDAO historyDAO = new historyDAO();
+
 	    private marketPlaceDAO marketPlaceDAO = new marketPlaceDAO();
+
 	    private String currentUser;
 	    private HttpSession session=null;
 	    
@@ -38,7 +42,12 @@ public class ControlServlet extends HttpServlet {
 	    	userDAO = new userDAO();
 	    	currentUser= "";
 	    	nftDAO = new nftDAO();
+
+	    	historyDAO = new historyDAO();
+
 	    	marketPlaceDAO = new marketPlaceDAO();
+
+	    
 	    }
 	    
 	    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -60,7 +69,11 @@ public class ControlServlet extends HttpServlet {
         	case "/initialize":
         		userDAO.init();
         		nftDAO.init();
+
+        		historyDAO.init();
+
         		marketPlaceDAO.init();
+
         		System.out.println("Database successfully initialized!");
         		rootPage(request,response,"");
         		break;
@@ -104,7 +117,22 @@ public class ControlServlet extends HttpServlet {
 	        dispatcher.forward(request, response);
 	     
 	        System.out.println("listNFT finished: 111111111111111111111111111111111111");
-	    }        
+
+	    }     
+	    
+	    private void listHistory(HttpServletRequest request, HttpServletResponse response)
+	            throws SQLException, IOException, ServletException {
+	        System.out.println("listHistory started: 00000000000000000000000000000000000");
+	        
+	        List<history> listHistory = historyDAO.listAllHistory();
+	        request.setAttribute("listHistory", listHistory);       
+	        RequestDispatcher dispatcher = request.getRequestDispatcher("HistoryList.jsp");       
+	        dispatcher.forward(request, response);
+	     
+	        System.out.println("listHistory finished: 111111111111111111111111111111111111");
+	    }   
+
+	         
 	    
 	    private void listMarketPlace(HttpServletRequest request, HttpServletResponse response)
 	            throws SQLException, IOException, ServletException {
@@ -118,11 +146,13 @@ public class ControlServlet extends HttpServlet {
 	        System.out.println("listMarket finished: 111111111111111111111111111111111111");
 	    }        
 	    
+
 	    private void rootPage(HttpServletRequest request, HttpServletResponse response, String view) throws ServletException, IOException, SQLException{
 	    	System.out.println("root view");
 			request.setAttribute("listUser", userDAO.listAllUsers());
 			request.setAttribute("listNFT", nftDAO.listAllNFTS());
 			request.setAttribute("listMarketPlace", marketPlaceDAO.listMarketPlace());
+			request.setAttribute("listHistory", historyDAO.listAllHistory());
 	    	request.getRequestDispatcher("rootView.jsp").forward(request, response);
 	    }
 	    
@@ -157,18 +187,13 @@ public class ControlServlet extends HttpServlet {
 	   	 	String firstName = request.getParameter("firstName");
 	   	 	String lastName = request.getParameter("lastName");
 	   	 	String password = request.getParameter("password");
-	   	 	String birthday = request.getParameter("birthday");
-	   	 	String adress_street_num = request.getParameter("adress_street_num"); 
-	   	 	String adress_street = request.getParameter("adress_street"); 
-	   	 	String adress_city = request.getParameter("adress_city"); 
-	   	 	String adress_state = request.getParameter("adress_state"); 
-	   	 	String adress_zip_code = request.getParameter("adress_zip_code"); 
+	   	 	String age = request.getParameter("age");
 	   	 	String confirm = request.getParameter("confirmation");
 	   	 	
 	   	 	if (password.equals(confirm)) {
 	   	 		if (!userDAO.checkEmail(email)) {
 		   	 		System.out.println("Registration Successful! Added to database");
-		   	 	user users = new user(email,firstName, lastName, password, birthday, adress_street_num,  adress_street,  adress_city,  adress_state,  adress_zip_code, 100);
+		   	 	user users = new user(email,firstName, lastName, password, age, 100);
 		   	 		userDAO.insert(users);
 		   	 		response.sendRedirect("login.jsp");
 	   	 		}
@@ -194,7 +219,7 @@ public class ControlServlet extends HttpServlet {
 	     
         
 	    
-	    
+	
 	    
 	    
 	    
