@@ -112,7 +112,7 @@ public class ControlServlet extends HttpServlet {
 	        
 	        List<marketPlace> listMarketPlace = marketPlaceDAO.listMarketPlace();
 	        request.setAttribute("listMarketPlace", listMarketPlace);       
-	        RequestDispatcher dispatcher = request.getRequestDispatcher("NFTList.jsp");       
+	        RequestDispatcher dispatcher = request.getRequestDispatcher("marketPlaceList.jsp");       
 	        dispatcher.forward(request, response);
 	     
 	        System.out.println("listMarket finished: 111111111111111111111111111111111111");
@@ -122,6 +122,7 @@ public class ControlServlet extends HttpServlet {
 	    	System.out.println("root view");
 			request.setAttribute("listUser", userDAO.listAllUsers());
 			request.setAttribute("listNFT", nftDAO.listAllNFTS());
+			request.setAttribute("listMarketPlace", marketPlaceDAO.listMarketPlace());
 	    	request.getRequestDispatcher("rootView.jsp").forward(request, response);
 	    }
 	    
