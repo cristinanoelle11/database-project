@@ -24,6 +24,7 @@ public class ControlServlet extends HttpServlet {
 	    private static final long serialVersionUID = 1L;
 	    private userDAO userDAO = new userDAO();
 	    private nftDAO nftDAO = new nftDAO();
+	    private marketPlaceDAO marketPlaceDAO = new marketPlaceDAO();
 	    private String currentUser;
 	    private HttpSession session=null;
 	    
@@ -37,6 +38,7 @@ public class ControlServlet extends HttpServlet {
 	    	userDAO = new userDAO();
 	    	currentUser= "";
 	    	nftDAO = new nftDAO();
+	    	marketPlaceDAO = new marketPlaceDAO();
 	    }
 	    
 	    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -58,6 +60,7 @@ public class ControlServlet extends HttpServlet {
         	case "/initialize":
         		userDAO.init();
         		nftDAO.init();
+        		marketPlaceDAO.init();
         		System.out.println("Database successfully initialized!");
         		rootPage(request,response,"");
         		break;
@@ -102,6 +105,19 @@ public class ControlServlet extends HttpServlet {
 	     
 	        System.out.println("listPeople finished: 111111111111111111111111111111111111");
 	    }        
+	    
+	    private void listMarketPlace(HttpServletRequest request, HttpServletResponse response)
+	            throws SQLException, IOException, ServletException {
+	        System.out.println("listMarketPlace started: 00000000000000000000000000000000000");
+	        
+	        List<marketPlace> listMarketPlace = marketPlaceDAO.listMarketPlace();
+	        request.setAttribute("listMarketPlace", listMarketPlace);       
+	        RequestDispatcher dispatcher = request.getRequestDispatcher("NFTList.jsp");       
+	        dispatcher.forward(request, response);
+	     
+	        System.out.println("listMarket finished: 111111111111111111111111111111111111");
+	    }        
+	    
 	    private void rootPage(HttpServletRequest request, HttpServletResponse response, String view) throws ServletException, IOException, SQLException{
 	    	System.out.println("root view");
 			request.setAttribute("listUser", userDAO.listAllUsers());
