@@ -95,18 +95,18 @@ public class marketPlaceDAO {
         
         String[] INITIAL1 = {
 					        "use testdb; ",
-					        "drop table if exists NFT; ",
-					        ("CREATE TABLE if not exists NFT( " +
+					        "drop table if exists marketPlace; ",
+					        ("CREATE TABLE if not exists marketPlace( " +
 					        	"saleID INTEGER AUTO_INCREMENT PRIMARY KEY,"+
 					        	"endDate VARCHAR(10),"+
-					        	"price INTEGER(20);")
+					        	"price INTEGER(20));")
 					        	
         					};
-        String[] TUPLES1 = {("insert into MarketPlace( saleID, price, end date)"+
-        			"values ( 'Grass ', 'picture of grass', 'https://images.pexels.com/photos/413195/pexels-photo-413195.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'), "+
-			    		 	"('apple', 'picture of apple','https://image.shutterstock.com/image-photo/red-apple-isolated-on-white-600w-1727544364.jpg'),"+
-			    		 	"('apple', 'picture of apple','https://image.shutterstock.com/image-photo/red-apple-isolated-on-white-600w-1727544364.jpg'),"+
-			    		 	"('apple', 'picture of apple','https://image.shutterstock.com/image-photo/red-apple-isolated-on-white-600w-1727544364.jpg');")
+        String[] TUPLES1 = {("insert into marketPlace(endDate, price)"+
+        			"values ( '01/12/21', '12324'),"+
+			    		 	"('02/23/22','3243242'),"+
+			    		 	"('03/14/20','123434'),"+
+			    		 	"('04/07/22','34342');")
 			    			};
         
         //for loop to put these in database
