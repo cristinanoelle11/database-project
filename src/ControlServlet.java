@@ -24,11 +24,11 @@ public class ControlServlet extends HttpServlet {
 	    private static final long serialVersionUID = 1L;
 	    private userDAO userDAO = new userDAO();	    
 	    private nftDAO nftDAO = new nftDAO();
-<<<<<<< HEAD
+
 	    private historyDAO historyDAO = new historyDAO();
 
 	    private marketPlaceDAO marketPlaceDAO = new marketPlaceDAO();
->>>>>>> bcf03e324dacfe3815544dfa3b5233bed22bee48
+
 	    private String currentUser;
 	    private HttpSession session=null;
 	    
