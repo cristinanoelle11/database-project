@@ -70,15 +70,15 @@ public class marketPlaceDAO {
     
     public List<marketPlace> listMarketPlace() throws SQLException {
         List<marketPlace> listMarketPlace = new ArrayList<marketPlace>();        
-        String sql = "SELECT * FROM NFT";      
+        String sql = "SELECT * FROM marketPlace";      
         connect_func();      
         statement = (Statement) connect.createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
          
         while (resultSet.next()) {
         	int saleID = resultSet.getInt("saleID");
-            String endDate = resultSet.getString("end Date");
-            int price = resultSet.getInt("Price");
+            String endDate = resultSet.getString("endDate");
+            int price = resultSet.getInt("price");
              
             marketPlace market = new marketPlace(saleID, endDate, price);
             listMarketPlace.add(market);

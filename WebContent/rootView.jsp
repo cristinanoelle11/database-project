@@ -83,6 +83,21 @@
                     <td><c:out value="${history.date}" /></td>
             </c:forEach>
         </table>
+         <table border="1" cellpadding="5">
+            <caption><h2>Market Place</h2></caption>
+            <tr>
+                <th>saleID</th>
+                <th>End Date</th>
+                <th>Price</th>
+               
+            </tr>
+            <c:forEach var="marketPlace" items="${listMarketPlace}">
+                <tr style="text-align:center">
+                    <td><c:out value="${marketPlace.saleID}" /></td>
+                    <td><c:out value="${marketPlace.endDate}" /></td>
+                    <td><c:out value="${marketPlace.price}" /></td>
+            </c:forEach>
+        </table>
 	</div>
 	</div>
 

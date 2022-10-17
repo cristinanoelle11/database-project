@@ -12,15 +12,15 @@
             <caption><h2>Market Place</h2></caption>
             <<tr>
                 <th>saleID</th>
+                 <th>End Date</th>
                 <th>Price</th>
-                <th>End Date</th>
                
             </tr>
             <c:forEach var="MarktetPlace" items="${listMarketPlace}">
                 <tr style="text-align:center">
-                    <td><c:out value="${MarketPlace.saleID}" /></td>
-                    <td><c:out value="${MarketPlace.endDate}" /></td>
-                    <td><c:out value="${MarketPlace.price}" /></td>
+                    <td><c:out value="${marketPlace.saleID}" /></td>
+                    <td><c:out value="${marketPlace.endDate}" /></td>
+                    <td><c:out value="${marketPlace.price}" /></td>
             </c:forEach>
         </table>
     </div>   

@@ -42,9 +42,7 @@ public class ControlServlet extends HttpServlet {
 	    	userDAO = new userDAO();
 	    	currentUser= "";
 	    	nftDAO = new nftDAO();
-
 	    	historyDAO = new historyDAO();
-
 	    	marketPlaceDAO = new marketPlaceDAO();
 
 	    
@@ -69,11 +67,8 @@ public class ControlServlet extends HttpServlet {
         	case "/initialize":
         		userDAO.init();
         		nftDAO.init();
-
         		historyDAO.init();
-
         		marketPlaceDAO.init();
-
         		System.out.println("Database successfully initialized!");
         		rootPage(request,response,"");
         		break;
