@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.sql.PreparedStatement;
 //import java.sql.Connection;
 //import java.sql.PreparedStatement;
@@ -23,15 +24,15 @@ import java.util.List;
 /**
  * Servlet implementation class Connect
  */
-@WebServlet("/nftDAO")
-public class nftDAO {
+@WebServlet("/historyDAO")
+public class historyDAO {
 	private static final long serialVersionUID = 1L;
 	private Connection connect = null;
 	private Statement statement = null;
 	private PreparedStatement preparedStatement = null;
 	private ResultSet resultSet = null;
 	
-	public nftDAO(){}
+	public historyDAO(){}
 	
 	/** 
 	 * @see HttpServlet#HttpServlet()
@@ -68,28 +69,28 @@ public class nftDAO {
         }
     }
     
-    public List<nft> listAllNFTS() throws SQLException {
-        List<nft> listNFT = new ArrayList<nft>();        
-        String sql = "SELECT * FROM NFT";      
+    public List<history> listAllHistory() throws SQLException {
+        List<history> listHistory = new ArrayList<history>();        
+        String sql = "SELECT * FROM History";      
         connect_func();      
         statement = (Statement) connect.createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
          
         while (resultSet.next()) {
-        	int nftId = resultSet.getInt("nftID");
-            String name = resultSet.getString("name");
-            String description = resultSet.getString("description");
-            String image = resultSet.getString("image");
-            int owner = resultSet.getInt("owner");
+        	int historyID = resultSet.getInt("historyID");
+        	 int userID = resultSet.getInt("userID");
+        	int nftID = resultSet.getInt("nftID");
+            String details = resultSet.getString("details");
+            String action = resultSet.getString("action");
+            Timestamp date = resultSet.getTimestamp("date");
              
-            nft nfts = new nft(nftId, name, description, image, owner);
-            listNFT.add(nfts);
+            history historys = new history(historyID, userID, nftID, details, action, date);
+            listHistory.add(historys);
         }        
         resultSet.close();
         disconnect();        
-        return listNFT;
+        return listHistory;
     }
-    
     
     public void init() throws SQLException, FileNotFoundException, IOException{
     	connect_func();
@@ -97,20 +98,19 @@ public class nftDAO {
         
         String[] INITIAL1 = {
 					        "use testdb; ",
-					        "drop table if exists NFT; ",
-					        ("CREATE TABLE if not exists NFT( " +
-					        	"nftID INTEGER AUTO_INCREMENT PRIMARY KEY,"+
-					        	"name VARCHAR(10),"+
-					        	"description VARCHAR(50),"+
-					        	"image VARCHAR(4000),"+
-					        	"owner INTEGER);")
+					        "drop table if exists History; ",
+					        ("CREATE TABLE if not exists History( " +
+					        	"historyID INTEGER AUTO_INCREMENT PRIMARY KEY,"+
+					        	"userID INTEGER,"+
+					        	"nftID INTEGER,"+
+					        	"details VARCHAR(2000),"+
+					        	"action VARCHAR(50),"+
+					        	"date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP);")
 					        	
         					};
-        String[] TUPLES1 = {("insert into NFT( name, description, image, owner)"+
-        			"values ( 'Grass ', 'picture of grass', 'https://images.pexels.com/photos/413195/pexels-photo-413195.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', '1'), "+
-			    		 	"('pear', 'picture of apple','https://image.shutterstock.com/image-photo/red-apple-isolated-on-white-600w-1727544364.jpg', '3'),"+
-			    		 	"('apple', 'picture of apple','https://image.shutterstock.com/image-photo/red-apple-isolated-on-white-600w-1727544364.jpg', '2'),"+
-			    		 	"('apple', 'picture of apple','https://image.shutterstock.com/image-photo/red-apple-isolated-on-white-600w-1727544364.jpg', '4');")
+        String[] TUPLES1 = {("insert into History( details, action )"+
+        			"values ('user creat','creation'), "+
+			    		 	"('user add', 'addition');")
 			    			};
         
         //for loop to put these in database
@@ -120,4 +120,5 @@ public class nftDAO {
         	statement.execute(TUPLES1[i]);
         disconnect();
     }
+    
 }

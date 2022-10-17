@@ -20,9 +20,8 @@
                 <th>Email</th>
                 <th>First name</th>
                 <th>Last name</th>
-                <th>Address</th>
                 <th>Password</th>
-                <th>Birthday</th>
+                <th>Age</th>
                 <th>wallet($)</th>
                 
             </tr>
@@ -32,9 +31,8 @@
                     <td>"${user.email}" </td>
                     <td>"${user.firstName}"</td>
                     <td>"${user.lastName}"</td>
-                    <td>"${user.adress_street_num} ${users.adress_street} ${users.adress_city} ${users.adress_state} ${users.adress_zip_code}"</td>
                     <td>"${user.password}"</td>
-                    <td>"${user.birthday}"</td>
+                    <td>"${user.age}"</td>
                     <td>"${user.wallet}"</td>
                     
                  </tr>

@@ -16,9 +16,8 @@
 				<th>Email</th>
                 <th>First name</th>
                 <th>Last name</th>
-                <th>Address</th>
                 <th>Password</th>
-                <th>Birthday</th>
+                <th>Age</th>
                 <th>wallet($)</th>
                 
 
@@ -29,9 +28,8 @@
                     <td><c:out value="${users.email}" /></td>
                     <td><c:out value="${users.firstName}" /></td>
                     <td><c:out value="${users.lastName}" /></td>
-                    <td><c:out value= "${users.adress_street_num} ${users.adress_street} ${users.adress_city} ${users.adress_state} ${users.adress_zip_code}" /></td>
                     <td><c:out value="${users.password}" /></td>
-                    <td><c:out value="${users.birthday}" /></td>
+                    <td><c:out value="${users.age}" /></td>
                     <td><c:out value="${users.wallet}"/></td>
                 </tr>
             </c:forEach>

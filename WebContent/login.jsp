@@ -4,7 +4,7 @@
 <html>
 
 <body>
- <center>	<h1> Welcome to ppswap Login page </h1> </center>
+ <center>	<h1> Welcome to NFT Store Login page </h1> </center>
 	<div align="center">
 		<p> ${loginFailedStr} </p>
 		<form action="login" method="post">

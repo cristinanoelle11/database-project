@@ -26,9 +26,8 @@
                 <th>Email</th>
                 <th>First name</th>
                 <th>Last name</th>
-                <th>Address</th>
                 <th>Password</th>
-                <th>Birthday</th>
+                <th>Age</th>
                 <th>wallet($)</th>
                 
             </tr>
@@ -38,9 +37,8 @@
                     <td><c:out value="${users.email}" /></td>
                     <td><c:out value="${users.firstName}" /></td>
                     <td><c:out value="${users.lastName}" /></td>
-                    <td><c:out value= "${users.adress_street_num} ${users.adress_street} ${users.adress_city} ${users.adress_state} ${users.adress_zip_code}" /></td>
                     <td><c:out value="${users.password}" /></td>
-                    <td><c:out value="${users.birthday}" /></td>
+                    <td><c:out value="${users.age}" /></td>
                     <td><c:out value="${users.wallet}"/></td>
             </c:forEach>
         </table>
@@ -61,6 +59,28 @@
                     <td><c:out value="${nft.description}" /></td>
                     <td><c:out value= "${nft.image}" /></td>
                     <td><c:out value="${nft.owner}" /></td>
+            </c:forEach>
+        </table>
+         <table border="1" cellpadding="5">
+            <caption><h2>List of History</h2></caption>
+            <tr>
+                <th>HistoryID</th>
+                <th>UserID</th>
+                <th>NFT ID</th>
+                <th>Details</th>
+                <th>Action</th>
+                <th>Date</th>
+               
+            </tr>
+            <c:forEach var="history" items="${listHistory}">
+                <tr style="text-align:center">
+                
+                	<td><c:out value="${history.historyID}" /></td>
+                	<td><c:out value="${history.userID}" /></td>
+                    <td><c:out value="${history.nftID}" /></td>
+                    <td><c:out value="${history.details}" /></td>
+                    <td><c:out value="${history.action}" /></td>
+                    <td><c:out value="${history.date}" /></td>
             </c:forEach>
         </table>
 	</div>
