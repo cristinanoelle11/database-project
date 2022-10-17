@@ -108,9 +108,17 @@ public class historyDAO {
 					        	"date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP);")
 					        	
         					};
-        String[] TUPLES1 = {("insert into History( details, action )"+
-        			"values ('user creat','creation'), "+
-			    		 	"('user add', 'addition');")
+        String[] TUPLES1 = {("insert into History( userID, nftID, details, action )"+
+        			"values ('1','1','user created','create'),"+
+        					"('2','3','user created','create'),"+
+        					"('3','2','user created','create'),"+
+        					"('4','4','user created','create'),"+
+        					"('5','6','user created','create'),"+
+        					"('6','5','user created','create'),"+
+        					"('7','8','user created','create'),"+
+        					"('8','7','user created','create'),"+
+        					"('9','10','user created','create'),"+
+			    		 	"('10','9','user created', 'create');")
 			    			};
         
         //for loop to put these in database
