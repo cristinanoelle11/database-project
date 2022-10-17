@@ -117,7 +117,7 @@ public class ControlServlet extends HttpServlet {
 	        dispatcher.forward(request, response);
 	     
 	        System.out.println("listNFT finished: 111111111111111111111111111111111111");
-<<<<<<< HEAD
+
 	    }     
 	    
 	    private void listHistory(HttpServletRequest request, HttpServletResponse response)
@@ -132,7 +132,7 @@ public class ControlServlet extends HttpServlet {
 	        System.out.println("listHistory finished: 111111111111111111111111111111111111");
 	    }   
 
-	    }        
+	         
 	    
 	    private void listMarketPlace(HttpServletRequest request, HttpServletResponse response)
 	            throws SQLException, IOException, ServletException {
