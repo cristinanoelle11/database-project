@@ -45,7 +45,7 @@ public class nft {
 	}
 	
 	public int getOwner() {
-		return nftID;
+		return owner ;
 	}
 	public void setOwner(int owner) {
 		this.owner = owner;

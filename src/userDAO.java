@@ -86,7 +86,7 @@ public class userDAO
         statement = (Statement) connect.createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
         while (resultSet.next()) {
-        	
+        	int userID = resultSet.getInt("userID");
             String email = resultSet.getString("email");
             String firstName = resultSet.getString("firstName");
             String lastName = resultSet.getString("lastName");
@@ -99,7 +99,7 @@ public class userDAO
             String adress_zip_code = resultSet.getString("adress_zip_code"); 
             int wallet = resultSet.getInt("wallet");
              
-            user users = new user(email,firstName, lastName, password, birthday, adress_street_num,  adress_street,  adress_city,  adress_state,  adress_zip_code, wallet);
+            user users = new user(userID,email,firstName, lastName, password, birthday, adress_street_num,  adress_street,  adress_city,  adress_state,  adress_zip_code, wallet);
             listUser.add(users);
         }        
         resultSet.close();
@@ -180,7 +180,7 @@ public class userDAO
         ResultSet resultSet = preparedStatement.executeQuery();
          
         if (resultSet.next()) {
-        	
+        	int userID = resultSet.getInt("userID");
             String firstName = resultSet.getString("firstName");
             String lastName = resultSet.getString("lastName");
             String password = resultSet.getString("password");
@@ -191,7 +191,7 @@ public class userDAO
             String adress_state = resultSet.getString("adress_state"); 
             String adress_zip_code = resultSet.getString("adress_zip_code"); 
             int wallet = resultSet.getInt("wallet");
-            user = new user( email, firstName, lastName, password, birthday, adress_street_num,  adress_street,  adress_city,  adress_state,  adress_zip_code,wallet);
+            user = new user( userID, email, firstName, lastName, password, birthday, adress_street_num,  adress_street,  adress_city,  adress_state,  adress_zip_code,wallet);
         }
          
         resultSet.close();
@@ -269,7 +269,7 @@ public class userDAO
 					        "use testdb; ",
 					        "drop table if exists User; ",
 					        ("CREATE TABLE if not exists User( " +
-					        	
+					        	"userID INTEGER AUTO_INCREMENT PRIMARY KEY,"+
 					            "email VARCHAR(50) NOT NULL, " + 
 					            "firstName VARCHAR(10) NOT NULL, " +
 					            "lastName VARCHAR(10) NOT NULL, " +
@@ -280,8 +280,7 @@ public class userDAO
 					            "adress_city VARCHAR(20)," + 
 					            "adress_state VARCHAR(2),"+ 
 					            "adress_zip_code VARCHAR(5),"+ 
-					            "wallet INTEGER DEFAULT 100,"+
-					            "PRIMARY KEY (email) "+"); ")
+					            "wallet INTEGER DEFAULT 100);")
         					};
         String[] TUPLES = {("insert into User(email, firstName, lastName, password, birthday, adress_street_num, adress_street, adress_city, adress_state, adress_zip_code, wallet)"+
         			"values ('susie@gmail.com', 'Susie ', 'Guzman', 'susie1234', '2000-06-27', '1234', 'whatever street', 'detroit', 'MI', '48202','100'),"+

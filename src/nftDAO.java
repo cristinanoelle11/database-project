@@ -103,12 +103,12 @@ public class nftDAO {
 					        	"name VARCHAR(10),"+
 					        	"description VARCHAR(50),"+
 					        	"image VARCHAR(4000),"+
-					        	"owner INTEGER"+");")
+					        	"owner INTEGER);")
 					        	
         					};
         String[] TUPLES1 = {("insert into NFT( name, description, image)"+
         			"values ( 'Grass ', 'picture of grass', 'https://images.pexels.com/photos/413195/pexels-photo-413195.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'), "+
-			    		 	"('apple', 'picture of apple','https://image.shutterstock.com/image-photo/red-apple-isolated-on-white-600w-1727544364.jpg'),"+
+			    		 	"('pear', 'picture of apple','https://image.shutterstock.com/image-photo/red-apple-isolated-on-white-600w-1727544364.jpg'),"+
 			    		 	"('apple', 'picture of apple','https://image.shutterstock.com/image-photo/red-apple-isolated-on-white-600w-1727544364.jpg'),"+
 			    		 	"('apple', 'picture of apple','https://image.shutterstock.com/image-photo/red-apple-isolated-on-white-600w-1727544364.jpg');")
 			    			};

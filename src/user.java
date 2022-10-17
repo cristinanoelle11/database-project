@@ -1,6 +1,6 @@
 public class user 
 {
-		
+		protected int userID;
 		protected String password;
 	 	protected String email;
 	    protected String firstName;
@@ -15,24 +15,14 @@ public class user
 	    
 	 
 	    //constructors
-	    public user() {
-	    }
-	 
+	    
 	    public user(String email) 
 	    {
 	        this.email = email;
 	    }
-	    
-	    public user( String email,String firstName, String lastName, String password,String birthday, String adress_street_num, String adress_street, String adress_city, String adress_state,String adress_zip_code, int wallet) 
+	    public user(String email, String firstName, String lastName, String password,String birthday, String adress_street_num, String adress_street, String adress_city, String adress_state,String adress_zip_code, int wallet) 
 	    {
-	    	this( firstName,lastName,password,birthday, adress_street_num,  adress_street,  adress_city,  adress_state,  adress_zip_code,wallet);
 	    	this.email = email;
-	    }
-	 
-	
-	    public user( String firstName, String lastName, String password,String birthday, String adress_street_num, String adress_street, String adress_city, String adress_state,String adress_zip_code, int wallet) 
-	    {
-	    	
 	    	this.firstName = firstName;
 	    	this.lastName = lastName;
 	    	this.password = password;
@@ -42,9 +32,16 @@ public class user
 	        this.adress_city= adress_city;
 	        this.adress_state = adress_state;
 	        this.adress_zip_code = adress_zip_code;
-	        this.wallet = wallet;
-	       
+	        this.wallet = wallet; 
 	    }
+	    
+	    public user(int userID, String email,String firstName, String lastName, String password,String birthday, String adress_street_num, String adress_street, String adress_city, String adress_state,String adress_zip_code, int wallet) 
+	    {
+	    	this(email,firstName,lastName,password,birthday, adress_street_num,  adress_street,  adress_city,  adress_state,  adress_zip_code,wallet);
+	    	this.userID = userID;
+	    	
+	    }
+	   
 	    
 	   //getter and setter methods
 	    public String getEmail() {
@@ -53,7 +50,12 @@ public class user
 	    public void setEmail(String email) {
 	        this.email = email;
 	    }
-	    
+	    public int getuserID() {
+	    	return userID;
+	    }
+	    public void setuserID(int userID) {
+	    	this.userID = userID;
+	    }
 	    public String getFirstName() {
 	        return firstName;
 	    }

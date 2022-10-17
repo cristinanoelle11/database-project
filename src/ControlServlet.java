@@ -103,7 +103,7 @@ public class ControlServlet extends HttpServlet {
 	        RequestDispatcher dispatcher = request.getRequestDispatcher("NFTList.jsp");       
 	        dispatcher.forward(request, response);
 	     
-	        System.out.println("listPeople finished: 111111111111111111111111111111111111");
+	        System.out.println("listNFT finished: 111111111111111111111111111111111111");
 	    }        
 	    
 	    private void listMarketPlace(HttpServletRequest request, HttpServletResponse response)
@@ -151,7 +151,7 @@ public class ControlServlet extends HttpServlet {
 	    }
 	           
 	    private void register(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
-	    
+	    	
 	    	String email = request.getParameter("email");
 	   	 	String firstName = request.getParameter("firstName");
 	   	 	String lastName = request.getParameter("lastName");
@@ -167,7 +167,7 @@ public class ControlServlet extends HttpServlet {
 	   	 	if (password.equals(confirm)) {
 	   	 		if (!userDAO.checkEmail(email)) {
 		   	 		System.out.println("Registration Successful! Added to database");
-		            user users = new user( email,firstName, lastName, password, birthday, adress_street_num,  adress_street,  adress_city,  adress_state,  adress_zip_code, 100);
+		   	 	user users = new user(email,firstName, lastName, password, birthday, adress_street_num,  adress_street,  adress_city,  adress_state,  adress_zip_code, 100);
 		   	 		userDAO.insert(users);
 		   	 		response.sendRedirect("login.jsp");
 	   	 		}
