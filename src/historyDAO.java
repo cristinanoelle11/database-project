@@ -105,9 +105,9 @@ public class historyDAO {
 					        	"nftID INTEGER,"+
 					        	"details VARCHAR(2000),"+
 					        	"action VARCHAR(50),"+
-					        	"date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP),"+
+					        	"date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,"+
 					        	"FOREIGN KEY (userID) REFERENCES User(userID),"+
-					        	"FOREIGN KEY (nftID) REFERENCES NFT(nftID);")
+					        	"FOREIGN KEY (nftID) REFERENCES NFT(nftID));")
 					        	
         					};
         String[] TUPLES1 = {("insert into History( userID, nftID, details, action )"+
