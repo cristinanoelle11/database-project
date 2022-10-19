@@ -1,6 +1,10 @@
 GROUP MEMBERS:
 	Cristina Powers gv6830 AND Logarn Barnes gw4822
 
+CONTRIBUTIONS:
+	So far each person has done an equal part of participation for this project. We have met for 2 hours after 5 classes
+	while also working on it on our own time.
+
 SETUP:
 	1) Download and install Eclipse IDE for Enterprise Java developers: Eclipse IDE for Enterprise Java Developers
  	(Links to an external site.). In Windows, the zip file is unzipped into C:\Program Files\ and then run the eclipse 
