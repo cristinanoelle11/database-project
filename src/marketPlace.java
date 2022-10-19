@@ -1,13 +1,14 @@
+import java.sql.Timestamp;
 
 public class marketPlace {
 	protected int saleID;
-	protected String endDate;
+	protected Timestamp endDate;
 	protected int price;
 	
 	//constructors
 		public marketPlace() {}
 		
-		public marketPlace(int saleID, String endDate, int price) {
+		public marketPlace(int saleID, Timestamp endDate, int price) {
 			this.saleID = saleID;
 			this.endDate = endDate;
 			this.price = price;
@@ -20,11 +21,12 @@ public class marketPlace {
 		public void setSaleID(int saleID) {
 			this.saleID = saleID;
 		}
-		public String getEndDate() {
+		public Timestamp getEndDate() {
 			return endDate;
 		}
-		public void setEndDate(String endDate) {
-			this.endDate = endDate;
+		public void setEndDate(Timestamp endDate) {
+			 long time = endDate.getTime();
+			 endDate = new Timestamp(time);
 		}
 		public int getPrice() {
 			return price;

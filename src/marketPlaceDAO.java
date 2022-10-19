@@ -1,6 +1,7 @@
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Timestamp;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
@@ -77,7 +78,7 @@ public class marketPlaceDAO {
          
         while (resultSet.next()) {
         	int saleID = resultSet.getInt("saleID");
-            String endDate = resultSet.getString("endDate");
+            Timestamp endDate = resultSet.getTimestamp("endDate");
             int price = resultSet.getInt("price");
              
             marketPlace market = new marketPlace(saleID, endDate, price);
@@ -98,15 +99,21 @@ public class marketPlaceDAO {
 					        "drop table if exists marketPlace; ",
 					        ("CREATE TABLE if not exists marketPlace( " +
 					        	"saleID INTEGER AUTO_INCREMENT PRIMARY KEY,"+
-					        	"endDate VARCHAR(10),"+
+					        	"endDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,"+
 					        	"price INTEGER(20));")
 					        	
         					};
-        String[] TUPLES1 = {("insert into marketPlace(endDate, price)"+
-        			"values ( '01/12/21', '12324'),"+
-			    		 	"('02/23/22','3243242'),"+
-			    		 	"('03/14/20','123434'),"+
-			    		 	"('04/07/22','34342');")
+        String[] TUPLES1 = {("insert into marketPlace(price)"+
+        			"values ('12324'),"+
+			    		 	"('3243242'),"+
+			    		 	"('123434'),"+
+			    		 	"('432'),"+
+			    		 	"('79'),"+
+			    		 	"('234'),"+
+			    		 	"('676'),"+
+			    		 	"('567'),"+
+			    		 	"('43'),"+
+			    		 	"('34342');")
 			    			};
         
         //for loop to put these in database
