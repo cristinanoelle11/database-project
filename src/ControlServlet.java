@@ -61,6 +61,9 @@ public class ControlServlet extends HttpServlet {
         	case "/login":
         		login(request,response);
         		break;
+        	case "/mintNFT":
+        		mintNFT(request,response);
+        		break;
         	case "/register":
         		register(request, response);
         		break;
@@ -204,6 +207,35 @@ public class ControlServlet extends HttpServlet {
 	   		 request.getRequestDispatcher("register.jsp").forward(request, response);
 	   	 	}
 	    }    
+	    
+	    //Function to mintNFT in servlet
+private void mintNFT(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+	    	
+	    	String name = request.getParameter("name");
+	   	 	String description = request.getParameter("description");
+	   	 	String image = request.getParameter("image");
+	   	 
+	   	 	//Functions to check NFT validity in nftDAO
+	   	 	if (!nftDAO.checkNftName(name)) {
+	   	 		if (!nftDAO.checkImage(image)) {
+		   	 		System.out.println("Minting Successful! Added to database");
+		   	 	nft nfts = new nft(name,description, image);
+		   	 		nftDAO.insertNFT(nfts);
+		   	 		response.sendRedirect("marketPlaceList.jsp");
+	   	 		}
+		   	 	else {
+		   	 		System.out.println("imageURL taken, please enter new imageURL");
+		    		 request.setAttribute("errorOne","Minting failed: imageURL taken, please enter a new imageURL.");
+		    		 request.getRequestDispatcher("register.jsp").forward(request, response);
+		   	 	}
+	   	 	}
+	   	 	else {
+	   	 		System.out.println("NFT name already taken");
+	   		 request.setAttribute("errorTwo","Minting failed: NFT name is already taken.");
+	   		 request.getRequestDispatcher("mint.jsp").forward(request, response);
+	   	 	}
+	    }    
+	    
 	    private void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
 	    	currentUser = "";
         		response.sendRedirect("login.jsp");

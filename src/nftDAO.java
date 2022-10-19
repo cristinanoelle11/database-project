@@ -90,6 +90,57 @@ public class nftDAO {
         return listNFT;
     }
     
+    //Function to create NFT
+    //copies insert function in userDAO
+    public void insertNFT(nft nfts) throws SQLException {
+    	connect_func();         
+		String sql = "insert into NFT(name, description, image) values (?, ?, ?)";
+		preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+			preparedStatement.setString(1, nfts.getName());
+			preparedStatement.setString(2, nfts.getDescription());
+			preparedStatement.setString(3, nfts.getImage());
+			//set owner???
+			//set NFT ID???
+		preparedStatement.executeUpdate();
+        preparedStatement.close();
+    }
+    
+    //Function(s) to validate NFT
+    public boolean checkNftName(String name) throws SQLException {
+    	boolean checks = false;
+    	String sql = "SELECT * FROM NFT WHERE name = ?";
+    	connect_func();
+    	preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+        preparedStatement.setString(1, name);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        
+        System.out.println(checks);	
+        
+        if (resultSet.next()) {
+        	checks = true;
+        }
+        
+        System.out.println(checks);
+    	return checks;
+    }
+    
+    public boolean checkImage(String image) throws SQLException {
+    	boolean checks = false;
+    	String sql = "SELECT * FROM NFT WHERE image = ?";
+    	connect_func();
+    	preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+        preparedStatement.setString(1, image);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        
+        System.out.println(checks);	
+        
+        if (resultSet.next()) {
+        	checks = true;
+        }
+        
+        System.out.println(checks);
+       	return checks;
+    }
     
     public void init() throws SQLException, FileNotFoundException, IOException{
     	connect_func();
