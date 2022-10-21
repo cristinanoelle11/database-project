@@ -44,7 +44,6 @@ public class ControlServlet extends HttpServlet {
 	    	nftDAO = new nftDAO();
 	    	historyDAO = new historyDAO();
 	    	marketPlaceDAO = new marketPlaceDAO();
-
 	    
 	    }
 	    
@@ -63,6 +62,9 @@ public class ControlServlet extends HttpServlet {
         		break;
         	case "/register":
         		register(request, response);
+        		break;
+        	case "/search":
+        		search(request,response);
         		break;
         	case "/initialize":
         		userDAO.init();
@@ -151,7 +153,18 @@ public class ControlServlet extends HttpServlet {
 	    	request.getRequestDispatcher("rootView.jsp").forward(request, response);
 	    }
 	    
-	    
+	    private void search(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+	    	String name = request.getParameter("name");
+	    	System.out.println("searchNFT started: 00000000000000000000000000000000000");
+
+	        List<nft> certainNFT = nftDAO.listCertainNFT(name);
+	        request.setAttribute("certainNFT", certainNFT);       
+	        RequestDispatcher dispatcher = request.getRequestDispatcher("NFT.jsp");       
+	        dispatcher.forward(request, response);
+	     
+	        System.out.println("searchNFT finished: 111111111111111111111111111111111111");
+	    	
+	    }
 	    protected void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
 	    	 String email = request.getParameter("email");
 	    	 String password = request.getParameter("password");

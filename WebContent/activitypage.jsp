@@ -17,5 +17,10 @@
 		 <a href="login.jsp"target ="_self" > logout</a><br><br> 
 		 <p> You can show all the transactions or other attributes here like balance, name of the user and others.</p>
 		 </center>
+		 
+		 <form action="search" method="post">
+			Search NFTs By Name: <input type="text" name="name">
+			<input type="submit" value="Search"/>
+		</form>
 	</body>
 </html>

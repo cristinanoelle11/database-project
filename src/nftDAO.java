@@ -67,7 +67,28 @@ public class nftDAO {
             System.out.println(connect);
         }
     }
-    
+    public List<nft> listCertainNFT(String nameSearch) throws SQLException {
+        List<nft> certainNFT = new ArrayList<nft>();        
+        String sql = "SELECT * FROM NFT WHERE name = '"+nameSearch+"'";  
+        
+        connect_func();      
+        statement = (Statement) connect.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+         
+        while (resultSet.next()) {
+        	int nftId = resultSet.getInt("nftID");
+            String name = resultSet.getString("name");
+            String description = resultSet.getString("description");
+            String image = resultSet.getString("image");
+            int owner = resultSet.getInt("owner");
+             
+            nft nftcertain = new nft(nftId, name, description, image, owner);
+            certainNFT.add(nftcertain);
+        }        
+        resultSet.close();
+        disconnect();        
+        return certainNFT;
+    }
     public List<nft> listAllNFTS() throws SQLException {
         List<nft> listNFT = new ArrayList<nft>();        
         String sql = "SELECT * FROM NFT";      
@@ -109,7 +130,7 @@ public class nftDAO {
 					        	
         					};
         String[] TUPLES1 = {("insert into NFT( name, description, image, owner)"+
-        			"values ( 'Grass ', 'picture of grass', 'https://images.pexels.com/photos/413195/pexels-photo-413195.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', '1'), "+
+        			"values ('Grass', 'picture of grass', 'https://images.pexels.com/photos/413195/pexels-photo-413195.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', '1'), "+
 			    		 	"('Pear', 'picture of pear','https://image.shutterstock.com/image-photo/red-apple-isolated-on-white-600w-1727544364.jpg', '3'),"+
 			    		 	"('Apple', 'picture of apple','https://image.shutterstock.com/image-photo/red-apple-isolated-on-white-600w-1727544364.jpg', '2'),"+
 			    		 	"('The girl', 'picture of a girl reading a book','https://image.shutterstock.com/image-vector/girl-reading-sit-side-book-600w-1687461220.jpg', '4'),"+
