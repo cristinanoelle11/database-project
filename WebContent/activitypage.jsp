@@ -5,6 +5,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link>
+
+</link>
 <meta charset="ISO-8859-1">
 <title>Activity page</title>
 </head>
@@ -19,8 +22,9 @@
 		 </center>
 		 
 		 <form action="search" method="post">
-			Search NFTs By Name: <input type="text" name="name">
+			Search NFTs By Name: <input type="text" id = "search" name="name">
 			<input type="submit" value="Search"/>
 		</form>
+		
 	</body>
 </html>

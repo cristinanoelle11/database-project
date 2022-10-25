@@ -57,6 +57,9 @@ public class ControlServlet extends HttpServlet {
 	    
 	    try {
         	switch(action) {  
+        	case"/buy":
+        		buy(request,response);
+        		break;
         	case "/login":
         		login(request,response);
         		break;
@@ -118,7 +121,7 @@ public class ControlServlet extends HttpServlet {
 	    }     
 	    
 	    private void listHistory(HttpServletRequest request, HttpServletResponse response)
-	            throws SQLException, IOException, ServletException {
+	        throws SQLException, IOException, ServletException {
 	        System.out.println("listHistory started: 00000000000000000000000000000000000");
 	        
 	        List<history> listHistory = historyDAO.listAllHistory();
@@ -156,15 +159,46 @@ public class ControlServlet extends HttpServlet {
 	    private void search(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
 	    	String name = request.getParameter("name");
 	    	System.out.println("searchNFT started: 00000000000000000000000000000000000");
-
+	    	
 	        List<nft> certainNFT = nftDAO.listCertainNFT(name);
-	        request.setAttribute("certainNFT", certainNFT);       
+	        request.setAttribute("certainNFT", certainNFT);  
 	        RequestDispatcher dispatcher = request.getRequestDispatcher("NFT.jsp");       
 	        dispatcher.forward(request, response);
-	     
+	        
 	        System.out.println("searchNFT finished: 111111111111111111111111111111111111");
-	    	
 	    }
+	    
+	    private void buy(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+	    	//int newOwner = Integer.parseInt(request.getParameter("owner"));
+	    	System.out.println("buyNFT started: 00000000000000000000000000000000000");
+	    	marketPlace listings = marketPlaceDAO.getmarketPlace();
+	    	user users = userDAO.getUser(currentUser);
+	    	if(users.wallet < listings.price) {
+	    		System.out.println("wallet is less then the price of nft");
+		   		 request.setAttribute("errorOne","wallet is less then the price of nft");
+		   		// request.getRequestDispatcher("register.jsp").forward(request, response);
+	    	}else {
+	    	//in this case returns 2
+	    	int newWallet;
+	    	newWallet = users.wallet - listings.price;
+    			System.out.println("new Owner is = " + newWallet); // should return 2
+    		userDAO.updateWallet(users.userID, newWallet);
+	    	int newOwner = users.userID;
+	    	nft thenft = nftDAO.getNFT();
+	    	//should return 1
+	    	int currentOwner = thenft.owner;
+	    		System.out.println("the old owner is = " + currentOwner); // returns 1
+	    	currentOwner = newOwner;	    	
+	    	nftDAO.update(currentOwner,thenft.owner );
+	    		System.out.println("new Owner is = " + newOwner); // should return 2
+	    	//delete from marketplace
+	    	marketPlaceDAO.delete(thenft.owner);
+	    	 
+	    	
+	    	System.out.println("buyNFT finished: 111111111111111111111111111111111111");
+	    	}
+	    }
+	    
 	    protected void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
 	    	 String email = request.getParameter("email");
 	    	 String password = request.getParameter("password");

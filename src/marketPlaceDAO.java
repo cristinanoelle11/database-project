@@ -88,7 +88,38 @@ public class marketPlaceDAO {
         disconnect();        
         return listMarketPlace;
     }
-    
+    public marketPlace getmarketPlace() throws SQLException {
+    	marketPlace marketplace = null;
+        String sql = "SELECT * FROM marketPlace";
+         
+        connect_func();      
+        statement = (Statement) connect.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);;
+         
+        if (resultSet.next()) {
+        	int saleID = resultSet.getInt("saleID");
+            Timestamp endDate = resultSet.getTimestamp("endDate");
+            int price = resultSet.getInt("price");
+            int nftID = resultSet.getInt("nftID");
+             marketplace = new marketPlace(saleID, endDate, price, nftID);
+        }
+         
+        resultSet.close();
+        statement.close();
+         
+        return marketplace;
+    }
+    public boolean delete(int nftID) throws SQLException {
+        String sql = "DELETE FROM marketPlace WHERE nftID = ?";        
+        connect_func();
+         
+        preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+        preparedStatement.setInt(1, nftID);
+         
+        boolean rowDeleted = preparedStatement.executeUpdate() > 0;
+        preparedStatement.close();
+        return rowDeleted;     
+    }
     
     public void init() throws SQLException, FileNotFoundException, IOException{
     	connect_func();
@@ -106,7 +137,7 @@ public class marketPlaceDAO {
 					        	
         					};
         String[] TUPLES1 = {("insert into marketPlace(price, nftID)"+
-        			"values ('12324', '1'),"+
+        			"values ('70', '1'),"+
 			    		 	"('3243242', '2'),"+
 			    		 	"('123434', '3'),"+
 			    		 	"('432', '4'),"+

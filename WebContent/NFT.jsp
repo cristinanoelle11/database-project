@@ -8,29 +8,27 @@
 <title>Insert title here</title>
 </head>
 <body>
-
-<h1>List all users</h1>
+<c:forEach var="nft" items="${certainNFT}">
+<h1><c:out value="${nft.name}" /></h1>
     <div align="center">
-       </table>
-              <table border="1" cellpadding="6">
-            <caption><h2>List of NFTS</h2></caption>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Image</th>
-                <th>Owner</th>
-                
-            </tr>
-            <c:forEach var="nft" items="${certainNFT}">
-                <tr style="text-align:center">
-                    <td><c:out value="${nft.nftID}" /></td>
-                    <td><c:out value="${nft.name}" /></td>
-                    <td><c:out value="${nft.description}" /></td>
-                    <td><c:out value= "${nft.image}" /></td>
-                    <td><c:out value="${nft.owner}" /></td>
-            </c:forEach>
-        </table>
+      
+       
+             
+            
+            <img src = "<c:out value= "${nft.image}" />"width="300" height="400">
+            <p><c:out value="${nft.description}" /></p>
+             
+            
+            	<p>Price = <c:out value="${nft.price}" /></p>
+           
+            <form action = "buy" method="post" >
+            	<input type = hidden name = "owner" value ="${nft.owner}" />
+				<input type="submit" value="BUY ME"/>
+			</form>
+			</c:forEach>
+             
+           
+       
 	</div>
 </body>
 </html>
