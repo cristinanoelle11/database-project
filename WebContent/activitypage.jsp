@@ -4,6 +4,25 @@
 <!DOCTYPE html>
 <html>
 <head>
+<style>
+	h1 {color:red;}
+	p {color:blue;}
+	.flexcontainer {
+		margin:10px;
+	  	display: flex;
+        flex-wrap: wrap;
+        margin-left:auto;
+		margin-right:auto;
+}
+	.nftImage{
+		width:350px;
+		height:350px;
+	}
+	.nftC{
+		margin-left:auto;
+		margin-right:auto;
+	}
+</style>
 <meta charset="ISO-8859-1">
 <title>Activity page</title>
 </head>
@@ -16,13 +35,16 @@
 		 <a href="login.jsp"target ="_self" > logout</a><br><br> 
 		 <h3>Your NFTS:</h3>
 		 </center>
-		 <c:forEach var="nfts" items="${usersNFTS}">
-		<h1><c:out value="${nfts.name}" /></h1>
-    <div align="center">
-            <img src = "<c:out value= "${nfts.image}" />"width="300" height="400">
-            <p><c:out value="${nfts.description}" /></p>
-            </div>
-            </c:forEach>
+		<div class = "flexcontainer"> 
+			<c:forEach var="nfts" items="${usersNFTS}">
+	    	<div class ="nftC">
+	   			<h4 class ="nftName"><c:out value="${nfts.name}" /></h1>
+	            <img class ="nftImage" src = "<c:out value= "${nfts.image}" />">
+	            <p class ="nftDescrip"><c:out value="${nfts.description}" /></p>
+	        </div>
+	         </c:forEach>
+	     </div>
+           
 		 <form action="search" method="post">
 			Search NFTs By Name: <input type="text" id = "search" name="name">
 			<input type="submit" value="Search"/>
