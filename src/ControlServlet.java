@@ -211,11 +211,15 @@ public class ControlServlet extends HttpServlet {
 	    	 }
 	    	 else if(userDAO.isValid(email, password)) 
 	    	 {
-			 	 
 			 	 currentUser = email;
-				 System.out.println("Login Successful! Redirecting");
-				 request.getRequestDispatcher("activitypage.jsp").forward(request, response);
-			 			 			 			 
+			 	 user users = userDAO.getUser(currentUser);
+			 	 request.setAttribute("currentU", users);
+			 	 int owner = users.userID;
+			 	 List<nft> usersNFTS = nftDAO.listUsersNFTs(owner);
+			     request.setAttribute("usersNFTS", usersNFTS);  
+				 RequestDispatcher dispatcher = request.getRequestDispatcher("activitypage.jsp");       
+			     dispatcher.forward(request, response);
+			     System.out.println("Login Successful! Redirecting");
 	    	 }
 	    	 else {
 	    		 request.setAttribute("loginStr","Login Failed: Please check your credentials.");

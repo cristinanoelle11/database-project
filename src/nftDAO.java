@@ -96,6 +96,28 @@ public class nftDAO {
         disconnect();        
         return certainNFT;
     }
+    public List<nft> listUsersNFTs(int owner) throws SQLException {
+        List<nft> nfts = new ArrayList<nft>();        
+        String sql = "SELECT * FROM  NFT WHERE owner = '"+owner+"'";  
+       
+        connect_func();      
+        statement = (Statement) connect.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+         
+        while (resultSet.next()) {
+        	int nftId = resultSet.getInt("nftID");
+            String name = resultSet.getString("name");
+            String description = resultSet.getString("description");
+            String image = resultSet.getString("image");
+             owner = resultSet.getInt("owner");
+            nft usersnfts = new nft(nftId, name, description, image, owner);
+            nfts.add(usersnfts);
+        }       
+        
+        resultSet.close();
+        disconnect();        
+        return nfts;
+    }
     public boolean update(int newOwner, int oldOwner) throws SQLException {
         String sql = "update NFT set owner= ? where owner =?";
         connect_func();
