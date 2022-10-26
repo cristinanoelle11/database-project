@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
@@ -87,6 +88,20 @@ public class marketPlaceDAO {
         resultSet.close();
         disconnect();        
         return listMarketPlace;
+    }
+    public boolean insert(Date date, int price, int nftID) throws SQLException {
+        String sql = "insert into marketPlace(endDate, price, nftID) values (?, ?, ?)";        
+        connect_func();
+         
+        preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+        
+        preparedStatement.setDate(1,date);
+        preparedStatement.setInt(2, price);
+        preparedStatement.setInt(3, nftID);
+         
+        boolean rowDeleted = preparedStatement.executeUpdate() > 0;
+        preparedStatement.close();
+        return rowDeleted;     
     }
     public marketPlace getmarketPlace() throws SQLException {
     	marketPlace marketplace = null;

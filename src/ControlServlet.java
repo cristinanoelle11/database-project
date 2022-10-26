@@ -17,6 +17,8 @@ import javax.servlet.http.HttpSession;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.sql.PreparedStatement;
 
 
@@ -69,6 +71,9 @@ public class ControlServlet extends HttpServlet {
         	case "/search":
         		search(request,response);
         		break;
+        	case "/placeInMarket":
+        		placeInMarket(request,response);
+        		break;
         	case "/initialize":
         		userDAO.init();
         		nftDAO.init();
@@ -83,7 +88,7 @@ public class ControlServlet extends HttpServlet {
         	case "/logout":
         		logout(request,response);
         		break;
-        	 case "/list": 
+        	case"/list":
                  System.out.println("The action is: list");
                  listUser(request, response);           	
                  break;
@@ -167,35 +172,78 @@ public class ControlServlet extends HttpServlet {
 	        
 	        System.out.println("searchNFT finished: 111111111111111111111111111111111111");
 	    }
+	    private void placeInMarket(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException, ParseException {
+	    	System.out.println("listNFT started: 00000000000000000000000000000000000");
+	    	String name = request.getParameter("name");
+	    	String price = request.getParameter("price");
+	    	String date = request.getParameter("date");
+	    	nft enteredNFT = nftDAO.getNFTbyName(name);
+	    	
+	    	int enterednftID = enteredNFT.nftID;
+	    	List<marketPlace> listings = marketPlaceDAO.listMarketPlace();
 	    
+	    	boolean ans =listings.stream().filter(o -> o.getnftID() == enterednftID).findFirst().isPresent();
+	    	if(ans) {
+	    		System.out.println("true");
+	    		System.out.println("this product is already listed");
+	    	}else {
+	    		System.out.println("false");
+	    	SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy"); // your template here
+	    	java.util.Date dateStr = formatter.parse(date);
+	    	java.sql.Date dateDB = new java.sql.Date(dateStr.getTime());
+	    	nft thenft = nftDAO.getNFTbyName(name);
+	    	
+	    	int nftID = thenft.nftID;
+	    	int priceNFT = Integer.parseInt(price); 
+	    
+	    	marketPlaceDAO.insert(dateDB, priceNFT, nftID);
+	    	
+	    	
+	    	request.setAttribute("listMarketPlace", marketPlaceDAO.listMarketPlace());
+	    	request.getRequestDispatcher("marketPlaceList.jsp").forward(request, response);
+	    	
+	    	System.out.println("listNFT started: 00000000000000000000000000000000000");
+	    	}
+	    }
+
 	    private void buy(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
 	    	//int newOwner = Integer.parseInt(request.getParameter("owner"));
 	    	System.out.println("buyNFT started: 00000000000000000000000000000000000");
 	    	marketPlace listings = marketPlaceDAO.getmarketPlace();
 	    	user users = userDAO.getUser(currentUser);
-	    	if(users.wallet < listings.price) {
-	    		System.out.println("wallet is less then the price of nft");
-		   		 request.setAttribute("errorOne","wallet is less then the price of nft");
-		   		// request.getRequestDispatcher("register.jsp").forward(request, response);
-	    	}else {
-	    	//in this case returns 2
-	    	int newWallet;
-	    	newWallet = users.wallet - listings.price;
-    			System.out.println("new Owner is = " + newWallet); // should return 2
-    		userDAO.updateWallet(users.userID, newWallet);
-	    	int newOwner = users.userID;
-	    	nft thenft = nftDAO.getNFT();
-	    	//should return 1
-	    	int currentOwner = thenft.owner;
-	    		System.out.println("the old owner is = " + currentOwner); // returns 1
-	    	currentOwner = newOwner;	    	
-	    	nftDAO.update(currentOwner,thenft.owner );
-	    		System.out.println("new Owner is = " + newOwner); // should return 2
-	    	//delete from marketplace
-	    	marketPlaceDAO.delete(thenft.owner);
-	    	 
-	    	
-	    	System.out.println("buyNFT finished: 111111111111111111111111111111111111");
+		    	if(users.wallet < listings.price) {
+		    		System.out.println("wallet is less then the price of nft");
+			   		request.setAttribute("errorOne","wallet is less then the price of nft");
+			   		// request.getRequestDispatcher("register.jsp").forward(request, response);
+		    	}else {
+			    	//SUBTRACT TOTAL AND UPDATE
+			    	int newWallet;
+			    	newWallet = users.wallet - listings.price;
+		    		System.out.println("new Owner is = " + newWallet); // should return 2
+		    		userDAO.updateWallet(users.userID, newWallet);
+		    		
+			    	int newOwner = users.userID;//2
+			    	
+			    	nft thenft = nftDAO.getNFT();
+			    	
+			    	//UPDATE NFT OWNER
+			    	int currentOwner = thenft.owner; //1
+			    		System.out.println("the old owner is = " + currentOwner); // returns 1
+			    //	currentOwner = newOwner;	    	
+			    	nftDAO.update(newOwner,thenft.owner);
+			    		System.out.println("new Owner is = " + newOwner); // should return 2
+			    	//delete from marketplace
+			    	marketPlaceDAO.delete(thenft.owner);
+			    	
+			    	user userUpdate = userDAO.getUser(currentUser);
+				 	request.setAttribute("currentU", userUpdate);
+				 	List<nft> usersNFTS = nftDAO.listUsersNFTs(users.userID);
+				    request.setAttribute("usersNFTS", usersNFTS);  
+			    	RequestDispatcher dispatcher = request.getRequestDispatcher("activitypage.jsp");       
+				    dispatcher.forward(request, response);
+				    
+			    	
+			    	System.out.println("buyNFT finished: 111111111111111111111111111111111111");
 	    	}
 	    }
 	    

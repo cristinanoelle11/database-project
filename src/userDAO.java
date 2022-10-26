@@ -189,7 +189,33 @@ public class userDAO
          
         return user;
     }
-    
+    public user getUserByName(String name) throws SQLException {
+    	user user = null;
+        String sql = "SELECT * FROM User WHERE name = ?";
+         
+        connect_func();
+         
+        preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+        preparedStatement.setString(1, name);
+         
+        ResultSet resultSet = preparedStatement.executeQuery();
+         
+        if (resultSet.next()) {
+        	int userID = resultSet.getInt("userID");
+        	String email = resultSet.getString("email");
+            String firstName = resultSet.getString("firstName");
+            String lastName = resultSet.getString("lastName");
+            String password = resultSet.getString("password");
+            String age = resultSet.getString("age");
+            int wallet = resultSet.getInt("wallet");
+            user = new user(userID, email, firstName, lastName, password, age, wallet);
+        }
+         
+        resultSet.close();
+        statement.close();
+         
+        return user;
+    }
     public boolean checkEmail(String email) throws SQLException {
     	boolean checks = false;
     	String sql = "SELECT * FROM User WHERE email = ?";

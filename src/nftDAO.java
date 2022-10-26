@@ -1,5 +1,3 @@
-
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -151,7 +149,25 @@ public class nftDAO {
         return nft;
     }
     
-    
+    public nft getNFTbyName(String name) throws SQLException {
+    	nft nft = null;
+        String sql = "SELECT * FROM NFT where name = '"+name+"'";
+         
+        connect_func();      
+        statement = (Statement) connect.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);;
+         
+        if (resultSet.next()) {
+        	int nftId = resultSet.getInt("nftID");
+            String description = resultSet.getString("description");
+            String image = resultSet.getString("image");
+            int owner = resultSet.getInt("owner");
+            nft = new nft(nftId, name, description, image, owner);
+        }
+        resultSet.close();
+        statement.close();
+        return nft;
+    }
     public nft nftOwner(int oldOwner, int newOwner) throws SQLException {
     	nft nft = null;
         String sql = "SELECT * FROM NFT WHERE owner = '"+oldOwner+"'";

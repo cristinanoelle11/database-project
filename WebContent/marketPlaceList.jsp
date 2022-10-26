@@ -10,17 +10,19 @@
 <div align="center">
         <table border="1" cellpadding="5">
             <caption><h2>Market Place</h2></caption>
-            <<tr>
+            <tr>
                 <th>saleID</th>
-                 <th>End Date</th>
+                <th>End Date</th>
                 <th>Price</th>
+                <th>nftID</th>
                
             </tr>
-            <c:forEach var="MarktetPlace" items="${listMarketPlace}">
+            <c:forEach var="marketPlace" items="${listMarketPlace}">
                 <tr style="text-align:center">
                     <td><c:out value="${marketPlace.saleID}" /></td>
                     <td><c:out value="${marketPlace.endDate}" /></td>
                     <td><c:out value="${marketPlace.price}" /></td>
+                    <td><c:out value="${marketPlace.nftID}" /></td>
             </c:forEach>
         </table>
     </div>   
