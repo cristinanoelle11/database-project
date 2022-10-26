@@ -80,15 +80,46 @@ public class marketPlaceDAO {
         	int saleID = resultSet.getInt("saleID");
             Timestamp endDate = resultSet.getTimestamp("endDate");
             int price = resultSet.getInt("price");
-             
-            marketPlace market = new marketPlace(saleID, endDate, price);
+            int nftID = resultSet.getInt("nftID");
+            marketPlace market = new marketPlace(saleID, endDate, price, nftID);
             listMarketPlace.add(market);
         }        
         resultSet.close();
         disconnect();        
         return listMarketPlace;
     }
-    
+    public marketPlace getmarketPlace() throws SQLException {
+    	marketPlace marketplace = null;
+        String sql = "SELECT * FROM marketPlace";
+         
+        connect_func();      
+        statement = (Statement) connect.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);;
+         
+        if (resultSet.next()) {
+        	int saleID = resultSet.getInt("saleID");
+            Timestamp endDate = resultSet.getTimestamp("endDate");
+            int price = resultSet.getInt("price");
+            int nftID = resultSet.getInt("nftID");
+             marketplace = new marketPlace(saleID, endDate, price, nftID);
+        }
+         
+        resultSet.close();
+        statement.close();
+         
+        return marketplace;
+    }
+    public boolean delete(int nftID) throws SQLException {
+        String sql = "DELETE FROM marketPlace WHERE nftID = ?";        
+        connect_func();
+         
+        preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+        preparedStatement.setInt(1, nftID);
+         
+        boolean rowDeleted = preparedStatement.executeUpdate() > 0;
+        preparedStatement.close();
+        return rowDeleted;     
+    }
     
     public void init() throws SQLException, FileNotFoundException, IOException{
     	connect_func();
@@ -100,20 +131,22 @@ public class marketPlaceDAO {
 					        ("CREATE TABLE if not exists marketPlace( " +
 					        	"saleID INTEGER AUTO_INCREMENT PRIMARY KEY,"+
 					        	"endDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,"+
-					        	"price INTEGER(20));")
+					        	"price INTEGER(20),"+
+					        	"nftID INTEGER,"+
+					        	"FOREIGN KEY (nftID) REFERENCES NFT(nftID));")
 					        	
         					};
-        String[] TUPLES1 = {("insert into marketPlace(price)"+
-        			"values ('12324'),"+
-			    		 	"('3243242'),"+
-			    		 	"('123434'),"+
-			    		 	"('432'),"+
-			    		 	"('79'),"+
-			    		 	"('234'),"+
-			    		 	"('676'),"+
-			    		 	"('567'),"+
-			    		 	"('43'),"+
-			    		 	"('34342');")
+        String[] TUPLES1 = {("insert into marketPlace(price, nftID)"+
+        			"values ('70', '1'),"+
+			    		 	"('3243242', '2'),"+
+			    		 	"('123434', '3'),"+
+			    		 	"('432', '4'),"+
+			    		 	"('79', '5'),"+
+			    		 	"('234', '6'),"+
+			    		 	"('676', '7'),"+
+			    		 	"('567', '8'),"+
+			    		 	"('43', '9'),"+
+			    		 	"('34342', '10');")
 			    			};
         
         //for loop to put these in database

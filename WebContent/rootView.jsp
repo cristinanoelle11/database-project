@@ -89,6 +89,7 @@
                 <th>saleID</th>
                 <th>End Date</th>
                 <th>Price</th>
+                <th>nftID</th>
                
             </tr>
             <c:forEach var="marketPlace" items="${listMarketPlace}">
@@ -96,6 +97,7 @@
                     <td><c:out value="${marketPlace.saleID}" /></td>
                     <td><c:out value="${marketPlace.endDate}" /></td>
                     <td><c:out value="${marketPlace.price}" /></td>
+                    <td><c:out value="${marketPlace.nftID}" /></td>
             </c:forEach>
         </table>
 	</div>

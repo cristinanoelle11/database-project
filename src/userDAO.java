@@ -133,7 +133,17 @@ public class userDAO
         preparedStatement.close();
         return rowDeleted;     
     }
-     
+     public boolean updateWallet(int userID, int wallet) throws SQLException{
+    	 String sql = "update user set wallet= ? where userID = ?";
+         connect_func();
+         preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+         preparedStatement.setInt(1, wallet);
+         preparedStatement.setInt(2, userID);
+
+         boolean rowUpdated = preparedStatement.executeUpdate()>0;
+         preparedStatement.close();
+         return rowUpdated;
+     }
     public boolean update(user users) throws SQLException {
         String sql = "update User set userID =?,firstName=?, lastName =?,password = ?,age=?, wallet=? where email = ?";
         connect_func();
@@ -171,7 +181,7 @@ public class userDAO
             String password = resultSet.getString("password");
             String age = resultSet.getString("age");
             int wallet = resultSet.getInt("wallet");
-            user = new user( userID, email, firstName, lastName, password, age, wallet);
+            user = new user(userID, email, firstName, lastName, password, age, wallet);
         }
          
         resultSet.close();
