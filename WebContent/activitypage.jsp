@@ -32,7 +32,10 @@
 <center><h1>Welcome <c:out value="${currentU.firstName}" />! You have been successfully logged in</h1> </center>
 	 <p>your current balance is <c:out value="${currentU.wallet}" /> in (EUH)</p>
 	 <center>
-		 <a href="login.jsp"target ="_self" > logout</a><br><br> 
+		 <a href="login.jsp"target ="_self" > logout</a><br><br>
+		 <a href="mint.jsp"target ="_self" > Mint NFT</a><br><br>
+		 <a href="transfer.jsp"target ="_self" >Transfer NFT</a><br><br>  
+		 
 		 <h3>Your NFTS:</h3>
 		 </center>
 		<div class = "flexcontainer"> 

@@ -34,7 +34,7 @@
 				</tr>
 				
 			</table>
-			<a href="marketPlaceList.jsp" target="_self">Return to Market Place</a>
+			<a href="marketPlaceList.jsp" target="_self">to Market Place</a>
 		</form>
 	</div>
 </body>

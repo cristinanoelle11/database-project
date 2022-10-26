@@ -72,6 +72,9 @@ public class ControlServlet extends HttpServlet {
         	case "/search":
         		search(request,response);
         		break;
+        	case "/transfer":
+        		transfer(request, response);
+        		break;
         	case "/initialize":
         		userDAO.init();
         		nftDAO.init();
@@ -169,6 +172,26 @@ public class ControlServlet extends HttpServlet {
 	        dispatcher.forward(request, response);
 	        
 	        System.out.println("searchNFT finished: 111111111111111111111111111111111111");
+	    }
+	    
+	    private void transfer(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+	    	// Find user to transfer to
+	    	String tranferToEmail = request.getParameter("email");
+	    	String nftName = request.getParameter("name");
+	    	System.out.println("transferNFT started: 00000000000000000000000000000000000");
+
+	    	// Create instance for holder and receiver
+		 	user NftHolder = userDAO.getUser(currentUser);
+		 	user NftReciever = userDAO.getUser(tranferToEmail);
+		 	
+	    	//get NFT to transfer
+		 	nft certainNFT = nftDAO.getNFT(nftName);
+	    	//Update NFT
+		 	if (NftHolder.getuserID() == certainNFT.getOwner()) {
+		 		nftDAO.update2(NftReciever.getuserID(), nftName);
+		 	}
+	        
+	        System.out.println("transferNFT finished: 111111111111111111111111111111111111");
 	    }
 	    
 	    private void buy(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
@@ -272,7 +295,7 @@ private void mintNFT(HttpServletRequest request, HttpServletResponse response) t
 		   	 		System.out.println("Minting Successful! Added to database");
 		   	 	nft nfts = new nft(name,description, image);
 		   	 		nftDAO.insertNFT(nfts);
-		   	 		response.sendRedirect("marketPlaceList.jsp");
+		   	 		response.sendRedirect("activitypage.jsp");
 	   	 		}
 		   	 	else {
 		   	 		System.out.println("imageURL taken, please enter new imageURL");
