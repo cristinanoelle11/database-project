@@ -89,6 +89,7 @@ public class marketPlaceDAO {
         disconnect();        
         return listMarketPlace;
     }
+
     public boolean insert(Date date, int price, int nftID) throws SQLException {
         String sql = "insert into marketPlace(endDate, price, nftID) values (?, ?, ?)";        
         connect_func();
@@ -135,7 +136,17 @@ public class marketPlaceDAO {
         preparedStatement.close();
         return rowDeleted;     
     }
-    
+    public boolean deleteViaDate( )throws SQLException{
+    	 String sql = "DELETE FROM marketPlace WHERE endDate <= SYSDATE()";        
+         connect_func();
+          
+         preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+        
+         boolean rowDeleted = preparedStatement.executeUpdate() > 0;
+         preparedStatement.close();
+         return rowDeleted;   
+    	
+    }
     public void init() throws SQLException, FileNotFoundException, IOException{
     	connect_func();
         statement =  (Statement) connect.createStatement();

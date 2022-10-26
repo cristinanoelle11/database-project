@@ -62,6 +62,9 @@ public class ControlServlet extends HttpServlet {
         	case"/buy":
         		buy(request,response);
         		break;
+        	case"/activity":
+        		activity(request,response);
+        		break;
         	case "/login":
         		login(request,response);
         		break;
@@ -186,6 +189,8 @@ public class ControlServlet extends HttpServlet {
 	    	if(ans) {
 	    		System.out.println("true");
 	    		System.out.println("this product is already listed");
+	    		request.setAttribute("errorOne","this product is already listed in the marketplace, try again");
+	    		request.getRequestDispatcher("ListNFT.jsp").forward(request, response);
 	    	}else {
 	    		System.out.println("false");
 	    	SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy"); // your template here
@@ -265,6 +270,7 @@ public class ControlServlet extends HttpServlet {
 			 	 int owner = users.userID;
 			 	 List<nft> usersNFTS = nftDAO.listUsersNFTs(owner);
 			     request.setAttribute("usersNFTS", usersNFTS);  
+			   //  marketPlaceDAO.deleteViaDate();
 				 RequestDispatcher dispatcher = request.getRequestDispatcher("activitypage.jsp");       
 			     dispatcher.forward(request, response);
 			     System.out.println("Login Successful! Redirecting");
@@ -274,7 +280,19 @@ public class ControlServlet extends HttpServlet {
 	    		 request.getRequestDispatcher("login.jsp").forward(request, response);
 	    	 }
 	    }
-	           
+	    protected void activity(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+	    	
+	    	user users = userDAO.getUser(currentUser);
+		 	 request.setAttribute("currentU", users);
+		 	 int owner = users.userID;
+		 	 List<nft> usersNFTS = nftDAO.listUsersNFTs(owner);
+		     request.setAttribute("usersNFTS", usersNFTS);  
+		   //  marketPlaceDAO.deleteViaDate();
+			 RequestDispatcher dispatcher = request.getRequestDispatcher("activitypage.jsp");       
+		     dispatcher.forward(request, response);
+		     System.out.println("activity Successful! Redirecting");
+	    }
+   
 	    private void register(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
 	    	
 	    	String email = request.getParameter("email");

@@ -27,11 +27,7 @@
 		
 		height:150px;
 	}
-	.listBlock{
-		display:block;
-		width:550px;
-		height:350px;
-	}
+	
 </style>
 <meta charset="ISO-8859-1">
 <title>Activity page</title>
@@ -42,6 +38,7 @@
 <center><h1>Welcome <c:out value="${currentU.firstName}" />! You have been successfully logged in</h1> </center>
 	 <p>your current balance is <c:out value="${currentU.wallet}" /> in (EUH)</p>
 	 <center>
+	
 		 <a href="login.jsp"target ="_self" > logout</a><br><br> 
 		 <h3>Your NFTS:</h3>
 		 </center>
@@ -60,15 +57,6 @@
 			<input type="submit" value="Search"/>
 		</form>
 		</div>
-		<div class = "listBlock">
-		 <form action="placeInMarket" method="post">
-		 <h4>List NFT onto MarketPlace</h4>
-			NFT Name: <input type="text"  name="name"><br>
-			What Price (ETH) for NFT <input type="number" name="price" ><br>
-			What date would you like it to not be listed anymore?<input type="text" name="date"><br>
-			
-			<input type="submit" value="List"/>
-		</form>
-		</div>
+		 <a href="ListNFT.jsp"target ="_self" > LIST AN NFT ON MARKEPLACE</a><br><br> 
 	</body>
 </html>
