@@ -13,6 +13,13 @@ public class nft {
 		this.owner = owner;
 	}
 	
+	public nft(String name, String description, String image) {
+		this.name = name;
+		this.description = description;
+		this.image = image;
+
+	}
+	
 	public nft(int nftID, String name, String description, String image, int owner) {
 		this.nftID = nftID;
 		this.name = name;
