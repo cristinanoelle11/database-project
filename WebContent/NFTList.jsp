@@ -7,6 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+<jsp:include page="header.jsp" />
 <div align="center">
         <table border="1" cellpadding="5">
             <caption><h2>List of NFTS</h2></caption>

@@ -5,16 +5,13 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title><c:out value="${nft.name}" /></title>
 </head>
 <body>
+<jsp:include page="header.jsp" />
 <c:forEach var="nft" items="${certainNFT}">
 <h1><c:out value="${nft.name}" /></h1>
     <div align="center">
-      
-       
-             
-            
             <img src = "<c:out value= "${nft.image}" />"width="300" height="400">
             <p><c:out value="${nft.description}" /></p>
              

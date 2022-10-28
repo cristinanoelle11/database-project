@@ -74,6 +74,9 @@ public class ControlServlet extends HttpServlet {
         	case "/search":
         		search(request,response);
         		break;
+        	case "/searchNFT":
+        		searchNFT(request,response);
+        		break;
         	case "/placeInMarket":
         		placeInMarket(request,response);
         		break;
@@ -127,7 +130,18 @@ public class ControlServlet extends HttpServlet {
 	        System.out.println("listNFT finished: 111111111111111111111111111111111111");
 
 	    }     
-	    
+	    private void searchNFT(HttpServletRequest request, HttpServletResponse response)
+	            throws SQLException, IOException, ServletException {
+	    	  System.out.println("searchNFT started: 00000000000000000000000000000000000");
+		        
+	    	  List<nft> listNFT = nftDAO.listAllNFTS();
+	    		request.setAttribute("listNFT", listNFT);   
+		        List<marketPlace> listMarketPlace = marketPlaceDAO.listMarketPlace();
+		        request.setAttribute("listMarketPlace", listMarketPlace); 
+		        RequestDispatcher dispatcher = request.getRequestDispatcher("search.jsp");       
+		        dispatcher.forward(request, response);
+		        System.out.println("searchNFT finished: 111111111111111111111111111111111111");
+	    }
 	    private void listHistory(HttpServletRequest request, HttpServletResponse response)
 	        throws SQLException, IOException, ServletException {
 	        System.out.println("listHistory started: 00000000000000000000000000000000000");
@@ -139,9 +153,6 @@ public class ControlServlet extends HttpServlet {
 	     
 	        System.out.println("listHistory finished: 111111111111111111111111111111111111");
 	    }   
-
-	         
-	    
 	    private void listMarketPlace(HttpServletRequest request, HttpServletResponse response)
 	            throws SQLException, IOException, ServletException {
 	        System.out.println("listMarketPlace started: 00000000000000000000000000000000000");
@@ -154,7 +165,6 @@ public class ControlServlet extends HttpServlet {
 	        System.out.println("listMarket finished: 111111111111111111111111111111111111");
 	    }        
 	    
-
 	    private void rootPage(HttpServletRequest request, HttpServletResponse response, String view) throws ServletException, IOException, SQLException{
 	    	System.out.println("root view");
 			request.setAttribute("listUser", userDAO.listAllUsers());
@@ -175,6 +185,7 @@ public class ControlServlet extends HttpServlet {
 	        
 	        System.out.println("searchNFT finished: 111111111111111111111111111111111111");
 	    }
+	    
 	    private void placeInMarket(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException, ParseException {
 	    	System.out.println("listNFT started: 00000000000000000000000000000000000");
 	    	String name = request.getParameter("name");
@@ -203,12 +214,16 @@ public class ControlServlet extends HttpServlet {
 	    
 	    	marketPlaceDAO.insert(dateDB, priceNFT, nftID);
 	    	
-	    	
-	    	request.setAttribute("listMarketPlace", marketPlaceDAO.listMarketPlace());
-	    	request.getRequestDispatcher("marketPlaceList.jsp").forward(request, response);
-	    	
-	    	System.out.println("listNFT started: 00000000000000000000000000000000000");
+	    		List<nft> listNFT = nftDAO.listAllNFTS();
+	    		request.setAttribute("listNFT", listNFT);   
+		        List<marketPlace> listMarketPlace = marketPlaceDAO.listMarketPlace();
+		        request.setAttribute("listMarketPlace", listMarketPlace);  
+		        
+		        RequestDispatcher dispatcher = request.getRequestDispatcher("marketPlaceList.jsp");       
+		        dispatcher.forward(request, response);
+		    	System.out.println("listNFT finished: 00000000000000000000000000000000000");
 	    	}
+	    	
 	    }
 
 	    private void buy(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
@@ -243,10 +258,15 @@ public class ControlServlet extends HttpServlet {
 			    	user userUpdate = userDAO.getUser(currentUser);
 				 	request.setAttribute("currentU", userUpdate);
 				 	List<nft> usersNFTS = nftDAO.listUsersNFTs(users.userID);
-				    request.setAttribute("usersNFTS", usersNFTS);  
+				    request.setAttribute("usersNFTS", usersNFTS); 
+				    
+				    List<nft> listNFT = nftDAO.listAllNFTS();
+		    		request.setAttribute("listNFT", listNFT);   
+			        List<marketPlace> listMarketPlace = marketPlaceDAO.listMarketPlace();
+			        request.setAttribute("listMarketPlace", listMarketPlace); 
+			        
 			    	RequestDispatcher dispatcher = request.getRequestDispatcher("activitypage.jsp");       
 				    dispatcher.forward(request, response);
-				    
 			    	
 			    	System.out.println("buyNFT finished: 111111111111111111111111111111111111");
 	    	}
@@ -271,7 +291,13 @@ public class ControlServlet extends HttpServlet {
 			 	 List<nft> usersNFTS = nftDAO.listUsersNFTs(owner);
 			     request.setAttribute("usersNFTS", usersNFTS);  
 			   //  marketPlaceDAO.deleteViaDate();
-				 RequestDispatcher dispatcher = request.getRequestDispatcher("activitypage.jsp");       
+			     List<nft> listNFT = nftDAO.listAllNFTS();
+		    		request.setAttribute("listNFT", listNFT);   
+			        List<marketPlace> listMarketPlace = marketPlaceDAO.listMarketPlace();
+			        request.setAttribute("listMarketPlace", listMarketPlace); 
+				 RequestDispatcher dispatcher = request.getRequestDispatcher("activitypage.jsp");  
+			          
+
 			     dispatcher.forward(request, response);
 			     System.out.println("Login Successful! Redirecting");
 	    	 }
@@ -288,6 +314,10 @@ public class ControlServlet extends HttpServlet {
 		 	 List<nft> usersNFTS = nftDAO.listUsersNFTs(owner);
 		     request.setAttribute("usersNFTS", usersNFTS);  
 		   //  marketPlaceDAO.deleteViaDate();
+		     List<nft> listNFT = nftDAO.listAllNFTS();
+	    		request.setAttribute("listNFT", listNFT);   
+		        List<marketPlace> listMarketPlace = marketPlaceDAO.listMarketPlace();
+		        request.setAttribute("listMarketPlace", listMarketPlace); 
 			 RequestDispatcher dispatcher = request.getRequestDispatcher("activitypage.jsp");       
 		     dispatcher.forward(request, response);
 		     System.out.println("activity Successful! Redirecting");

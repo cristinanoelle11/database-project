@@ -5,15 +5,13 @@
 <html>
 <head>
 <style>
-	h1 {color:red;}
-	p {color:blue;}
 	.flexcontainer {
 		margin:10px;
 	  	display: flex;
         flex-wrap: wrap;
         margin-left:auto;
 		margin-right:auto;
-}
+	}
 	.nftImage{
 		width:350px;
 		height:350px;
@@ -22,26 +20,19 @@
 		margin-left:auto;
 		margin-right:auto;
 	}
-	.searchBlock{
-		display:block;
-		
-		height:150px;
+	.wallet{
+		display: inline;
 	}
-	
+
 </style>
 <meta charset="ISO-8859-1">
 <title>Activity page</title>
 </head>
-
 	<body>
-	
-<center><h1>Welcome <c:out value="${currentU.firstName}" />! You have been successfully logged in</h1> </center>
-	 <p>your current balance is <c:out value="${currentU.wallet}" /> in (EUH)</p>
-	 <center>
-	
-		 <a href="login.jsp"target ="_self" > logout</a><br><br> 
-		 <h3>Your NFTS:</h3>
-		 </center>
+	<jsp:include page="header.jsp" />
+	<center><h1>Welcome <c:out value="${currentU.firstName}" />! You have been successfully logged in</h1> </center>
+	<h2 class ="wallet">Wallet: </h2><p class = "wallet"><c:out value="${currentU.wallet}" /> in (EUH)</p>
+	<h3>Your NFTS:</h3>
 		<div class = "flexcontainer"> 
 			<c:forEach var="nfts" items="${usersNFTS}">
 	    	<div class ="nftC">
@@ -51,12 +42,5 @@
 	        </div>
 	         </c:forEach>
 	     </div>
-         <div class = "searchBlock">
-		 <form action="search" method="post">
-			Search NFTs By Name: <input type="text" id = "search" name="name">
-			<input type="submit" value="Search"/>
-		</form>
-		</div>
-		 <a href="ListNFT.jsp"target ="_self" > LIST AN NFT ON MARKEPLACE</a><br><br> 
 	</body>
 </html>

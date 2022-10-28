@@ -5,6 +5,7 @@ public class marketPlace {
 	protected Timestamp endDate;
 	protected int price;
 	protected int nftID;
+	protected String name;
 	//constructors
 		public marketPlace() {}
 		
@@ -13,6 +14,13 @@ public class marketPlace {
 			this.endDate = endDate;
 			this.price = price;
 			this.nftID = nftID;
+		}
+		public marketPlace(int saleID, Timestamp endDate, int price,int nftID, String name) {
+			this.saleID = saleID;
+			this.endDate = endDate;
+			this.price = price;
+			this.nftID = nftID;
+			this.name = name;
 		}
 		//getters and setters
 		
@@ -42,5 +50,10 @@ public class marketPlace {
 			this.nftID = nftID;
 		}
 		
-	
+		public String getName() {
+			return name;
+		}
+		public void setName(String name) {
+			this.name = name;
+		}
 }

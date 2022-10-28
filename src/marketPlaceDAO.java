@@ -125,6 +125,28 @@ public class marketPlaceDAO {
          
         return marketplace;
     }
+    public List<marketPlace> listMarket() throws SQLException {
+        List<marketPlace> market = new ArrayList<marketPlace>();        
+        String sql = "SELECT * FROM  marketPlace NATURAL JOIN NFT ";  
+       
+        connect_func();      
+        statement = (Statement) connect.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+         
+        while (resultSet.next()) {
+        	int saleID = resultSet.getInt("saleID");
+            Timestamp endDate = resultSet.getTimestamp("endDate");
+            int price = resultSet.getInt("price");
+            int nftID = resultSet.getInt("nftID");
+            String name = resultSet.getString("name");
+            marketPlace theMarket = new marketPlace(saleID, endDate, price, nftID, name);
+            market.add(theMarket);
+        }       
+        
+        resultSet.close();
+        disconnect();        
+        return market;
+    }
     public boolean delete(int nftID) throws SQLException {
         String sql = "DELETE FROM marketPlace WHERE nftID = ?";        
         connect_func();
