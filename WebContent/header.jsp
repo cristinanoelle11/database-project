@@ -52,6 +52,8 @@
 			<ul>
 				<li> <a href="login.jsp"target ="_self" >LOGOUT</a></li>
 				<li><a href="ListNFT.jsp"target ="_self" >SELL</a></li>
+				<li><a href="mint.jsp"target ="_self" > Mint NFT</a></li>
+		 		<li><a href="transfer.jsp"target ="_self" >Transfer NFT</a></li>
 				<li class ="search">
 				  	<form action="searchNFT" method="post">
 						<input class ="submitHome" type="submit" value="SEARCH"/>

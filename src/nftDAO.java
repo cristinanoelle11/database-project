@@ -126,13 +126,25 @@ public class nftDAO {
         preparedStatement.close();
         return rowUpdated;
     }
+    
+    public boolean update2(int newOwner, String nftname) throws SQLException {
+        String sql = "update NFT set owner= ? where name = ?";
+        connect_func();
+        preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+        preparedStatement.setInt(1, newOwner);
+        preparedStatement.setString(2, nftname);
+        boolean rowUpdated = preparedStatement.executeUpdate()>0;
+        preparedStatement.close();
+        return rowUpdated;
+    }
+    
     public nft getNFT() throws SQLException {
     	nft nft = null;
         String sql = "SELECT * FROM NFT";
          
         connect_func();      
         statement = (Statement) connect.createStatement();
-        ResultSet resultSet = statement.executeQuery(sql);;
+        ResultSet resultSet = statement.executeQuery(sql);
          
         if (resultSet.next()) {
         	int nftId = resultSet.getInt("nftID");
@@ -149,6 +161,7 @@ public class nftDAO {
         return nft;
     }
     
+
     public nft getNFTbyName(String name) throws SQLException {
     	nft nft = null;
         String sql = "SELECT * FROM NFT where name = '"+name+"'";
@@ -168,6 +181,30 @@ public class nftDAO {
         statement.close();
         return nft;
     }
+
+    public nft getNFT(String name) throws SQLException {
+    	nft nft = null;
+        String sql = "SELECT * FROM NFT WHERE name = '"+name+"'";
+         
+        connect_func();   
+        statement = (Statement) connect.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+         
+        if (resultSet.next()) {
+        	int nftId = resultSet.getInt("nftID");
+            String nftName = resultSet.getString("name");
+            String description = resultSet.getString("description");
+            String image = resultSet.getString("image");
+            int owner = resultSet.getInt("owner");
+            nft = new nft(nftId, nftName, description, image, owner);
+        }
+         
+        resultSet.close();
+        statement.close();
+         
+        return nft;
+    }
+ 
     public nft nftOwner(int oldOwner, int newOwner) throws SQLException {
     	nft nft = null;
         String sql = "SELECT * FROM NFT WHERE owner = '"+oldOwner+"'";

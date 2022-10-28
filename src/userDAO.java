@@ -166,7 +166,7 @@ public class userDAO
     public user getUser(String email) throws SQLException {
     	user user = null;
         String sql = "SELECT * FROM User WHERE email = ?";
-         
+        // Handle error where user is not in database
         connect_func();
          
         preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
