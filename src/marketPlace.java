@@ -6,6 +6,7 @@ public class marketPlace {
 	protected int price;
 	protected int nftID;
 	protected String name;
+	protected String image;
 	//constructors
 		public marketPlace() {}
 		
@@ -15,12 +16,21 @@ public class marketPlace {
 			this.price = price;
 			this.nftID = nftID;
 		}
+		public marketPlace(int saleID, Timestamp endDate, int price,int nftID, String name, String image) {
+			this.saleID = saleID;
+			this.endDate = endDate;
+			this.price = price;
+			this.nftID = nftID;
+			this.name = name;
+			this.image = image;
+		}
 		public marketPlace(int saleID, Timestamp endDate, int price,int nftID, String name) {
 			this.saleID = saleID;
 			this.endDate = endDate;
 			this.price = price;
 			this.nftID = nftID;
 			this.name = name;
+			
 		}
 		//getters and setters
 		
@@ -55,5 +65,11 @@ public class marketPlace {
 		}
 		public void setName(String name) {
 			this.name = name;
+		}
+		public String getImage() {
+			return image;
+		}
+		public void setImage(String image) {
+			this.image = image;
 		}
 }

@@ -16,34 +16,31 @@
 		margin-right:auto;
 	}
 	.listing{
-		width:350px;
-		height:350px;
 		margin-left:auto;
 		margin-right:auto;
+		
 	}
-	p{
-	display:inline;
-	}
-	h3{
-	display:inline;
+	.nftImage{
+		width:350px;
+		height:350px;
 	}
 </style>
 </head>
 <body>
 <jsp:include page="header.jsp" />
 	<center><h1>MarketPlace</h1></center>
-	<c:forEach var="nft" items="${listNFT}">
-	<c:forEach var="market" items="${listMarketPlace}">
-	<c:if test="${nft.nftID == market.nftID}">
 	<div class = "flexcontainer">
-	<div class = "listing">
-		<h3><c:out value="${nft.name}" /></h3>
-		<p>Price = <c:out value="${market.price}" /></p>
-	</div>
-	</div>
-	</c:if>
+	<c:forEach var="market" items="${listMarketPlace}">
+	
+		<div class = "listing">
+			<h3><c:out value="${market.name}" /></h3>
+			<p>Price = <c:out value="${market.price}" /></p>
+			<img class ="nftImage" src = "<c:out value= "${market.image}" />">
+		</div>
 		</c:forEach>
-	</c:forEach>
+	</div>
+	
+
             	
            
          

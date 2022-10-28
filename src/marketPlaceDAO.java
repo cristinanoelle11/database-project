@@ -72,7 +72,7 @@ public class marketPlaceDAO {
     
     public List<marketPlace> listMarketPlace() throws SQLException {
         List<marketPlace> listMarketPlace = new ArrayList<marketPlace>();        
-        String sql = "SELECT * FROM marketPlace";      
+        String sql = "SELECT n.name,n.image, m.* FROM marketPlace m JOIN NFT n on m.nftID = n.nftID";      
         connect_func();      
         statement = (Statement) connect.createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
@@ -82,7 +82,9 @@ public class marketPlaceDAO {
             Timestamp endDate = resultSet.getTimestamp("endDate");
             int price = resultSet.getInt("price");
             int nftID = resultSet.getInt("nftID");
-            marketPlace market = new marketPlace(saleID, endDate, price, nftID);
+            String name = resultSet.getString("name");
+            String image = resultSet.getString("image");
+            marketPlace market = new marketPlace(saleID, endDate, price, nftID, name, image);
             listMarketPlace.add(market);
         }        
         resultSet.close();
