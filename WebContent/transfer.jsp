@@ -9,8 +9,8 @@
 
 </head>
 <body>
+<jsp:include page="header.jsp" />
 <center><h1>Welcome <c:out value="${currentU.firstName}" />! Transfer NFT?</h1> </center>
-
 <h3>Your NFTS:</h3>
 		 </center>
 		<div class = "flexcontainer"> 
@@ -32,13 +32,13 @@
 				<tr>
 					<th>Transfer TO User Name: </th>
 					<td align="center" colspan="3">
-						<input type="text" name="email" size="45"  value="fireball" onfocus="this.value=''">
+						<input type="text" name="email" size="45"  value="name@gmail.com" onfocus="this.value=''">
 					</td>
 				</tr>
 				<tr>
 					<th>Nft To Transfer: </th>
 					<td align="center" colspan="3">
-						<input type="text" name="name" size="45" value="URL" onfocus="this.value=''">
+						<input type="text" name="name" size="45" value="Apple" onfocus="this.value=''">
 					</td>
 				</tr>
 				<tr>
@@ -48,7 +48,6 @@
 				</tr>
 				
 			</table>
-			<a href="activitypage.jsp" target="_self">to activity page</a>
 		</form>
 	</div>
 

@@ -37,6 +37,9 @@
 
 		<div class = "flexcontainer"> 
 			<c:forEach var="nfts" items="${usersNFTS}">
+			<c:if test="${nfts.owner} == ${currentU.userID}">
+			<p>${noNFTStr}</p>
+			</c:if>
 	    	<div class ="nftC">
 	   			<h4 class ="nftName"><c:out value="${nfts.name}" /></h1>
 	            <img class ="nftImage" src = "<c:out value= "${nfts.image}" />">

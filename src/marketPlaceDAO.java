@@ -72,7 +72,7 @@ public class marketPlaceDAO {
     
     public List<marketPlace> listMarketPlace() throws SQLException {
         List<marketPlace> listMarketPlace = new ArrayList<marketPlace>();        
-        String sql = "SELECT n.name,n.image, m.* FROM marketPlace m JOIN NFT n on m.nftID = n.nftID";      
+        String sql = "SELECT n.name,n.image, m.* FROM marketPlace m JOIN NFT n ON m.nftID = n.nftID";      
         connect_func();      
         statement = (Statement) connect.createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
@@ -160,16 +160,17 @@ public class marketPlaceDAO {
         preparedStatement.close();
         return rowDeleted;     
     }
-    public boolean deleteViaDate( )throws SQLException{
+    public boolean deleteViaDate()throws SQLException{
+    	connect_func();
+        
     	 String sql = "DELETE FROM marketPlace WHERE endDate <= SYSDATE()";        
-         connect_func();
-          
+         
          preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
         
          boolean rowDeleted = preparedStatement.executeUpdate() > 0;
          preparedStatement.close();
          return rowDeleted;   
-    	
+        
     }
     public void init() throws SQLException, FileNotFoundException, IOException{
     	connect_func();
@@ -180,23 +181,23 @@ public class marketPlaceDAO {
 					        "drop table if exists marketPlace; ",
 					        ("CREATE TABLE if not exists marketPlace( " +
 					        	"saleID INTEGER AUTO_INCREMENT PRIMARY KEY,"+
-					        	"endDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,"+
+					        	"endDate TIMESTAMP,"+
 					        	"price INTEGER(20),"+
 					        	"nftID INTEGER,"+
 					        	"FOREIGN KEY (nftID) REFERENCES NFT(nftID));")
 					        	
         					};
-        String[] TUPLES1 = {("insert into marketPlace(price, nftID)"+
-        			"values ('70', '1'),"+
-			    		 	"('3243242', '2'),"+
-			    		 	"('123434', '3'),"+
-			    		 	"('432', '4'),"+
-			    		 	"('79', '5'),"+
-			    		 	"('234', '6'),"+
-			    		 	"('676', '7'),"+
-			    		 	"('567', '8'),"+
-			    		 	"('43', '9'),"+
-			    		 	"('34342', '10');")
+        String[] TUPLES1 = {("insert into marketPlace(price, endDate, nftID)"+
+        			"values ('70',DATE_ADD(NOW(), INTERVAL 1 DAY), '1'),"+
+			    		 	"('20',DATE_ADD(NOW(), INTERVAL 2 DAY), '2'),"+
+			    		 	"('34', NOW(),'3'),"+
+			    		 	"('42', DATE_ADD(NOW(), INTERVAL 3 DAY),'4'),"+
+			    		 	"('79',DATE_ADD(NOW(), INTERVAL 4 DAY), '5'),"+
+			    		 	"('24', NOW(),'6'),"+
+			    		 	"('67', DATE_ADD(NOW(), INTERVAL 1 DAY),'7'),"+
+			    		 	"('56', NOW(), '8'),"+
+			    		 	"('43', DATE_ADD(NOW(), INTERVAL 5 DAY),'9'),"+
+			    		 	"('100', DATE_ADD(NOW(), INTERVAL 3 DAY),'10');")
 			    			};
         
         //for loop to put these in database

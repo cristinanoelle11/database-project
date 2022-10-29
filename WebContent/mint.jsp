@@ -4,9 +4,11 @@
 <html>
 <head><title>Mint NFT</title></head>
 <body>
+<jsp:include page="header.jsp" />
 <div align="center">
 		<p> ${errorOne } </p>
 		<p> ${errorTwo } </p>
+		<h1>Create an NFT!</h1>
 		<form action="mintNFT">
 			<table border="1" cellpadding="5">
 				<tr>
@@ -34,7 +36,7 @@
 				</tr>
 				
 			</table>
-			<a href="marketPlaceList.jsp" target="_self">to Market Place</a>
+			
 		</form>
 	</div>
 </body>

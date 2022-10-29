@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.Statement;
 import java.sql.Timestamp;
@@ -91,7 +92,90 @@ public class historyDAO {
         disconnect();        
         return listHistory;
     }
-    
+    public void insertExpired(user users, nft nfts)throws SQLException{
+    	connect_func();
+    	
+	    	String sql1 = "insert into History(userID, nftID, details, action, date) values (?, ?, ?,?, NOW())";
+	  		preparedStatement = (PreparedStatement) connect.prepareStatement(sql1);
+	  			preparedStatement.setInt(1,users.userID);
+	  			preparedStatement.setInt(2, nfts.nftID);
+	  			preparedStatement.setString(3, nfts.name +" (nft id: "+nfts.nftID+ ") has left the marketplace");
+	  			preparedStatement.setString(4, "expired");
+	  		
+	  		preparedStatement.executeUpdate();
+	        preparedStatement.close();
+   
+    }
+    public void insertTransfer(user NftHolder, user NftReciever, nft certainNFT) throws SQLException {
+        connect_func();         
+		String sql = "insert into History(userID, nftID, details, action, date) values (?, ?, ?, ?, NOW())";
+		preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+			preparedStatement.setInt(1,NftHolder.userID);
+			preparedStatement.setInt(2, certainNFT.nftID);
+			preparedStatement.setString(3, NftHolder.firstName + " transfered the NFT '" + certainNFT.name + " to "+ NftReciever.firstName);
+			preparedStatement.setString(4, "transfered");
+		
+		preparedStatement.executeUpdate();
+        preparedStatement.close();
+        
+        String sql1 = "insert into History(userID, nftID, details, action, date) values (?, ?, ?, ?, NOW())";
+		preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+			preparedStatement.setInt(1,NftReciever.userID);
+			preparedStatement.setInt(2, certainNFT.nftID);
+			preparedStatement.setString(3, NftReciever.firstName + " recieved the NFT '" + certainNFT.name + "' ("+ certainNFT.nftID +") from "+ NftHolder.firstName );
+			preparedStatement.setString(4, "recieved");
+			
+		preparedStatement.executeUpdate();
+        preparedStatement.close();
+        
+    }
+    public void insertBought(user buyer, user seller, nft certainNFT) throws SQLException {
+        connect_func();         
+		String sql = "insert into History(userID, nftID, details, action, date) values (?, ?, ?, ?, NOW())";
+		preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+			preparedStatement.setInt(1,buyer.userID);
+			preparedStatement.setInt(2, certainNFT.nftID);
+			preparedStatement.setString(3, buyer.firstName + " bought the NFT '" + certainNFT.name +"'(nft id:"+ certainNFT.nftID +") from "+ seller.firstName);
+			preparedStatement.setString(4, "bought");
+		
+		preparedStatement.executeUpdate();
+        preparedStatement.close();
+        
+        String sql1 = "insert into History(userID, nftID, details, action, date) values (?, ?, ?, ?, NOW())";
+		preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+			preparedStatement.setInt(1,seller.userID);
+			preparedStatement.setInt(2, certainNFT.nftID);
+			preparedStatement.setString(3, seller.firstName + " sold the NFT '" + certainNFT.name + "' (nft id:"+ certainNFT.nftID +") from "+ buyer.firstName );
+			preparedStatement.setString(4, "recieved");
+			
+		preparedStatement.executeUpdate();
+        preparedStatement.close();
+        
+    }
+    public void insertMint(user users,  nft nfts) throws SQLException {
+        connect_func();         
+		String sql = "insert into History(userID, nftID, details, action, date) values (?, ?, ?, ?, NOW())";
+		preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+			preparedStatement.setInt(1,users.userID);
+			preparedStatement.setInt(2, nfts.nftID);
+			preparedStatement.setString(3, users.firstName + " created the NFT '" + nfts.name + "' ("+ nfts.nftID +")");
+			preparedStatement.setString(4, "created");
+		
+		preparedStatement.executeUpdate();
+        preparedStatement.close();
+    }
+    public void insertUser(user users) throws SQLException {
+        connect_func();         
+		String sql = "insert into History(userID, details, action, date) values (?, ?, ?, NOW())";
+		preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+			preparedStatement.setInt(1,users.userID);
+			preparedStatement.setString(2, "user created");
+			preparedStatement.setString(3, "created");
+		
+		preparedStatement.executeUpdate();
+        preparedStatement.close();
+    }
+   
     public void init() throws SQLException, FileNotFoundException, IOException{
     	connect_func();
         statement =  (Statement) connect.createStatement();
@@ -105,22 +189,20 @@ public class historyDAO {
 					        	"nftID INTEGER,"+
 					        	"details VARCHAR(2000),"+
 					        	"action VARCHAR(50),"+
-					        	"date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,"+
-					        	"FOREIGN KEY (userID) REFERENCES User(userID),"+
-					        	"FOREIGN KEY (nftID) REFERENCES NFT(nftID));")
+					        	"date TIMESTAMP);")
 					        	
         					};
-        String[] TUPLES1 = {("insert into History( userID, nftID, details, action )"+
-        			"values ('1','1','user created','create'),"+
-        					"('2','3','user created','create'),"+
-        					"('3','2','user created','create'),"+
-        					"('4','4','user created','create'),"+
-        					"('5','6','user created','create'),"+
-        					"('6','5','user created','create'),"+
-        					"('7','8','user created','create'),"+
-        					"('8','7','user created','create'),"+
-        					"('9','10','user created','create'),"+
-			    		 	"('10','9','user created', 'create');")
+        String[] TUPLES1 = {("insert into History( userID, nftID, details, action, date )"+
+        			"values ('1','1','user created','create', NOW()),"+
+        					"('2','3','user created','create', NOW()),"+
+        					"('3','2','user created','create', NOW()),"+
+        					"('4','4','user created','create', NOW()),"+
+        					"('5','6','user created','create', NOW()),"+
+        					"('6','5','user created','create', NOW()),"+
+        					"('7','8','user created','create', NOW()),"+
+        					"('8','7','user created','create', NOW()),"+
+        					"('9','10','user created','create', NOW()),"+
+			    		 	"('10','9','user created', 'create', NOW());")
 			    			};
         
         //for loop to put these in database

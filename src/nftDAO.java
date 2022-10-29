@@ -253,13 +253,13 @@ public class nftDAO {
     //copies insert function in userDAO
     public void insertNFT(nft nfts) throws SQLException {
     	connect_func();         
-		String sql = "insert into NFT(name, description, image) values (?, ?, ?)";
+		String sql = "insert into NFT(name, description, image, owner) values (?, ?, ?, ?)";
 		preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
 			preparedStatement.setString(1, nfts.getName());
 			preparedStatement.setString(2, nfts.getDescription());
 			preparedStatement.setString(3, nfts.getImage());
-			//set owner???
-			//set NFT ID???
+			preparedStatement.setInt(4, nfts.getOwner());
+			
 		preparedStatement.executeUpdate();
         preparedStatement.close();
     }
