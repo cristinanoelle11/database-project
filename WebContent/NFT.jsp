@@ -19,7 +19,8 @@
             	<p>Price = <c:out value="${nft.price}" /></p>
            
             <form action = "buy" method="post" >
-            	<input type = hidden name = "owner" value ="${nft.owner}" />
+            	<input type = hidden name = "name" value ="${nft.name}" />
+            	<input type = hidden name = "nftID" value = "${nft.nftID}" />
 				<input type="submit" value="BUY ME"/>
 			</form>
 			</c:forEach>

@@ -26,14 +26,14 @@ import java.util.List;
  * Servlet implementation class Connect
  */
 @WebServlet("/marketPlaceDAO")
-public class marketPlaceDAO {
+public class MarketPlaceDAO {
 	private static final long serialVersionUID = 1L;
 	private Connection connect = null;
 	private Statement statement = null;
 	private PreparedStatement preparedStatement = null;
 	private ResultSet resultSet = null;
 	
-	public marketPlaceDAO(){}
+	public MarketPlaceDAO(){}
 	
 	/** 
 	 * @see HttpServlet#HttpServlet()
@@ -70,8 +70,8 @@ public class marketPlaceDAO {
         }
     }
     
-    public List<marketPlace> listMarketPlace() throws SQLException {
-        List<marketPlace> listMarketPlace = new ArrayList<marketPlace>();        
+    public List<MarketPlace> listMarketPlace() throws SQLException {
+        List<MarketPlace> listMarketPlace = new ArrayList<MarketPlace>();        
         String sql = "SELECT n.name,n.image, m.* FROM marketPlace m JOIN NFT n ON m.nftID = n.nftID";      
         connect_func();      
         statement = (Statement) connect.createStatement();
@@ -84,7 +84,7 @@ public class marketPlaceDAO {
             int nftID = resultSet.getInt("nftID");
             String name = resultSet.getString("name");
             String image = resultSet.getString("image");
-            marketPlace market = new marketPlace(saleID, endDate, price, nftID, name, image);
+            MarketPlace market = new MarketPlace(saleID, endDate, price, nftID, name, image);
             listMarketPlace.add(market);
         }        
         resultSet.close();
@@ -106,29 +106,34 @@ public class marketPlaceDAO {
         preparedStatement.close();
         return rowDeleted;     
     }
-    public marketPlace getmarketPlace() throws SQLException {
-    	marketPlace marketplace = null;
-        String sql = "SELECT * FROM marketPlace";
+    public MarketPlace getmarketPlace(String nftID) throws SQLException {
+    	MarketPlace marketplace = null;
+    	int nftid = Integer.parseInt(nftID);
+        String sql = "SELECT * FROM marketPlace where nftID = ?";
+        
+        
+        connect_func();  
+        preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+        
+        preparedStatement.setInt(1, nftid);
+        ResultSet resultSet = preparedStatement.executeQuery();
          
-        connect_func();      
-        statement = (Statement) connect.createStatement();
-        ResultSet resultSet = statement.executeQuery(sql);;
+       
          
         if (resultSet.next()) {
         	int saleID = resultSet.getInt("saleID");
             Timestamp endDate = resultSet.getTimestamp("endDate");
             int price = resultSet.getInt("price");
-            int nftID = resultSet.getInt("nftID");
-             marketplace = new marketPlace(saleID, endDate, price, nftID);
+            marketplace = new MarketPlace(saleID, endDate, price, nftid);
         }
          
         resultSet.close();
-        statement.close();
+        preparedStatement.close();
          
         return marketplace;
     }
-    public List<marketPlace> listMarket() throws SQLException {
-        List<marketPlace> market = new ArrayList<marketPlace>();        
+    public List<MarketPlace> listMarket() throws SQLException {
+        List<MarketPlace> market = new ArrayList<MarketPlace>();        
         String sql = "SELECT * FROM  marketPlace NATURAL JOIN NFT ";  
        
         connect_func();      
@@ -141,7 +146,7 @@ public class marketPlaceDAO {
             int price = resultSet.getInt("price");
             int nftID = resultSet.getInt("nftID");
             String name = resultSet.getString("name");
-            marketPlace theMarket = new marketPlace(saleID, endDate, price, nftID, name);
+            MarketPlace theMarket = new MarketPlace(saleID, endDate, price, nftID, name);
             market.add(theMarket);
         }       
         
@@ -160,16 +165,23 @@ public class marketPlaceDAO {
         preparedStatement.close();
         return rowDeleted;     
     }
-    public boolean deleteViaDate()throws SQLException{
+    public ArrayList<Integer> deleteViaDate()throws SQLException{
+    	ArrayList<Integer> nftsDeleted = new ArrayList<Integer>();
     	connect_func();
-        
-    	 String sql = "DELETE FROM marketPlace WHERE endDate <= SYSDATE()";        
+         String sqlG = "Select nftID from marketPlace WHERE endDate <= SYSDATE()";
+    	 String sqlD = "DELETE FROM marketPlace WHERE endDate <= SYSDATE()";        
          
-         preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
-        
-         boolean rowDeleted = preparedStatement.executeUpdate() > 0;
+         preparedStatement = (PreparedStatement) connect.prepareStatement(sqlG);
+         ResultSet resultSet = preparedStatement.executeQuery(sqlG);
+         while(resultSet.next()) {
+        	 int nftID = resultSet.getInt(1);
+        	 nftsDeleted.add(nftID);
+         }
+         
+         preparedStatement = (PreparedStatement) connect.prepareStatement(sqlD);
+         preparedStatement.executeUpdate();
          preparedStatement.close();
-         return rowDeleted;   
+         return nftsDeleted;   
         
     }
     public void init() throws SQLException, FileNotFoundException, IOException{

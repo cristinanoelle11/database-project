@@ -24,12 +24,12 @@ import java.sql.PreparedStatement;
 
 public class ControlServlet extends HttpServlet {
 	    private static final long serialVersionUID = 1L;
-	    private userDAO userDAO = new userDAO();	    
-	    private nftDAO nftDAO = new nftDAO();
+	    private UserDAO userDAO = new UserDAO();	    
+	    private NftDAO nftDAO = new NftDAO();
 
-	    private historyDAO historyDAO = new historyDAO();
+	    private HistoryDAO historyDAO = new HistoryDAO();
 
-	    private marketPlaceDAO marketPlaceDAO = new marketPlaceDAO();
+	    private MarketPlaceDAO marketPlaceDAO = new MarketPlaceDAO();
 
 	    private String currentUser;
 	    private HttpSession session=null;
@@ -41,11 +41,11 @@ public class ControlServlet extends HttpServlet {
 	    
 	    public void init()
 	    {
-	    	userDAO = new userDAO();
+	    	userDAO = new UserDAO();
 	    	currentUser= "";
-	    	nftDAO = new nftDAO();
-	    	historyDAO = new historyDAO();
-	    	marketPlaceDAO = new marketPlaceDAO();
+	    	nftDAO = new NftDAO();
+	    	historyDAO = new HistoryDAO();
+	    	marketPlaceDAO = new MarketPlaceDAO();
 	    
 	    }
 	    
@@ -115,7 +115,7 @@ public class ControlServlet extends HttpServlet {
 	        System.out.println("listUser started: 00000000000000000000000000000000000");
 
 	     
-	        List<user> listUser = userDAO.listAllUsers();
+	        List<User> listUser = userDAO.listAllUsers();
 	        request.setAttribute("listUser", listUser);       
 	        RequestDispatcher dispatcher = request.getRequestDispatcher("UserList.jsp");       
 	        dispatcher.forward(request, response);
@@ -127,7 +127,7 @@ public class ControlServlet extends HttpServlet {
 	            throws SQLException, IOException, ServletException {
 	        System.out.println("listNFT started: 00000000000000000000000000000000000");
 	        
-	        List<nft> listNFT = nftDAO.listAllNFTS();
+	        List<Nft> listNFT = nftDAO.listAllNFTS();
 	        request.setAttribute("listNFT", listNFT);       
 	        RequestDispatcher dispatcher = request.getRequestDispatcher("NFTList.jsp");       
 	        dispatcher.forward(request, response);
@@ -139,9 +139,9 @@ public class ControlServlet extends HttpServlet {
 	           throws SQLException, IOException, ServletException {
 	    	  System.out.println("searchNFT started: 00000000000000000000000000000000000");
 		        
-	    	  List<nft> listNFT = nftDAO.listAllNFTS();
+	    	  List<Nft> listNFT = nftDAO.listAllNFTS();
 	    		request.setAttribute("listNFT", listNFT);   
-		        List<marketPlace> listMarketPlace = marketPlaceDAO.listMarketPlace();
+		        List<MarketPlace> listMarketPlace = marketPlaceDAO.listMarketPlace();
 		        request.setAttribute("listMarketPlace", listMarketPlace); 
 		        RequestDispatcher dispatcher = request.getRequestDispatcher("search.jsp");       
 		        dispatcher.forward(request, response);
@@ -151,7 +151,7 @@ public class ControlServlet extends HttpServlet {
 	        throws SQLException, IOException, ServletException {
 	        System.out.println("listHistory started: 00000000000000000000000000000000000");
 	        
-	        List<history> listHistory = historyDAO.listAllHistory();
+	        List<History> listHistory = historyDAO.listAllHistory();
 	        request.setAttribute("listHistory", listHistory);       
 	        RequestDispatcher dispatcher = request.getRequestDispatcher("HistoryList.jsp");       
 	        dispatcher.forward(request, response);
@@ -162,7 +162,7 @@ public class ControlServlet extends HttpServlet {
 	            throws SQLException, IOException, ServletException {
 	        System.out.println("listMarketPlace started: 00000000000000000000000000000000000");
 	        
-	        List<marketPlace> listMarketPlace = marketPlaceDAO.listMarketPlace();
+	        List<MarketPlace> listMarketPlace = marketPlaceDAO.listMarketPlace();
 	        request.setAttribute("listMarketPlace", listMarketPlace);       
 	        RequestDispatcher dispatcher = request.getRequestDispatcher("marketPlaceList.jsp");       
 	        dispatcher.forward(request, response);
@@ -183,7 +183,7 @@ public class ControlServlet extends HttpServlet {
 	    	String name = request.getParameter("name");
 	    	System.out.println("searchNFT started: 00000000000000000000000000000000000");
 	    	
-	        List<nft> certainNFT = nftDAO.listCertainNFT(name);
+	        List<Nft> certainNFT = nftDAO.listCertainNFT(name);
 	        request.setAttribute("certainNFT", certainNFT);  
 	        RequestDispatcher dispatcher = request.getRequestDispatcher("NFT.jsp");       
 	        dispatcher.forward(request, response);
@@ -196,10 +196,10 @@ public class ControlServlet extends HttpServlet {
 	    	String name = request.getParameter("name");
 	    	String price = request.getParameter("price");
 	    	String date = request.getParameter("date");
-	    	nft enteredNFT = nftDAO.getNFTbyName(name);
+	    	Nft enteredNFT = nftDAO.getNFTbyName(name);
 	    	
 	    	int enterednftID = enteredNFT.nftID;
-	    	List<marketPlace> listings = marketPlaceDAO.listMarketPlace();
+	    	List<MarketPlace> listings = marketPlaceDAO.listMarketPlace();
 	    
 	    	boolean ans =listings.stream().filter(o -> o.getnftID() == enterednftID).findFirst().isPresent();
 	    	if(ans) {
@@ -212,16 +212,16 @@ public class ControlServlet extends HttpServlet {
 	    	SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy"); // your template here
 	    	java.util.Date dateStr = formatter.parse(date);
 	    	java.sql.Date dateDB = new java.sql.Date(dateStr.getTime());
-	    	nft thenft = nftDAO.getNFTbyName(name);
+	    	Nft thenft = nftDAO.getNFTbyName(name);
 	    	
 	    	int nftID = thenft.nftID;
 	    	int priceNFT = Integer.parseInt(price); 
 	    
 	    	marketPlaceDAO.insert(dateDB, priceNFT, nftID);
 	    	
-	    		List<nft> listNFT = nftDAO.listAllNFTS();
+	    		List<Nft> listNFT = nftDAO.listAllNFTS();
 	    		request.setAttribute("listNFT", listNFT);   
-		        List<marketPlace> listMarketPlace = marketPlaceDAO.listMarketPlace();
+		        List<MarketPlace> listMarketPlace = marketPlaceDAO.listMarketPlace();
 		        request.setAttribute("listMarketPlace", listMarketPlace);  
 		        
 		        RequestDispatcher dispatcher = request.getRequestDispatcher("marketPlaceList.jsp");       
@@ -238,12 +238,12 @@ public class ControlServlet extends HttpServlet {
 	    	System.out.println("transferNFT started: 00000000000000000000000000000000000");
 
 	    	// Create instance for holder and receiver
-		 	user NftHolder = userDAO.getUser(currentUser);
+		 	User NftHolder = userDAO.getUser(currentUser);
 		 
-		 	user NftReciever = userDAO.getUser(tranferToEmail);
+		 	User NftReciever = userDAO.getUser(tranferToEmail);
 		 	
 	    	//get NFT to transfer
-		 	nft certainNFT = nftDAO.getNFT(nftName);
+		 	Nft certainNFT = nftDAO.getNFT(nftName);
 	    	//Update NFT
 		 	if (NftHolder.userID == certainNFT.owner) {
 		 		nftDAO.update2(NftReciever.getuserID(), nftName);
@@ -258,36 +258,41 @@ public class ControlServlet extends HttpServlet {
 
 	    private void buy(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
 	    	//int newOwner = Integer.parseInt(request.getParameter("owner"));
+	    	String nftID = request.getParameter("nftID");
+	    	String name = request.getParameter("name");
 	    	System.out.println("buyNFT started: 00000000000000000000000000000000000");
-	    	marketPlace listings = marketPlaceDAO.getmarketPlace();
-	    	user users = userDAO.getUser(currentUser);
-		    	if(users.wallet < listings.price) {
+	    	MarketPlace listing = marketPlaceDAO.getmarketPlace(nftID);
+	    	
+	    	User user = userDAO.getUser(currentUser);
+	    	
+		    	if(user.wallet < listing.price) {
 		    		System.out.println("wallet is less then the price of nft");
 			   		request.setAttribute("errorOne","wallet is less then the price of nft");
 			   		// request.getRequestDispatcher("register.jsp").forward(request, response);
 		    	} else {
 			    	//SUBTRACT TOTAL AND UPDATE
 			    	int newWallet;
-			    	newWallet = users.wallet - listings.price;
-		    		userDAO.updateWallet(users.userID, newWallet);
+			    	newWallet = user.wallet - listing.price;
+		    		userDAO.updateWallet(user.userID, newWallet);
 		    		
-			    	int newOwner = users.userID;//2
-			    	nft thenft = nftDAO.getNFT();
+			    	int newOwner = user.userID;
+			    	Nft certainNFT = nftDAO.getNFTbyName(name);
 			    	//UPDATE NFT OWNER
-			    	int currentOwner = thenft.owner; //1
+			    	int currentOwner = certainNFT.owner;
+			    	User oldOwner = userDAO.getUser(currentOwner);
 			    		System.out.println("the old owner is = " + currentOwner); // returns 1
 			    //	currentOwner = newOwner;	    	
-			    	nftDAO.update(newOwner,thenft.owner);
+			    	nftDAO.update(newOwner,certainNFT.owner);
 			    		System.out.println("new Owner is = " + newOwner); // should return 2
 			    	//delete from marketplace
-			    	marketPlaceDAO.delete(thenft.owner);
+			    	marketPlaceDAO.delete(certainNFT.owner);
 			    	
-			    	user userUpdate = userDAO.getUser(currentUser);
+			    	User userUpdate = userDAO.getUser(currentUser);
 				 	request.setAttribute("currentU", userUpdate);
-				 	List<nft> usersNFTS = nftDAO.listUsersNFTs(users.userID);
+				 	List<Nft> usersNFTS = nftDAO.listUsersNFTs(user.userID);
 				    request.setAttribute("usersNFTS", usersNFTS); 
 			        request.setAttribute("noNFTStr","You currently own no NFTs.");
-			        historyDAO.insertBought(users, userUpdate, thenft);
+			        historyDAO.insertBought(user, oldOwner, certainNFT);
 					RequestDispatcher dispatcher = request.getRequestDispatcher("/activity");
 
 				    dispatcher.forward(request, response);
@@ -309,15 +314,17 @@ public class ControlServlet extends HttpServlet {
 	    	 else if(userDAO.isValid(email, password)) 
 	    	 {
 			 	 currentUser = email;
-			 	 user users = userDAO.getUser(currentUser);
+			 	 User users = userDAO.getUser(currentUser);
 			 	 request.setAttribute("currentU", users);
 			 	 int owner = users.userID;
-			 	nft thenft = nftDAO.getNFT();
-			 	 List<nft> usersNFTS = nftDAO.listUsersNFTs(owner);
+			 	 
+			 	 List<Nft> usersNFTS = nftDAO.listUsersNFTs(owner);
 			     request.setAttribute("usersNFTS", usersNFTS);  
-			     historyDAO.insertExpired(users, thenft);
-			     marketPlaceDAO.deleteViaDate();
-			 
+			     ArrayList<Integer> deletedNFTS =  marketPlaceDAO.deleteViaDate(); 
+			     for(Integer nftid : deletedNFTS) {
+				     Nft thenft = nftDAO.getNFT(nftid);
+				     historyDAO.insertExpired(users, thenft);
+			     }
 				 RequestDispatcher dispatcher = request.getRequestDispatcher("/activity");
 			     dispatcher.forward(request, response);
 			     System.out.println("Login Successful! Redirecting");
@@ -330,16 +337,16 @@ public class ControlServlet extends HttpServlet {
 	    
 	    protected void activity(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
 	    	
-	    	user users = userDAO.getUser(currentUser);
+	    	User users = userDAO.getUser(currentUser);
 		 	 request.setAttribute("currentU", users);
 		 	 int owner = users.userID;
-		 	 List<nft> usersNFTS = nftDAO.listUsersNFTs(owner);
+		 	 List<Nft> usersNFTS = nftDAO.listUsersNFTs(owner);
 		     request.setAttribute("usersNFTS", usersNFTS);  
 		    
 		     
-		     List<nft> listNFT = nftDAO.listAllNFTS();
+		     List<Nft> listNFT = nftDAO.listAllNFTS();
 	    	 request.setAttribute("listNFT", listNFT);   
-		     List<marketPlace> listMarketPlace = marketPlaceDAO.listMarketPlace();
+		     List<MarketPlace> listMarketPlace = marketPlaceDAO.listMarketPlace();
 		     request.setAttribute("listMarketPlace", listMarketPlace);
 		     
 			 RequestDispatcher dispatcher = request.getRequestDispatcher("activitypage.jsp");       
@@ -359,7 +366,7 @@ public class ControlServlet extends HttpServlet {
 	   	 	if (password.equals(confirm)) {
 	   	 		if (!userDAO.checkEmail(email)) {
 		   	 		System.out.println("Registration Successful! Added to database");
-		   	 	user users = new user(email,firstName, lastName, password, age, 100);
+		   	 	User users = new User(email,firstName, lastName, password, age, 100);
 		   	 		userDAO.insert(users);
 		   	 		historyDAO.insertUser(users);
 		   	 		response.sendRedirect("login.jsp");
@@ -383,13 +390,13 @@ public class ControlServlet extends HttpServlet {
 	    	String name = request.getParameter("name");
 	   	 	String description = request.getParameter("description");
 	   	 	String image = request.getParameter("image");
-	    	user users = userDAO.getUser(currentUser);
+	    	User users = userDAO.getUser(currentUser);
 	    	int owner = users.userID;
 	   	 	//Functions to check NFT validity in nftDAO
 	   	 	if (!nftDAO.checkNftName(name)) {
 	   	 		if (!nftDAO.checkImage(image)) {
 		   	 		System.out.println("Minting Successful! Added to database");
-		   	 		nft nfts = new nft(name,description, image, owner);
+		   	 		Nft nfts = new Nft(name,description, image, owner);
 		   	 		nftDAO.insertNFT(nfts);
 		   	 		historyDAO.insertMint(users,nfts);
 		   	 	 RequestDispatcher dispatcher = request.getRequestDispatcher("/activity");
