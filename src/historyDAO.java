@@ -26,14 +26,14 @@ import java.util.List;
  * Servlet implementation class Connect
  */
 @WebServlet("/historyDAO")
-public class HistoryDAO {
+public class historyDAO {
 	private static final long serialVersionUID = 1L;
 	private Connection connect = null;
 	private Statement statement = null;
 	private PreparedStatement preparedStatement = null;
 	private ResultSet resultSet = null;
 	
-	public HistoryDAO(){}
+	public historyDAO(){}
 	
 	/** 
 	 * @see HttpServlet#HttpServlet()
