@@ -26,14 +26,14 @@ import java.util.StringTokenizer;
  */
 
 @WebServlet("/nftDAO")
-public class nftDAO {
+public class NftDAO {
 	private static final long serialVersionUID = 1L;
 	private Connection connect = null;
 	private Statement statement = null;
 	private PreparedStatement preparedStatement = null;
 	private ResultSet resultSet = null;
 	
-	public nftDAO(){
+	public NftDAO(){
 	
 	}
 	
@@ -71,8 +71,8 @@ public class nftDAO {
             System.out.println(connect);
         }
     }
-    public List<nft> listCertainNFT(String nameSearch) throws SQLException {
-        List<nft> certainNFT = new ArrayList<nft>();        
+    public List<Nft> listCertainNFT(String nameSearch) throws SQLException {
+        List<Nft> certainNFT = new ArrayList<Nft>();        
         String sql = "SELECT * FROM  marketPlace NATURAL JOIN NFT WHERE name = '"+nameSearch+"'";  
        
         connect_func();      
@@ -86,7 +86,7 @@ public class nftDAO {
             String image = resultSet.getString("image");
             int owner = resultSet.getInt("owner");
             int price = resultSet.getInt("price");
-            nft nftcertain = new nft(nftId, name, description, image, owner, price);
+            Nft nftcertain = new Nft(nftId, name, description, image, owner, price);
             certainNFT.add(nftcertain);
         }       
         
@@ -94,8 +94,8 @@ public class nftDAO {
         disconnect();        
         return certainNFT;
     }
-    public List<nft> listUsersNFTs(int owner) throws SQLException {
-        List<nft> nfts = new ArrayList<nft>();        
+    public List<Nft> listUsersNFTs(int owner) throws SQLException {
+        List<Nft> nfts = new ArrayList<Nft>();        
         String sql = "SELECT * FROM  NFT WHERE owner = '"+owner+"'";  
        
         connect_func();      
@@ -108,7 +108,7 @@ public class nftDAO {
             String description = resultSet.getString("description");
             String image = resultSet.getString("image");
              owner = resultSet.getInt("owner");
-            nft usersnfts = new nft(nftId, name, description, image, owner);
+            Nft usersnfts = new Nft(nftId, name, description, image, owner);
             nfts.add(usersnfts);
         }       
         
@@ -138,8 +138,8 @@ public class nftDAO {
         return rowUpdated;
     }
     
-    public nft getNFT(int nftID) throws SQLException {
-    	nft nft = null;
+    public Nft getNFT(int nftID) throws SQLException {
+    	Nft nft = null;
         String sql = "SELECT * FROM NFT where nftID = ?";
          
         connect_func();     
@@ -156,7 +156,7 @@ public class nftDAO {
             String description = resultSet.getString("description");
             String image = resultSet.getString("image");
             int owner = resultSet.getInt("owner");
-            nft = new nft(nftID, name, description, image, owner);
+            nft = new Nft(nftID, name, description, image, owner);
         }
          
         resultSet.close();
@@ -166,8 +166,8 @@ public class nftDAO {
     }
     
 
-    public nft getNFTbyName(String name) throws SQLException {
-    	nft nft = null;
+    public Nft getNFTbyName(String name) throws SQLException {
+    	Nft nft = null;
         String sql = "SELECT * FROM NFT where name = '"+name+"'";
          
         connect_func();      
@@ -179,15 +179,15 @@ public class nftDAO {
             String description = resultSet.getString("description");
             String image = resultSet.getString("image");
             int owner = resultSet.getInt("owner");
-            nft = new nft(nftId, name, description, image, owner);
+            nft = new Nft(nftId, name, description, image, owner);
         }
         resultSet.close();
         statement.close();
         return nft;
     }
 
-    public nft getNFT(String name) throws SQLException {
-    	nft nft = null;
+    public Nft getNFT(String name) throws SQLException {
+    	Nft nft = null;
         String sql = "SELECT * FROM NFT WHERE name = '"+name+"'";
          
         connect_func();   
@@ -200,7 +200,7 @@ public class nftDAO {
             String description = resultSet.getString("description");
             String image = resultSet.getString("image");
             int owner = resultSet.getInt("owner");
-            nft = new nft(nftId, nftName, description, image, owner);
+            nft = new Nft(nftId, nftName, description, image, owner);
         }
          
         resultSet.close();
@@ -209,8 +209,8 @@ public class nftDAO {
         return nft;
     }
  
-    public nft nftOwner(int oldOwner, int newOwner) throws SQLException {
-    	nft nft = null;
+    public Nft nftOwner(int oldOwner, int newOwner) throws SQLException {
+    	Nft nft = null;
         String sql = "SELECT * FROM NFT WHERE owner = '"+oldOwner+"'";
          
         connect_func();      
@@ -223,7 +223,7 @@ public class nftDAO {
             String description = resultSet.getString("description");
             String image = resultSet.getString("image");
           
-            nft = new nft(nftId, name, description, image, newOwner);
+            nft = new Nft(nftId, name, description, image, newOwner);
         }
          
         resultSet.close();
@@ -231,8 +231,8 @@ public class nftDAO {
          
         return nft;
     }
-    public List<nft> listAllNFTS() throws SQLException {
-        List<nft> listNFT = new ArrayList<nft>();        
+    public List<Nft> listAllNFTS() throws SQLException {
+        List<Nft> listNFT = new ArrayList<Nft>();        
         String sql = "SELECT * FROM NFT";      
         connect_func();      
         statement = (Statement) connect.createStatement();
@@ -245,7 +245,7 @@ public class nftDAO {
             String image = resultSet.getString("image");
             int owner = resultSet.getInt("owner");
              
-            nft nfts = new nft(nftId, name, description, image, owner);
+            Nft nfts = new Nft(nftId, name, description, image, owner);
             listNFT.add(nfts);
         }        
         resultSet.close();
@@ -255,7 +255,7 @@ public class nftDAO {
     
     //Function to create NFT
     //copies insert function in userDAO
-    public void insertNFT(nft nfts) throws SQLException {
+    public void insertNFT(Nft nfts) throws SQLException {
     	connect_func();         
 		String sql = "insert into NFT(name, description, image, owner) values (?, ?, ?, ?)";
 		preparedStatement = (PreparedStatement) connect.prepareStatement(sql);

@@ -1,6 +1,6 @@
 import java.sql.Timestamp;
 
-public class marketPlace {
+public class MarketPlace {
 	protected int saleID;
 	protected Timestamp endDate;
 	protected int price;
@@ -8,15 +8,15 @@ public class marketPlace {
 	protected String name;
 	protected String image;
 	//constructors
-		public marketPlace() {}
+		public MarketPlace() {}
 		
-		public marketPlace(int saleID, Timestamp endDate, int price,int nftID) {
+		public MarketPlace(int saleID, Timestamp endDate, int price,int nftID) {
 			this.saleID = saleID;
 			this.endDate = endDate;
 			this.price = price;
 			this.nftID = nftID;
 		}
-		public marketPlace(int saleID, Timestamp endDate, int price,int nftID, String name, String image) {
+		public MarketPlace(int saleID, Timestamp endDate, int price,int nftID, String name, String image) {
 			this.saleID = saleID;
 			this.endDate = endDate;
 			this.price = price;
@@ -24,7 +24,7 @@ public class marketPlace {
 			this.name = name;
 			this.image = image;
 		}
-		public marketPlace(int saleID, Timestamp endDate, int price,int nftID, String name) {
+		public MarketPlace(int saleID, Timestamp endDate, int price,int nftID, String name) {
 			this.saleID = saleID;
 			this.endDate = endDate;
 			this.price = price;

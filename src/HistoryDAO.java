@@ -26,14 +26,14 @@ import java.util.List;
  * Servlet implementation class Connect
  */
 @WebServlet("/historyDAO")
-public class historyDAO {
+public class HistoryDAO {
 	private static final long serialVersionUID = 1L;
 	private Connection connect = null;
 	private Statement statement = null;
 	private PreparedStatement preparedStatement = null;
 	private ResultSet resultSet = null;
 	
-	public historyDAO(){}
+	public HistoryDAO(){}
 	
 	/** 
 	 * @see HttpServlet#HttpServlet()
@@ -92,7 +92,7 @@ public class historyDAO {
         disconnect();        
         return listHistory;
     }
-    public void insertExpired(user users, nft nfts)throws SQLException{
+    public void insertExpired(User users, Nft nfts)throws SQLException{
     	connect_func();
     	
 	    	String sql1 = "insert into History(userID, nftID, details, action, date) values (?, ?, ?,?, NOW())";
@@ -106,7 +106,7 @@ public class historyDAO {
 	        preparedStatement.close();
    
     }
-    public void insertTransfer(user NftHolder, user NftReciever, nft certainNFT) throws SQLException {
+    public void insertTransfer(User NftHolder, User NftReciever, Nft certainNFT) throws SQLException {
         connect_func();         
 		String sql = "insert into History(userID, nftID, details, action, date) values (?, ?, ?, ?, NOW())";
 		preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
@@ -129,7 +129,7 @@ public class historyDAO {
         preparedStatement.close();
         
     }
-    public void insertBought(user buyer, user seller, nft certainNFT) throws SQLException {
+    public void insertBought(User buyer, User seller, Nft certainNFT) throws SQLException {
         connect_func();         
 		String sql = "insert into History(userID, nftID, details, action, date) values (?, ?, ?, ?, NOW())";
 		preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
@@ -152,7 +152,7 @@ public class historyDAO {
         preparedStatement.close();
         
     }
-    public void insertMint(user users,  nft nfts) throws SQLException {
+    public void insertMint(User users,  Nft nfts) throws SQLException {
         connect_func();         
 		String sql = "insert into History(userID, nftID, details, action, date) values (?, ?, ?, ?, NOW())";
 		preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
@@ -164,7 +164,7 @@ public class historyDAO {
 		preparedStatement.executeUpdate();
         preparedStatement.close();
     }
-    public void insertUser(user users) throws SQLException {
+    public void insertUser(User users) throws SQLException {
         connect_func();         
 		String sql = "insert into History(userID, details, action, date) values (?, ?, ?, NOW())";
 		preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
