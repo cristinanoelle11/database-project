@@ -1,4 +1,4 @@
-public class User 
+public class user 
 {
 		protected int userID;
 		protected String password;
@@ -11,11 +11,11 @@ public class User
 	 
 	    //constructors
 	    
-	    public User(String email) 
+	    public user(String email) 
 	    {
 	        this.email = email;
 	    }
-	    public User(String email, String firstName, String lastName, String password,String age, int wallet) 
+	    public user(String email, String firstName, String lastName, String password,String age, int wallet) 
 	    {
 	    	this.email = email;
 	    	this.firstName = firstName;
@@ -25,7 +25,7 @@ public class User
 	        this.wallet = wallet; 
 	    }
 	    
-	    public User(int userID, String email,String firstName, String lastName, String password,String age, int wallet)
+	    public user(int userID, String email,String firstName, String lastName, String password,String age, int wallet)
 	    {
 	    	this(email,firstName,lastName,password,age,wallet);
 	    	this.userID = userID;

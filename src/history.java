@@ -1,7 +1,7 @@
 import java.sql.Timestamp;
 import java.util.Date;
 
-public class History {
+public class history {
 	protected int historyID;
 	protected int userID;
 	protected int nftID;
@@ -11,8 +11,8 @@ public class History {
 	
 	
 	//constructor
-	public History() {}
-	public History(int historyID, int userID, int nftID, String details, String action, Timestamp date) {
+	public history() {}
+	public history(int historyID, int userID, int nftID, String details, String action, Timestamp date) {
 		this.historyID = historyID;
 		this.userID = userID;
 		this.nftID = nftID;

@@ -24,7 +24,7 @@ import java.util.List;
  * Servlet implementation class Connect
  */
 @WebServlet("/userDAO")
-public class UserDAO 
+public class userDAO 
 {
 	private static final long serialVersionUID = 1L;
 	private Connection connect = null;
@@ -32,7 +32,7 @@ public class UserDAO
 	private PreparedStatement preparedStatement = null;
 	private ResultSet resultSet = null;
 	
-	public UserDAO(){}
+	public userDAO(){}
 	
 	/** 
 	 * @see HttpServlet#HttpServlet()
@@ -79,8 +79,8 @@ public class UserDAO
         }
     }
     
-    public List<User> listAllUsers() throws SQLException {
-        List<User> listUser = new ArrayList<User>();        
+    public List<user> listAllUsers() throws SQLException {
+        List<user> listUser = new ArrayList<user>();        
         String sql = "SELECT * FROM User";      
         connect_func();      
         statement = (Statement) connect.createStatement();
@@ -94,7 +94,7 @@ public class UserDAO
             String age = resultSet.getString("age");
             int wallet = resultSet.getInt("wallet");
              
-            User users = new User(userID,email,firstName, lastName, password, age, wallet);
+            user users = new user(userID,email,firstName, lastName, password, age, wallet);
             listUser.add(users);
         }        
         resultSet.close();
@@ -108,7 +108,7 @@ public class UserDAO
         }
     }
     
-    public void insert(User users) throws SQLException {
+    public void insert(user users) throws SQLException {
     	connect_func("root","pass1234");         
 		String sql = "insert into User(email, firstName, lastName, password, age,wallet) values (?, ?, ?, ?, ?, ?)";
 		preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
@@ -144,7 +144,7 @@ public class UserDAO
          preparedStatement.close();
          return rowUpdated;
      }
-    public boolean update(User users) throws SQLException {
+    public boolean update(user users) throws SQLException {
         String sql = "update User set userID =?,firstName=?, lastName =?,password = ?,age=?, wallet=? where email = ?";
         connect_func();
         
@@ -163,8 +163,8 @@ public class UserDAO
         return rowUpdated;     
     }
     
-    public User getUser(String email) throws SQLException {
-    	User user = null;
+    public user getUser(String email) throws SQLException {
+    	user user = null;
         String sql = "SELECT * FROM User WHERE email = ?";
         // Handle error where user is not in database
         connect_func();
@@ -181,7 +181,7 @@ public class UserDAO
             String password = resultSet.getString("password");
             String age = resultSet.getString("age");
             int wallet = resultSet.getInt("wallet");
-            user = new User(userID, email, firstName, lastName, password, age, wallet);
+            user = new user(userID, email, firstName, lastName, password, age, wallet);
         }
          
         resultSet.close();
@@ -189,8 +189,8 @@ public class UserDAO
          
         return user;
     }
-    public User getUser(int userID) throws SQLException {
-    	User user = null;
+    public user getUser(int userID) throws SQLException {
+    	user user = null;
         String sql = "SELECT * FROM User WHERE userID = ?";
         // Handle error where user is not in database
         connect_func();
@@ -207,7 +207,7 @@ public class UserDAO
             String password = resultSet.getString("password");
             String age = resultSet.getString("age");
             int wallet = resultSet.getInt("wallet");
-            user = new User(userID, email, firstName, lastName, password, age, wallet);
+            user = new user(userID, email, firstName, lastName, password, age, wallet);
         }
          
         resultSet.close();
@@ -215,8 +215,8 @@ public class UserDAO
          
         return user;
     }
-    public User getUserByName(String name) throws SQLException {
-    	User user = null;
+    public user getUserByName(String name) throws SQLException {
+    	user user = null;
         String sql = "SELECT * FROM User WHERE name = ?";
          
         connect_func();
@@ -234,7 +234,7 @@ public class UserDAO
             String password = resultSet.getString("password");
             String age = resultSet.getString("age");
             int wallet = resultSet.getInt("wallet");
-            user = new User(userID, email, firstName, lastName, password, age, wallet);
+            user = new user(userID, email, firstName, lastName, password, age, wallet);
         }
          
         resultSet.close();

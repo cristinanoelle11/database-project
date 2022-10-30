@@ -1,5 +1,5 @@
 
-public class Nft {
+public class nft {
 	protected int nftID;
 	protected String name;
 	protected String description;
@@ -8,26 +8,26 @@ public class Nft {
 	protected int price;
 	
 	//constructors
-	public Nft() {}
-	public Nft(int owner) {
+	public nft() {}
+	public nft(int owner) {
 		this.owner = owner;
 	}
 	
-	public Nft(String name, String description, String image, int owner) {
+	public nft(String name, String description, String image, int owner) {
 		this.name = name;
 		this.description = description;
 		this.image = image;
 		this.owner = owner;
 	}
 	
-	public Nft(int nftID, String name, String description, String image, int owner) {
+	public nft(int nftID, String name, String description, String image, int owner) {
 		this.nftID = nftID;
 		this.name = name;
 		this.description = description;
 		this.image = image;
 		this.owner = owner;
 	}
-	public Nft(int nftID, String name, String description, String image, int owner, int price) {
+	public nft(int nftID, String name, String description, String image, int owner, int price) {
 		this.nftID = nftID;
 		this.name = name;
 		this.description = description;
