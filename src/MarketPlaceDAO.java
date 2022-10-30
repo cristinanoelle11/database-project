@@ -70,8 +70,8 @@ public class MarketPlaceDAO {
         }
     }
     
-    public List<marketPlace> listMarketPlace() throws SQLException {
-        List<marketPlace> listMarketPlace = new ArrayList<marketPlace>();        
+    public List<MarketPlace> listMarketPlace() throws SQLException {
+        List<MarketPlace> listMarketPlace = new ArrayList<MarketPlace>();        
         String sql = "SELECT n.name,n.image, m.* FROM marketPlace m JOIN NFT n ON m.nftID = n.nftID";      
         connect_func();      
         statement = (Statement) connect.createStatement();
@@ -84,7 +84,7 @@ public class MarketPlaceDAO {
             int nftID = resultSet.getInt("nftID");
             String name = resultSet.getString("name");
             String image = resultSet.getString("image");
-            marketPlace market = new marketPlace(saleID, endDate, price, nftID, name, image);
+            MarketPlace market = new MarketPlace(saleID, endDate, price, nftID, name, image);
             listMarketPlace.add(market);
         }        
         resultSet.close();
@@ -106,8 +106,8 @@ public class MarketPlaceDAO {
         preparedStatement.close();
         return rowDeleted;     
     }
-    public marketPlace getmarketPlace(String nftID) throws SQLException {
-    	marketPlace marketplace = null;
+    public MarketPlace getmarketPlace(String nftID) throws SQLException {
+    	MarketPlace marketplace = null;
     	int nftid = Integer.parseInt(nftID);
         String sql = "SELECT * FROM marketPlace where nftID = ?";
         
@@ -124,7 +124,7 @@ public class MarketPlaceDAO {
         	int saleID = resultSet.getInt("saleID");
             Timestamp endDate = resultSet.getTimestamp("endDate");
             int price = resultSet.getInt("price");
-            marketplace = new marketPlace(saleID, endDate, price, nftid);
+            marketplace = new MarketPlace(saleID, endDate, price, nftid);
         }
          
         resultSet.close();
@@ -132,8 +132,8 @@ public class MarketPlaceDAO {
          
         return marketplace;
     }
-    public List<marketPlace> listMarket() throws SQLException {
-        List<marketPlace> market = new ArrayList<marketPlace>();        
+    public List<MarketPlace> listMarket() throws SQLException {
+        List<MarketPlace> market = new ArrayList<MarketPlace>();        
         String sql = "SELECT * FROM  marketPlace NATURAL JOIN NFT ";  
        
         connect_func();      
@@ -146,7 +146,7 @@ public class MarketPlaceDAO {
             int price = resultSet.getInt("price");
             int nftID = resultSet.getInt("nftID");
             String name = resultSet.getString("name");
-            marketPlace theMarket = new marketPlace(saleID, endDate, price, nftID, name);
+            MarketPlace theMarket = new MarketPlace(saleID, endDate, price, nftID, name);
             market.add(theMarket);
         }       
         
