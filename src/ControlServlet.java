@@ -151,7 +151,7 @@ public class ControlServlet extends HttpServlet {
 	        throws SQLException, IOException, ServletException {
 	        System.out.println("listHistory started: 00000000000000000000000000000000000");
 	        
-	        List<History> listHistory = historyDAO.listAllHistory();
+	        List<history> listHistory = historyDAO.listAllHistory();
 	        request.setAttribute("listHistory", listHistory);       
 	        RequestDispatcher dispatcher = request.getRequestDispatcher("HistoryList.jsp");       
 	        dispatcher.forward(request, response);

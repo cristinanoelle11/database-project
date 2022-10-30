@@ -70,8 +70,8 @@ public class historyDAO {
         }
     }
     
-    public List<History> listAllHistory() throws SQLException {
-        List<History> listHistory = new ArrayList<History>();        
+    public List<history> listAllHistory() throws SQLException {
+        List<history> listHistory = new ArrayList<history>();        
         String sql = "SELECT * FROM History";      
         connect_func();      
         statement = (Statement) connect.createStatement();
@@ -85,7 +85,7 @@ public class historyDAO {
             String action = resultSet.getString("action");
             Timestamp date = resultSet.getTimestamp("date");
              
-            History historys = new History(historyID, userID, nftID, details, action, date);
+            history historys = new history(historyID, userID, nftID, details, action, date);
             listHistory.add(historys);
         }        
         resultSet.close();
