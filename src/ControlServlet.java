@@ -65,6 +65,9 @@ public class ControlServlet extends HttpServlet {
         	case"/activity":
         		activity(request,response);
         		break;
+        	case "/cancel":
+        		cancel(request, response);
+        		break;
         	case "/login":
         		login(request,response);
         		break;
@@ -185,6 +188,9 @@ public class ControlServlet extends HttpServlet {
 	    	
 	        List<Nft> certainNFT = nftDAO.listCertainNFT(name);
 	        request.setAttribute("certainNFT", certainNFT);  
+	        User user = userDAO.getUser(currentUser);
+	        
+	        request.setAttribute("currentUser", user); 
 	        RequestDispatcher dispatcher = request.getRequestDispatcher("NFT.jsp");       
 	        dispatcher.forward(request, response);
 	        
@@ -300,7 +306,22 @@ public class ControlServlet extends HttpServlet {
 			    	System.out.println("buyNFT finished: 111111111111111111111111111111111111");
 	    	}
 	    }
+	    protected void cancel(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+	    	System.out.println("cancelNFT started: 111111111111111111111111111111111111");
+	    	String nftID = request.getParameter("nftID");
+	    	String name = request.getParameter("name");
+	    	Nft certainNFT = nftDAO.getNFTbyName(name);
+	    	int currentOwner = certainNFT.owner;
+	    	User Owner = userDAO.getUser(currentOwner);
+	    	marketPlaceDAO.delete(certainNFT.owner);
+	    	historyDAO.cancelSell(Owner, certainNFT);
+	    	RequestDispatcher dispatcher = request.getRequestDispatcher("/activity");
+		    dispatcher.forward(request, response);
+		    System.out.println("cancelNFT finished: 111111111111111111111111111111111111");
+	    }
 	    
+	    
+
 	    protected void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
 	    	 String email = request.getParameter("email");
 	    	 String password = request.getParameter("password");

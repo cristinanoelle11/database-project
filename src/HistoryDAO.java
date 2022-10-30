@@ -152,6 +152,19 @@ public class HistoryDAO {
         preparedStatement.close();
         
     }
+    public void cancelSell(User seller, Nft certainNFT) throws SQLException {
+        connect_func();         
+		String sql = "insert into History(userID, nftID, details, action, date) values (?, ?, ?, ?, NOW())";
+		preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+			preparedStatement.setInt(1,seller.userID);
+			preparedStatement.setInt(2, certainNFT.nftID);
+			preparedStatement.setString(3, seller.firstName + " removed the NFT '" + certainNFT.name +"'(nft id:"+ certainNFT.nftID +") from the marketplace");
+			preparedStatement.setString(4, "removed");
+		
+		preparedStatement.executeUpdate();
+        preparedStatement.close();
+        
+    }
     public void insertMint(User users,  Nft nfts) throws SQLException {
         connect_func();         
 		String sql = "insert into History(userID, nftID, details, action, date) values (?, ?, ?, ?, NOW())";
