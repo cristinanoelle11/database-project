@@ -26,14 +26,14 @@ import java.util.List;
  * Servlet implementation class Connect
  */
 @WebServlet("/marketPlaceDAO")
-public class marketPlaceDAO {
+public class MarketPlaceDAO {
 	private static final long serialVersionUID = 1L;
 	private Connection connect = null;
 	private Statement statement = null;
 	private PreparedStatement preparedStatement = null;
 	private ResultSet resultSet = null;
 	
-	public marketPlaceDAO(){}
+	public MarketPlaceDAO(){}
 	
 	/** 
 	 * @see HttpServlet#HttpServlet()
