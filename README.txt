@@ -59,12 +59,10 @@ SETUP:
 		nftID INTEGER,
 		details VARCHAR(2000),
 		action VARCHAR(50),
-		date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-		FOREIGN KEY (userID) REFERENCES User(userID),
-		FOREIGN KEY (nftID) REFERENCES NFT(NFTID));
-	insert into History(userID, nftID,details, action)
-	values('1', '1' 'user created','creation'), 
-		  ('2', '3', 'user created','creation');
+		date TIMESTAMP);
+	insert into History( userID, nftID, details, action, date )
+	values('1', '1' 'user created','creation', NOW()), 
+		  ('2', '3', 'user created','creation', NOW());
 	select * from History;
 	
 	drop table if exists marketPlace;          
@@ -72,7 +70,7 @@ SETUP:
 		saleID INTEGER AUTO_INCREMENT PRIMARY KEY,
 		endDate VARCHAR(10),
 		price INTEGER(20),
-		NFT INTEGER,
+		nftID INTEGER,
 		FOREIGN KEY (NFT) REFERENCES NFT(NFTID));
 	insert into marketPlace(endDate, price)
 	values ('01/12/21','12324'),
