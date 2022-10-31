@@ -16,13 +16,23 @@
             <p><c:out value="${nft.description}" /></p>
              
             
-            	<p>Price = <c:out value="${nft.price}" /></p>
-           
+            	<p>Price = <c:out value="${nft.price}" />(eth)</p>
+            <c:if test = "${nft.owner == currentUser.userID}">
+            
+            <form action = "cancel" method="post" >
+            	<input type = hidden name = "name" value ="${nft.name}" />
+            	<input type = hidden name = "nftID" value = "${nft.nftID}" />
+				<input type="submit" value="CANCEL"/>
+			</form>
+            </c:if>
+            <c:if test = "${nft.owner != currentUser.userID}">
             <form action = "buy" method="post" >
             	<input type = hidden name = "name" value ="${nft.name}" />
             	<input type = hidden name = "nftID" value = "${nft.nftID}" />
 				<input type="submit" value="BUY ME"/>
 			</form>
+            </c:if>
+            
 			</c:forEach>
              
            
