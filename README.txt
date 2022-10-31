@@ -2,7 +2,7 @@ GROUP MEMBERS:
 	Cristina Powers gv6830 AND Logarn Barnes gw4822
 
 CONTRIBUTIONS:
-	So far each person has done an equal part of participation for this project. We have met for 2 hours after 5 classes
+	So far each person has done an equal part of participation for this project. We have met for 2 hours after 8 classes
 	while also working on it on our own time.
 
 SETUP:
