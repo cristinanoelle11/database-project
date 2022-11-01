@@ -7,6 +7,8 @@
 	<div align="center">
 		<p> ${errorOne } </p>
 		<p> ${errorTwo } </p>
+		<p>${errorThree }</p>
+		
 		<form action="register">
 			<table border="1" cellpadding="5">
 				<tr>

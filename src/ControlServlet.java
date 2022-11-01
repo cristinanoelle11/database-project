@@ -384,6 +384,12 @@ public class ControlServlet extends HttpServlet {
 	   	 	String age = request.getParameter("age");
 	   	 	String confirm = request.getParameter("confirmation");
 	   	 	
+	   	 	int number = Integer.parseInt(age);
+	   	 	
+	   	 	if(number <= 18) {
+	   	 	 request.setAttribute("errorThree","Registration failed: You do not meet the age restrictions");
+    		 request.getRequestDispatcher("register.jsp").forward(request, response);
+	   	 	}
 	   	 	if (password.equals(confirm)) {
 	   	 		if (!userDAO.checkEmail(email)) {
 		   	 		System.out.println("Registration Successful! Added to database");
