@@ -15,9 +15,20 @@
 		margin-right:auto;
 		width:850px;
 	}
+	.nftC{
+		margin-left:auto;
+		margin-right:auto;
+	}
+		.flexcontainer {
+		margin:10px;
+	  	display: flex;
+	  	
+        flex-wrap: wrap;
+        margin-left:auto;
+		margin-right:auto;
+	}
 	.searchBlock{
-		display:block;
-		
+		display:block;	
 	}
 	.names{
 		width:200px;
@@ -34,6 +45,7 @@
 </head>
 <body>
 <jsp:include page="header.jsp" />
+	<p>${error} </p>
 	<div class = "searchBlock">
 		 <form action="search" method="post">
 			Search NFTs By Name: <input type="text" id = "search" name="name">
@@ -53,5 +65,6 @@
 			</c:forEach>
 			</c:forEach>
 		</div>
+		
 </body>
 </html>

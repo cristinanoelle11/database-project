@@ -146,6 +146,10 @@ public class ControlServlet extends HttpServlet {
 	    		request.setAttribute("listNFT", listNFT);   
 		        List<MarketPlace> listMarketPlace = marketPlaceDAO.listMarketPlace();
 		        request.setAttribute("listMarketPlace", listMarketPlace); 
+		        List<History> listHistory = historyDAO.listAllHistory();
+		        request.setAttribute("listHistory", listHistory);
+		        User user = userDAO.getUser(currentUser);
+		        request.setAttribute("currentUser", user); 
 		        RequestDispatcher dispatcher = request.getRequestDispatcher("search.jsp");       
 		        dispatcher.forward(request, response);
 		        System.out.println("searchNFT finished: 111111111111111111111111111111111111");
@@ -185,15 +189,19 @@ public class ControlServlet extends HttpServlet {
 	    private void search(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
 	    	String name = request.getParameter("name");
 	    	System.out.println("searchNFT started: 00000000000000000000000000000000000");
-	    	
-	        List<Nft> certainNFT = nftDAO.listCertainNFT(name);
-	        request.setAttribute("certainNFT", certainNFT);  
-	        User user = userDAO.getUser(currentUser);
-	        
-	        request.setAttribute("currentUser", user); 
-	        RequestDispatcher dispatcher = request.getRequestDispatcher("NFT.jsp");       
-	        dispatcher.forward(request, response);
-	        
+	    	List<Nft> certainNFT = nftDAO.listCertainNFT(name);
+	    	  request.setAttribute("certainNFT", certainNFT);  
+		        User user = userDAO.getUser(currentUser);        
+		        request.setAttribute("currentUser", user); 
+	        if(certainNFT.isEmpty()) {
+	        	request.setAttribute("error", "Sorry that is not an NFT listed, please try again");
+	        	RequestDispatcher dispatcher = request.getRequestDispatcher("/searchNFT");
+	        	dispatcher.forward(request, response);
+	        }
+	        else {
+		        RequestDispatcher dispatcher = request.getRequestDispatcher("NFT.jsp");       
+		        dispatcher.forward(request, response);
+	        }
 	        System.out.println("searchNFT finished: 111111111111111111111111111111111111");
 	    }
 	    
