@@ -79,12 +79,11 @@ public class HistoryDAO {
          
         while (resultSet.next()) {
         	int historyID = resultSet.getInt("historyID");
-        	 int userID = resultSet.getInt("userID");
+        	int userID = resultSet.getInt("userID");
         	int nftID = resultSet.getInt("nftID");
             String details = resultSet.getString("details");
             String action = resultSet.getString("action");
             Timestamp date = resultSet.getTimestamp("date");
-             
             History historys = new History(historyID, userID, nftID, details, action, date);
             listHistory.add(historys);
         }        
@@ -96,35 +95,31 @@ public class HistoryDAO {
     	connect_func();
     	
 	    	String sql1 = "insert into History(userID, nftID, details, action, date) values (?, ?, ?,?, NOW())";
-	  		preparedStatement = (PreparedStatement) connect.prepareStatement(sql1);
+	  			preparedStatement = (PreparedStatement) connect.prepareStatement(sql1);
 	  			preparedStatement.setInt(1,users.userID);
 	  			preparedStatement.setInt(2, nfts.nftID);
 	  			preparedStatement.setString(3, nfts.name +" (nft id: "+nfts.nftID+ ") has left the marketplace");
 	  			preparedStatement.setString(4, "expired");
-	  		
 	  		preparedStatement.executeUpdate();
 	        preparedStatement.close();
-   
     }
     public void insertTransfer(User NftHolder, User NftReciever, Nft certainNFT) throws SQLException {
         connect_func();         
 		String sql = "insert into History(userID, nftID, details, action, date) values (?, ?, ?, ?, NOW())";
-		preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+			preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
 			preparedStatement.setInt(1,NftHolder.userID);
 			preparedStatement.setInt(2, certainNFT.nftID);
 			preparedStatement.setString(3, NftHolder.firstName + " transfered the NFT '" + certainNFT.name + " to "+ NftReciever.firstName);
-			preparedStatement.setString(4, "transfered");
-		
+			preparedStatement.setString(4, "transfered");		
 		preparedStatement.executeUpdate();
         preparedStatement.close();
         
         String sql1 = "insert into History(userID, nftID, details, action, date) values (?, ?, ?, ?, NOW())";
-		preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+			preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
 			preparedStatement.setInt(1,NftReciever.userID);
 			preparedStatement.setInt(2, certainNFT.nftID);
 			preparedStatement.setString(3, NftReciever.firstName + " recieved the NFT '" + certainNFT.name + "' ("+ certainNFT.nftID +") from "+ NftHolder.firstName );
-			preparedStatement.setString(4, "recieved");
-			
+			preparedStatement.setString(4, "gifted");
 		preparedStatement.executeUpdate();
         preparedStatement.close();
         
@@ -132,22 +127,20 @@ public class HistoryDAO {
     public void insertBought(User buyer, User seller, Nft certainNFT) throws SQLException {
         connect_func();         
 		String sql = "insert into History(userID, nftID, details, action, date) values (?, ?, ?, ?, NOW())";
-		preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+			preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
 			preparedStatement.setInt(1,buyer.userID);
 			preparedStatement.setInt(2, certainNFT.nftID);
 			preparedStatement.setString(3, buyer.firstName + " bought the NFT '" + certainNFT.name +"'(nft id:"+ certainNFT.nftID +") from "+ seller.firstName);
 			preparedStatement.setString(4, "bought");
-		
 		preparedStatement.executeUpdate();
         preparedStatement.close();
         
         String sql1 = "insert into History(userID, nftID, details, action, date) values (?, ?, ?, ?, NOW())";
-		preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+			preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
 			preparedStatement.setInt(1,seller.userID);
 			preparedStatement.setInt(2, certainNFT.nftID);
 			preparedStatement.setString(3, seller.firstName + " sold the NFT '" + certainNFT.name + "' (nft id:"+ certainNFT.nftID +") from "+ buyer.firstName );
-			preparedStatement.setString(4, "recieved");
-			
+			preparedStatement.setString(4, "sold");
 		preparedStatement.executeUpdate();
         preparedStatement.close();
         
@@ -155,12 +148,11 @@ public class HistoryDAO {
     public void cancelSell(User seller, Nft certainNFT) throws SQLException {
         connect_func();         
 		String sql = "insert into History(userID, nftID, details, action, date) values (?, ?, ?, ?, NOW())";
-		preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+			preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
 			preparedStatement.setInt(1,seller.userID);
 			preparedStatement.setInt(2, certainNFT.nftID);
 			preparedStatement.setString(3, seller.firstName + " removed the NFT '" + certainNFT.name +"'(nft id:"+ certainNFT.nftID +") from the marketplace");
 			preparedStatement.setString(4, "removed");
-		
 		preparedStatement.executeUpdate();
         preparedStatement.close();
         
@@ -168,23 +160,21 @@ public class HistoryDAO {
     public void insertMint(User users,  Nft nfts) throws SQLException {
         connect_func();         
 		String sql = "insert into History(userID, nftID, details, action, date) values (?, ?, ?, ?, NOW())";
-		preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+			preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
 			preparedStatement.setInt(1,users.userID);
 			preparedStatement.setInt(2, nfts.nftID);
 			preparedStatement.setString(3, users.firstName + " created the NFT '" + nfts.name + "' ("+ nfts.nftID +")");
 			preparedStatement.setString(4, "created");
-		
 		preparedStatement.executeUpdate();
         preparedStatement.close();
     }
     public void insertUser(User users) throws SQLException {
         connect_func();         
 		String sql = "insert into History(userID, details, action, date) values (?, ?, ?, NOW())";
-		preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+			preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
 			preparedStatement.setInt(1,users.userID);
 			preparedStatement.setString(2, "user created");
 			preparedStatement.setString(3, "created");
-		
 		preparedStatement.executeUpdate();
         preparedStatement.close();
     }
@@ -192,7 +182,6 @@ public class HistoryDAO {
     public void init() throws SQLException, FileNotFoundException, IOException{
     	connect_func();
         statement =  (Statement) connect.createStatement();
-        
         String[] INITIAL1 = {
 					        "use testdb; ",
 					        "drop table if exists History; ",
@@ -203,7 +192,6 @@ public class HistoryDAO {
 					        	"details VARCHAR(2000),"+
 					        	"action VARCHAR(50),"+
 					        	"date TIMESTAMP);")
-					        	
         					};
         String[] TUPLES1 = {("insert into History( userID, nftID, details, action, date )"+
         			"values ('1','1','user created','create', NOW()),"+
@@ -217,13 +205,11 @@ public class HistoryDAO {
         					"('9','10','user created','create', NOW()),"+
 			    		 	"('10','9','user created', 'create', NOW());")
 			    			};
-        
         //for loop to put these in database
         for (int i = 0; i < INITIAL1.length; i++)
         	statement.execute(INITIAL1[i]);
         for (int i = 0; i < TUPLES1.length; i++)	
         	statement.execute(TUPLES1[i]);
         disconnect();
-    }
-    
+    }   
 }

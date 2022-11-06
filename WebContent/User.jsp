@@ -8,7 +8,7 @@
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
 </head>
-
+<body>
 <a href="login.jsp"target ="_self" > logout</a><br><br> 
 
 <h1>List all users</h1>
@@ -22,8 +22,7 @@
                 <th>Last name</th>
                 <th>Password</th>
                 <th>Age</th>
-                <th>wallet($)</th>
-                
+                <th>wallet($)</th>      
             </tr>
             <c:forEach var="user" items="${get_user}">
                 <tr style="text-align:center">
@@ -33,13 +32,11 @@
                     <td>"${user.lastName}"</td>
                     <td>"${user.password}"</td>
                     <td>"${user.age}"</td>
-                    <td>"${user.wallet}"</td>
-                    
+                    <td>"${user.wallet}"</td>               
                  </tr>
             </c:forEach>
           </table>
 	</div>
-<body>
 
 </body>
 </html>

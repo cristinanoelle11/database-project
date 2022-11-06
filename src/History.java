@@ -9,7 +9,6 @@ public class History {
 	protected String action;
 	protected Timestamp date;
 	
-	
 	//constructor
 	public History() {}
 	public History(int historyID, int userID, int nftID, String details, String action, Timestamp date) {

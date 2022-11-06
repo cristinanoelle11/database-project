@@ -51,7 +51,11 @@
 <div class = "menuBar">
 			<ul>
 				<li> <a href="login.jsp"target ="_self" >LOGOUT</a></li>
-				<li><a href="ListNFT.jsp"target ="_self" >SELL</a></li>
+				<li class ="sell">
+				  	<form action="sell" method="post">
+						<input class ="submitHome" type="submit" value="SELL"/>
+					</form>
+				</li>
 				<li><a href="mint.jsp"target ="_self" >CREATE</a></li>
 		 		<li><a href="transfer.jsp"target ="_self" >TRANSFER</a></li>
 				<li class ="search">

@@ -34,7 +34,6 @@
 	<center><h1>Welcome <c:out value="${currentU.firstName}" />! You have been successfully logged in</h1> </center>
 	<h2 class ="wallet">Wallet: </h2><p class = "wallet"><c:out value="${currentU.wallet}" /> in (ETH)</p>
 	<h3>Your NFTS:</h3>
-
 		<div class = "flexcontainer"> 
 			<c:forEach var="nfts" items="${usersNFTS}">
 			<c:if test="${nfts.owner} == ${currentU.userID}">

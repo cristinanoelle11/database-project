@@ -29,11 +29,9 @@ public class MarketPlace {
 			this.endDate = endDate;
 			this.price = price;
 			this.nftID = nftID;
-			this.name = name;
-			
+			this.name = name;	
 		}
 		//getters and setters
-		
 		public int getSaleID() {
 			return saleID;
 		}

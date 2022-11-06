@@ -22,7 +22,6 @@
 		.flexcontainer {
 		margin:10px;
 	  	display: flex;
-	  	
         flex-wrap: wrap;
         margin-left:auto;
 		margin-right:auto;
@@ -51,8 +50,7 @@
 			Search NFTs By Name: <input type="text" id = "search" name="name">
 			<input type="submit" value="Search"/>
 		</form>
-	</div>
-		
+	</div>	
 	<center><h4>NFTs on the MarketPlace:</h4></center>
 		<div class = "flexcontainer2">
 			<c:forEach var="nft" items="${listNFT}">
@@ -65,6 +63,22 @@
 			</c:forEach>
 			</c:forEach>
 		</div>
-		
+		<h1>NFTS you have previously bought</h1>
+		<div class = "flexcontainer">
+		<c:forEach var="history" items="${listHistory}">
+			<c:if test="${history.userID == currentUser.userID}">
+				<c:forEach var="nft" items="${listNFT}">
+					<c:if test="${history.nftID == nft.nftID && history.action == 'bought'}">
+			
+						<div class ="nftC">
+								<h3><c:out value="${nft.name}" /></h3>
+					            <img src = "<c:out value= "${nft.image}" />"width="350" height="350">
+					            <p><c:out value="${nft.description}" /></p>
+					    </div>
+					</c:if>
+				</c:forEach>  
+			</c:if>
+		</c:forEach>
+		</div>
 </body>
 </html>

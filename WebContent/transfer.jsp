@@ -6,7 +6,6 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Transfer</title>
-
 </head>
 <body>
 <jsp:include page="header.jsp" />
@@ -22,8 +21,6 @@
 	        </div>
 	         </c:forEach>
 	     </div>
-
-		
 		<div align="center">
 		<p> ${errorOne } </p>
 		<p> ${errorTwo } </p>

@@ -19,8 +19,6 @@
                 <th>Password</th>
                 <th>Age</th>
                 <th>wallet($)</th>
-                
-
             </tr>
             <c:forEach var="users" items="${listUser}">
                 <tr style="text-align:center">

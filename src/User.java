@@ -7,32 +7,22 @@ public class User
 	    protected String lastName;
 	    protected String age;
 	    protected int wallet;
-	    
-	 
-	    //constructors
-	    
-	    public User(String email) 
-	    {
+	    //constructor 
+	    public User(String email) {
 	        this.email = email;
 	    }
-	    public User(String email, String firstName, String lastName, String password,String age, int wallet) 
-	    {
+	    public User(String email, String firstName, String lastName, String password,String age, int wallet) {
 	    	this.email = email;
 	    	this.firstName = firstName;
 	    	this.lastName = lastName;
 	    	this.password = password;
 	        this.age = age;
 	        this.wallet = wallet; 
-	    }
-	    
-	    public User(int userID, String email,String firstName, String lastName, String password,String age, int wallet)
-	    {
+	    }	    
+	    public User(int userID, String email,String firstName, String lastName, String password,String age, int wallet)	    {
 	    	this(email,firstName,lastName,password,age,wallet);
 	    	this.userID = userID;
-	    	
 	    }
-	   
-	    
 	   //getter and setter methods
 	    public String getEmail() {
 	        return email;
@@ -51,22 +41,19 @@ public class User
 	    }
 	    public void setFirstName(String firstName) {
 	        this.firstName = firstName;
-	    }
-	    
+	    }	    
 	    public String getLastName() {
 	        return lastName;
 	    }
 	    public void setLastName(String lastName) {
 	        this.lastName = lastName;
-	    }
-	    
+	    }	    
 	    public String getPassword() {
 	        return password;
 	    }
 	    public void setPassword(String password) {
 	        this.password = password;
-	    }
-	  
+	    }	  
 	    public String getAge() {
 	    	return age;
 	    }
@@ -78,7 +65,5 @@ public class User
 	    }
 	    public void setWallet(int wallet) {
 	    	this.wallet = wallet;
-	    }
-	    
-	   
+	    }	      
 	}

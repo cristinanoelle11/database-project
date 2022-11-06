@@ -32,8 +32,7 @@ public class UserDAO
 	private PreparedStatement preparedStatement = null;
 	private ResultSet resultSet = null;
 	
-	public UserDAO(){}
-	
+	public UserDAO(){}	
 	/** 
 	 * @see HttpServlet#HttpServlet()
      */
@@ -48,8 +47,7 @@ public class UserDAO
             connect = (Connection) DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/testdb?allowPublicKeyRetrieval=true&useSSL=false&user=john&password=pass1234");
             System.out.println(connect);
         }
-    }
-    
+    } 
     public boolean database_login(String email, String password) throws SQLException{
     	try {
     		connect_func("root","pass1234");
@@ -77,8 +75,7 @@ public class UserDAO
   			          + "useSSL=false&user=" + username + "&password=" + password);
             System.out.println(connect);
         }
-    }
-    
+    }   
     public List<User> listAllUsers() throws SQLException {
         List<User> listUser = new ArrayList<User>();        
         String sql = "SELECT * FROM User";      
@@ -92,26 +89,23 @@ public class UserDAO
             String lastName = resultSet.getString("lastName");
             String password = resultSet.getString("password");
             String age = resultSet.getString("age");
-            int wallet = resultSet.getInt("wallet");
-             
+            int wallet = resultSet.getInt("wallet"); 
             User users = new User(userID,email,firstName, lastName, password, age, wallet);
             listUser.add(users);
         }        
         resultSet.close();
         disconnect();        
         return listUser;
-    }
-    
+    }  
     protected void disconnect() throws SQLException {
         if (connect != null && !connect.isClosed()) {
         	connect.close();
         }
     }
-    
     public void insert(User users) throws SQLException {
     	connect_func("root","pass1234");         
 		String sql = "insert into User(email, firstName, lastName, password, age,wallet) values (?, ?, ?, ?, ?, ?)";
-		preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+			preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
 			preparedStatement.setString(1, users.getEmail());
 			preparedStatement.setString(2, users.getFirstName());
 			preparedStatement.setString(3, users.getLastName());
@@ -127,8 +121,7 @@ public class UserDAO
         connect_func();
          
         preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
-        preparedStatement.setString(1, email);
-         
+        preparedStatement.setString(1, email);  
         boolean rowDeleted = preparedStatement.executeUpdate() > 0;
         preparedStatement.close();
         return rowDeleted;     
@@ -139,7 +132,6 @@ public class UserDAO
          preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
          preparedStatement.setInt(1, wallet);
          preparedStatement.setInt(2, userID);
-
          boolean rowUpdated = preparedStatement.executeUpdate()>0;
          preparedStatement.close();
          return rowUpdated;
@@ -148,32 +140,26 @@ public class UserDAO
         String sql = "update User set userID =?,firstName=?, lastName =?,password = ?,age=?, wallet=? where email = ?";
         connect_func();
         
-        preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
-        
+        preparedStatement = (PreparedStatement) connect.prepareStatement(sql);     
         preparedStatement.setString(1, users.getEmail());
 		preparedStatement.setString(2, users.getFirstName());
 		preparedStatement.setString(3, users.getLastName());
 		preparedStatement.setString(4, users.getPassword());
 		preparedStatement.setString(5, users.getAge());		
 		preparedStatement.setInt(6, users.getWallet());		
-		
-         
+     
         boolean rowUpdated = preparedStatement.executeUpdate() > 0;
         preparedStatement.close();
         return rowUpdated;     
-    }
-    
+    }  
     public User getUser(String email) throws SQLException {
     	User user = null;
         String sql = "SELECT * FROM User WHERE email = ?";
         // Handle error where user is not in database
-        connect_func();
-         
+        connect_func();       
         preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
-        preparedStatement.setString(1, email);
-         
-        ResultSet resultSet = preparedStatement.executeQuery();
-         
+        preparedStatement.setString(1, email);         
+        ResultSet resultSet = preparedStatement.executeQuery();        
         if (resultSet.next()) {
         	int userID = resultSet.getInt("userID");
             String firstName = resultSet.getString("firstName");
@@ -182,24 +168,19 @@ public class UserDAO
             String age = resultSet.getString("age");
             int wallet = resultSet.getInt("wallet");
             user = new User(userID, email, firstName, lastName, password, age, wallet);
-        }
-         
+        }        
         resultSet.close();
-        preparedStatement.close();
-         
+        preparedStatement.close();         
         return user;
     }
     public User getUser(int userID) throws SQLException {
     	User user = null;
         String sql = "SELECT * FROM User WHERE userID = ?";
         // Handle error where user is not in database
-        connect_func();
-         
+        connect_func();        
         preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
-        preparedStatement.setInt(1, userID);
-         
-        ResultSet resultSet = preparedStatement.executeQuery();
-         
+        preparedStatement.setInt(1, userID);         
+        ResultSet resultSet = preparedStatement.executeQuery();        
         if (resultSet.next()) {
         	String email = resultSet.getString("email");
             String firstName = resultSet.getString("firstName");
@@ -208,22 +189,17 @@ public class UserDAO
             String age = resultSet.getString("age");
             int wallet = resultSet.getInt("wallet");
             user = new User(userID, email, firstName, lastName, password, age, wallet);
-        }
-         
+        }        
         resultSet.close();
-        preparedStatement.close();
-         
+        preparedStatement.close();         
         return user;
     }
     public User getUserByName(String name) throws SQLException {
     	User user = null;
         String sql = "SELECT * FROM User WHERE name = ?";
-         
-        connect_func();
-         
+        connect_func();  
         preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
         preparedStatement.setString(1, name);
-         
         ResultSet resultSet = preparedStatement.executeQuery();
          
         if (resultSet.next()) {
@@ -235,11 +211,9 @@ public class UserDAO
             String age = resultSet.getString("age");
             int wallet = resultSet.getInt("wallet");
             user = new User(userID, email, firstName, lastName, password, age, wallet);
-        }
-         
+        } 
         resultSet.close();
-        statement.close();
-         
+        statement.close();  
         return user;
     }
     public boolean checkEmail(String email) throws SQLException {
@@ -250,16 +224,13 @@ public class UserDAO
         preparedStatement.setString(1, email);
         ResultSet resultSet = preparedStatement.executeQuery();
         
-        System.out.println(checks);	
-        
+        System.out.println(checks);	        
         if (resultSet.next()) {
         	checks = true;
         }
-        
         System.out.println(checks);
     	return checks;
-    }
-    
+    }   
     public boolean checkPassword(String password) throws SQLException {
     	boolean checks = false;
     	String sql = "SELECT * FROM User WHERE password = ?";
@@ -268,31 +239,23 @@ public class UserDAO
         preparedStatement.setString(1, password);
         ResultSet resultSet = preparedStatement.executeQuery();
         
-        System.out.println(checks);	
-        
+        System.out.println(checks);	        
         if (resultSet.next()) {
         	checks = true;
-        }
-        
+        }        
         System.out.println(checks);
        	return checks;
-    }
-
-    
+    }    
     public boolean isValid(String email, String password) throws SQLException
     {
     	String sql = "SELECT * FROM User";
     	connect_func();
     	statement = (Statement) connect.createStatement();
-    	ResultSet resultSet = statement.executeQuery(sql);
-    	
-    	resultSet.last();
-    	
+    	ResultSet resultSet = statement.executeQuery(sql);   	
+    	resultSet.last();    	
     	int setSize = resultSet.getRow();
-    	resultSet.beforeFirst();
-    	
-    	for(int i = 0; i < setSize; i++)
-    	{
+    	resultSet.beforeFirst();    	
+    	for(int i = 0; i < setSize; i++){
     		resultSet.next();
     		if(resultSet.getString("email").equals(email) && resultSet.getString("password").equals(password)) {
     			return true;
@@ -300,8 +263,7 @@ public class UserDAO
     	}
     	return false;
     }
-    
-    
+  
     public void init() throws SQLException, FileNotFoundException, IOException{
     	connect_func();
         statement =  (Statement) connect.createStatement();
@@ -331,8 +293,7 @@ public class UserDAO
 			    			"('mike@gmail.com', 'Mike', 'Smith','mike1234', '17', '100'),"+
 			    			"('jeannette@gmail.com', 'Jeannette ', 'Stone','jeannette1234', '22','100'),"+
 			    			"('root', 'default', 'default','pass1234', '0', '100');")
-			    			};
-        
+			    			};        
         //for loop to put these in database
         for (int i = 0; i < INITIAL.length; i++)
         	statement.execute(INITIAL[i]);
@@ -340,16 +301,4 @@ public class UserDAO
         	statement.execute(TUPLES[i]);
         disconnect();
     }
-
-    
-    
-   
-    
-    
-    
-    
-    
-	
-	
-
 }

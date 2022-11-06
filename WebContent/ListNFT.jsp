@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+ <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,7 +10,18 @@
 	.listBlock{
 		display:block;
 		width:550px;
-		height:350px;
+		height:150px;
+	}
+	.nftC{
+		margin-left:auto;
+		margin-right:auto;
+	}
+		.flexcontainer {
+		margin:10px;
+	  	display: flex;
+        flex-wrap: wrap;
+        margin-left:auto;
+		margin-right:auto;
 	}
 	.wallet{
 		display: inline;
@@ -28,5 +40,21 @@
 			<input type="submit" value="List"/>
 		</form>
 		</div>   
+		<h1>NFTS you have previously sold</h1>
+		<div class = "flexcontainer">
+		<c:forEach var="history" items="${listHistory}">
+			<c:if test="${history.userID == currentUser.userID}">
+				<c:forEach var="nft" items="${listNFT}">
+					<c:if test="${history.nftID == nft.nftID && history.action == 'sold'}">
+						<div class ="nftC">
+								<h3><c:out value="${nft.name}" /></h3>
+					            <img src = "<c:out value= "${nft.image}" />"width="350" height="350">
+					            <p><c:out value="${nft.description}" /></p>
+					    </div>
+					</c:if>
+				</c:forEach>  
+			</c:if>
+		</c:forEach>
+		</div>
 </body>
 </html>
