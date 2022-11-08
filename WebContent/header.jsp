@@ -56,7 +56,11 @@
 						<input class ="submitHome" type="submit" value="SELL"/>
 					</form>
 				</li>
-				<li><a href="mint.jsp"target ="_self" >CREATE</a></li>
+				<li class ="mint">
+				  	<form action="mint" method="post">
+						<input class ="submitHome" type="submit" value="CREATE"/>
+					</form>
+				</li>
 		 		<li><a href="transfer.jsp"target ="_self" >TRANSFER</a></li>
 				<li class ="search">
 				  	<form action="searchNFT" method="post">

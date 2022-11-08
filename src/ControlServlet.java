@@ -78,6 +78,9 @@ public class ControlServlet extends HttpServlet {
         	case "/sell":
         		sell(request,response);
         		break;
+        	case "/mint":
+        		mint(request,response);
+        		break;
         	case "/transfer":
         		transfer(request, response);
         		break;
@@ -162,6 +165,26 @@ public class ControlServlet extends HttpServlet {
 		        request.setAttribute("currentUser", user); 
 		        
 		        RequestDispatcher dispatcher = request.getRequestDispatcher("ListNFT.jsp");       
+		        dispatcher.forward(request, response);
+		        System.out.println("sell finished: 111111111111111111111111111111111111");
+	    }
+	    private void mint(HttpServletRequest request, HttpServletResponse response)
+	    		throws SQLException, IOException, ServletException {
+	    	System.out.println("mint started: 00000000000000000000000000000000000");
+	        
+	    	  	List<Nft> listNFT = nftDAO.listAllNFTS();
+	    		request.setAttribute("listNFT", listNFT);   
+	    		
+		        List<MarketPlace> listMarketPlace = marketPlaceDAO.listMarketPlace();
+		        request.setAttribute("listMarketPlace", listMarketPlace); 
+		        
+		        List<History> listHistory = historyDAO.listAllHistory();
+		        request.setAttribute("listHistory", listHistory);
+		        
+		        User user = userDAO.getUser(currentUser);
+		        request.setAttribute("currentUser", user); 
+		        
+		        RequestDispatcher dispatcher = request.getRequestDispatcher("mint.jsp");       
 		        dispatcher.forward(request, response);
 		        System.out.println("sell finished: 111111111111111111111111111111111111");
 	    }
@@ -407,7 +430,9 @@ public class ControlServlet extends HttpServlet {
 		   	 		System.out.println("Minting Successful! Added to database");
 		   	 		Nft nfts = new Nft(name,description, image, owner);
 		   	 		nftDAO.insertNFT(nfts);
-		   	 		historyDAO.insertMint(users,nfts);
+		   	 		//have to call getnft to make sure we get the automatic nftid to pass intop history
+		   	 		Nft newNFT = nftDAO.getNFTbyName(name);
+		   	 		historyDAO.insertMint(users,newNFT);
 		   	 	 RequestDispatcher dispatcher = request.getRequestDispatcher("/activity");
 			     dispatcher.forward(request, response);
 	   	 		}
