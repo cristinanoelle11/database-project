@@ -31,7 +31,7 @@
 	<body>
 
 	<jsp:include page="header.jsp" />
-	<center><h1>Welcome <c:out value="${currentU.firstName}" />! You have been successfully logged in</h1> </center>
+	<center><h1><c:out value="${currentU.firstName}" />'s Page!</h1> </center>
 	<h2 class ="wallet">Wallet: </h2><p class = "wallet"><c:out value="${currentU.wallet}" /> in (ETH)</p>
 	<h3>Your NFTS:</h3>
 		<div class = "flexcontainer"> 

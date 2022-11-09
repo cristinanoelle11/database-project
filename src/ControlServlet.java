@@ -95,6 +95,12 @@ public class ControlServlet extends HttpServlet {
         	case "/root":
         		rootPage(request,response, "");
         		break;
+        	case "/searchUsers":
+        		searchUsers(request, response);
+        		break;
+        	case "/displayUser":
+        		displayUser(request, response);
+        		break;
         	case "/logout":
         		logout(request,response);
         		break;
@@ -237,6 +243,36 @@ public class ControlServlet extends HttpServlet {
 		        dispatcher.forward(request, response);
 	        }
 	        System.out.println("searchNFT finished: 111111111111111111111111111111111111");
+	    }
+	    private void displayUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+	    	System.out.println("displayUSer started: 111111111111111111111111111111111111");
+	    	String email = request.getParameter("name"); 
+		     User users = userDAO.getUser(email);
+		 	 request.setAttribute("currentU", users);
+		 	 int owner = users.userID;
+		 	 List<Nft> usersNFTS = nftDAO.listUsersNFTs(owner);
+		     request.setAttribute("usersNFTS", usersNFTS);   
+		     RequestDispatcher dispatcher = request.getRequestDispatcher("userDisplay.jsp");       
+		        dispatcher.forward(request, response);
+		        System.out.println("displayUser finished: 111111111111111111111111111111111111");
+	    }
+	    
+	    private void searchUsers(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+	    	String email = request.getParameter("email");
+	    	System.out.println("searchUser started: 00000000000000000000000000000000000");
+	    	char firstChar = email.charAt(0);
+	    	List<User> users = userDAO.listAllUsers();
+	    	List<User> result = new ArrayList<User>(); 
+	    	users.stream().forEach(i -> {
+	    			if(i.getEmail().charAt(0) == firstChar) {
+	    				result.add(i);
+	    			}
+	    	});      
+		        request.setAttribute("users", result); 
+		        RequestDispatcher dispatcher = request.getRequestDispatcher("searchUsers.jsp");       
+		        dispatcher.forward(request, response);
+	        
+	        System.out.println("searchUser finished: 111111111111111111111111111111111111");
 	    }
 	    
 	    private void placeInMarket(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException, ParseException {

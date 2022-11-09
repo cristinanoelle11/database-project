@@ -164,7 +164,7 @@ public class HistoryDAO {
 			preparedStatement.setInt(1,users.userID);
 			preparedStatement.setInt(2, nfts.nftID);
 			preparedStatement.setString(3, users.firstName + " created the NFT '" + nfts.name + "' ("+ nfts.nftID +")");
-			preparedStatement.setString(4, "created");
+			preparedStatement.setString(4, "mint");
 		preparedStatement.executeUpdate();
         preparedStatement.close();
     }
