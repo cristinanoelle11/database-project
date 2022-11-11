@@ -72,6 +72,7 @@
 						<input class ="submitHome" type="submit" value="HOME"/>
 					</form>
 				</li>
+				<li><a href="searchUsers.jsp"target ="_self" >SEARCH USERS</a></li>
 			</ul>
 	</div>
 </body>

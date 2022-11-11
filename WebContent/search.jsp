@@ -69,7 +69,6 @@
 			<c:if test="${history.userID == currentUser.userID}">
 				<c:forEach var="nft" items="${listNFT}">
 					<c:if test="${history.nftID == nft.nftID && history.action == 'bought'}">
-			
 						<div class ="nftC">
 								<h3><c:out value="${nft.name}" /></h3>
 					            <img src = "<c:out value= "${nft.image}" />"width="350" height="350">

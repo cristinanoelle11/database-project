@@ -268,7 +268,11 @@ public class ControlServlet extends HttpServlet {
 	    				result.add(i);
 	    			}
 	    	});      
-		        request.setAttribute("users", result); 
+	    	if(result.isEmpty()) {
+	    		request.setAttribute("errorOne","There is no close user, try again");
+	    	}
+		        request.setAttribute("users", result);
+		    	request.setAttribute("messageOne","Users you may be looking for:");
 		        RequestDispatcher dispatcher = request.getRequestDispatcher("searchUsers.jsp");       
 		        dispatcher.forward(request, response);
 	        
