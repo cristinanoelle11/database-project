@@ -183,7 +183,14 @@ public class ControlServlet extends HttpServlet {
 		        
 		        User user = userDAO.getUser(currentUser);
 		        request.setAttribute("currentUser", user); 
-		        
+		        List<History> result = new ArrayList<History>(); 
+		    	listHistory.stream().forEach(i -> {
+		    			if(i.getAction().equals("sold")) {
+		    				result.add(i);
+		    			}
+		    	});      
+		    	request.setAttribute("result", result);
+		    	request.setAttribute("messageOne", "NFT's you have previously sold:");
 		        RequestDispatcher dispatcher = request.getRequestDispatcher("ListNFT.jsp");       
 		        dispatcher.forward(request, response);
 		        System.out.println("sell finished: 111111111111111111111111111111111111");
@@ -203,7 +210,14 @@ public class ControlServlet extends HttpServlet {
 		        
 		        User user = userDAO.getUser(currentUser);
 		        request.setAttribute("currentUser", user); 
-		        
+		        List<History> result = new ArrayList<History>(); 
+		    	listHistory.stream().forEach(i -> {
+		    			if(i.getAction().equals("mint")) {
+		    				result.add(i);
+		    			}
+		    	});      
+		    	request.setAttribute("result", result);
+		    	request.setAttribute("messageOne", "NFT's you have previously created:");
 		        RequestDispatcher dispatcher = request.getRequestDispatcher("mint.jsp");       
 		        dispatcher.forward(request, response);
 		        System.out.println("sell finished: 111111111111111111111111111111111111");
@@ -259,6 +273,7 @@ public class ControlServlet extends HttpServlet {
 	        }
 	        System.out.println("search finished: 111111111111111111111111111111111111");
 	    }
+	    
 	    private void displayUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
 	    	System.out.println("displayUSer started: 111111111111111111111111111111111111");
 	    	String email = request.getParameter("name"); 
@@ -306,6 +321,14 @@ public class ControlServlet extends HttpServlet {
 	        request.setAttribute("listHistory", listHistory);
 	        User user = userDAO.getUser(currentUser);
 	        request.setAttribute("currentUser", user);
+	        List<History> result = new ArrayList<History>(); 
+	    	listHistory.stream().forEach(i -> {
+	    			if(i.getAction().equals("mint")) {
+	    				result.add(i);
+	    			}
+	    	});      
+	    	request.setAttribute("result", result);
+	    	request.setAttribute("messageOne", "NFT's you have previously listed:");
 	    	boolean ans =listings.stream().filter(o -> o.getnftID() == enterednftID).findFirst().isPresent();
 	    	if(ans) {
 	    		System.out.println("this product is already listed");
@@ -372,7 +395,8 @@ public class ControlServlet extends HttpServlet {
 			    //	currentOwner = newOwner;	    	
 			    	nftDAO.update(newOwner,certainNFT.owner);
 			    	//delete from marketplace
-			    	marketPlaceDAO.delete(certainNFT.owner);
+			    	
+			    	marketPlaceDAO.delete(certainNFT.nftID);
 			    	User userUpdate = userDAO.getUser(currentUser);
 				 	request.setAttribute("currentU", userUpdate);
 				 	List<Nft> usersNFTS = nftDAO.listUsersNFTs(user.userID);

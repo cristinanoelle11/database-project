@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
- <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<!DOCTYPE html>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+ <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+ <!DOCTYPE html>
 <html>
 <head><title>Mint NFT</title></head>
 <body>
@@ -41,8 +42,9 @@
 		</form>
 	</div>
 	
-	
-	<h1>NFTS you have created</h1>
+	<c:if test="${fn:length(result) > 0}">
+		<h1>${messageOne}</h1>
+	</c:if>
 		<div class = "flexcontainer">
 		<c:forEach var="history" items="${listHistory}">
 			<c:if test="${history.userID == currentUser.userID}">
