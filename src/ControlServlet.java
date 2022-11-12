@@ -278,12 +278,21 @@ public class ControlServlet extends HttpServlet {
 	    	System.out.println("displayUSer started: 111111111111111111111111111111111111");
 	    	String email = request.getParameter("name"); 
 		     User users = userDAO.getUser(email);
+		     String enteredEmail = users.email;
+		     System.out.println("Currentuser = " + currentUser);
+		     System.out.println("user searching = " + enteredEmail);
+		     if(enteredEmail.equals(currentUser)) {
+		    	 System.out.println("in if statement");
+		    	 RequestDispatcher dispatcher = request.getRequestDispatcher("/activity");
+				 dispatcher.forward(request, response); 
+		     }else {
 		 	 request.setAttribute("currentU", users);
 		 	 int owner = users.userID;
 		 	 List<Nft> usersNFTS = nftDAO.listUsersNFTs(owner);
 		     request.setAttribute("usersNFTS", usersNFTS);   
 		     RequestDispatcher dispatcher = request.getRequestDispatcher("userDisplay.jsp");       
 		        dispatcher.forward(request, response);
+		     }
 		        System.out.println("displayUser finished: 111111111111111111111111111111111111");
 	    }
 	    
