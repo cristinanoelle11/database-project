@@ -300,17 +300,17 @@ public class ControlServlet extends HttpServlet {
 	    	String email = request.getParameter("email");
 	    	System.out.println("searchUser started: 00000000000000000000000000000000000");
 	    	char firstChar = email.charAt(0);
-	    	List<User> users = userDAO.listAllUsers();
-	    	List<User> result = new ArrayList<User>(); 
-	    	users.stream().forEach(i -> {
-	    			if(i.getEmail().charAt(0) == firstChar) {
-	    				result.add(i);
-	    			}
-	    	});      
-	    	if(result.isEmpty()) {
-	    		request.setAttribute("errorOne","There is no close user, try again");
+	    	List<User> users = userDAO.listAllUsers(email);
+//	    	List<User> result = new ArrayList<User>(); 
+//	    	users.stream().forEach(i -> {
+//	    			if(i.getEmail().charAt(0) == firstChar) {
+//	    				result.add(i);
+//	    			}
+//	    	});      
+	    	if(users.isEmpty()) {
+	    		request.setAttribute("errorOne","There is no similar user, please try again");
 	    	}
-		        request.setAttribute("users", result);
+		        request.setAttribute("users", users);
 		    	request.setAttribute("messageOne","Users you may be looking for:");
 		        RequestDispatcher dispatcher = request.getRequestDispatcher("searchUsers.jsp");       
 		        dispatcher.forward(request, response);

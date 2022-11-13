@@ -262,7 +262,6 @@ public class NftDAO {
     public void init() throws SQLException, FileNotFoundException, IOException{
     	connect_func();
         statement =  (Statement) connect.createStatement();
-        
         String[] INITIAL1 = {
 					        "use testdb; ",
 					        "drop table if exists NFT; ",
@@ -278,7 +277,7 @@ public class NftDAO {
         					};
         String[] TUPLES1 = {("insert into NFT( name, description, image, owner)"+
         			"values ('Grass', 'picture of grass', 'https://images.pexels.com/photos/413195/pexels-photo-413195.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', '1'), "+
-			    		 	"('Pear', 'picture of pear','https://image.shutterstock.com/image-photo/red-apple-isolated-on-white-600w-1727544364.jpg', '3'),"+
+			    		 	"('Pear', 'picture of pear','https://media.istockphoto.com/id/186861864/photo/pear-green-with-leaf.jpg?b=1&s=170667a&w=0&k=20&c=0NpzabgUweSG-dLJzHM6fgYCmzsplD9_HY5ujPp1ncs=', '3'),"+
 			    		 	"('Apple', 'picture of apple','https://image.shutterstock.com/image-photo/red-apple-isolated-on-white-600w-1727544364.jpg', '2'),"+
 			    		 	"('The girl', 'picture of a girl reading a book','https://image.shutterstock.com/image-vector/girl-reading-sit-side-book-600w-1687461220.jpg', '4'),"+
 			    		 	"('Beach', 'a busy day at the beach', 'https://image.shutterstock.com/image-photo/vibrant-aerial-view-people-beach-600w-1268832001.jpg', '6'),"+
@@ -287,7 +286,6 @@ public class NftDAO {
 			    		 	"('The Art of Books', 'an area of a bookstore full of different books','https://bookriot.com/wp-content/uploads/2020/04/bookstore-books-feature-700x375-1-1280x720.jpg','7'),"+
 			    		 	"('The Bouquet','a bouquet of white, pink, and purple roses with greenery as well','https://image.shutterstock.com/image-photo/woman-bouquet-beautiful-roses-on-600w-1935156821.jpg','10'),"+
 			    		 	"('Girls Day to the Theater','Three girls sitting next to each other with soda and popcorn enjoying a movie', 'https://image1.masterfile.com/getImage/NjExMS0wNjgzNzgxOGVuLjAwMDAwMDAw=AChW$q/6111-06837818en_Masterfile.jpg','9');"
-        		
         						)
 			    			};
         //for loop to put these in database
