@@ -72,6 +72,9 @@ public class ControlServlet extends HttpServlet {
         	case "/searchNFT":
         		searchNFT(request,response);
         		break;
+        	case "/searchNFT2":
+        		searchNFT2(request, response);
+        		break;
         	case "/placeInMarket":
         		placeInMarket(request,response);
         		break;
@@ -100,6 +103,9 @@ public class ControlServlet extends HttpServlet {
         		break;
         	case "/displayUser":
         		displayUser(request, response);
+        		break;
+        	case "/displayNFT":
+        		displayNFT(request, response);
         		break;
         	case "/logout":
         		logout(request,response);
@@ -153,6 +159,24 @@ public class ControlServlet extends HttpServlet {
 		        RequestDispatcher dispatcher = request.getRequestDispatcher("search.jsp");       
 		        dispatcher.forward(request, response);
 		        System.out.println("searchNFT finished: 111111111111111111111111111111111111");
+	    }
+	    private void searchNFT2(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+	 
+	        String name = request.getParameter("nftName");
+	    	System.out.println("searchNFT2 started: 00000000000000000000000000000000000");
+	    	char firstChar = name.charAt(0);
+	    	List<Nft> nfts = nftDAO.listAllNFTS();
+	    	List<Nft> result = new ArrayList<Nft>(); 
+	    	nfts.stream().forEach(i -> {
+	    			if(i.getName().charAt(0) == firstChar) {
+	    				result.add(i);
+	    			}
+	    	});      
+		        request.setAttribute("nftNames", result); 
+		        RequestDispatcher dispatcher = request.getRequestDispatcher("searchNFT.jsp");       
+		        dispatcher.forward(request, response);
+	        
+	        System.out.println("searchNFT2 finished: 111111111111111111111111111111111111");
 	    }
 	    private void sell(HttpServletRequest request, HttpServletResponse response)
 	    		throws SQLException, IOException, ServletException {
@@ -256,6 +280,17 @@ public class ControlServlet extends HttpServlet {
 		        dispatcher.forward(request, response);
 		        System.out.println("displayUser finished: 111111111111111111111111111111111111");
 	    }
+	    
+	    private void displayNFT(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+	    	System.out.println("displayNFT started: 000000000000000000000");
+	    	String nftNames = request.getParameter("names");
+		     Nft nfts = nftDAO.getNFT(nftNames);
+		 	 request.setAttribute("nft", nfts);
+		     RequestDispatcher dispatcher = request.getRequestDispatcher("nftDisplay.jsp");       
+		        dispatcher.forward(request, response);
+		        System.out.println("displayNFT finished: 111111111111111111111111111111111111");
+	    }
+	    
 	    
 	    private void searchUsers(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
 	    	String email = request.getParameter("email");
