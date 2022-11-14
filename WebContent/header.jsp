@@ -61,6 +61,7 @@
 						<input class ="submitHome" type="submit" value="CREATE"/>
 					</form>
 				</li>
+				<li><a href="searchUsers.jsp"target ="_self" >SEARCH USERS</a></li>
 		 		<li><a href="transfer.jsp"target ="_self" >TRANSFER</a></li>
 				<li class ="search">
 				  	<form action="searchNFT" method="post">
