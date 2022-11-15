@@ -297,4 +297,5 @@ public class NftDAO {
         	statement.execute(TUPLES1[i]);
         disconnect();
     }
+    
 }
