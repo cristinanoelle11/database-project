@@ -10,7 +10,7 @@
 <body>
 <jsp:include page="header.jsp" />
 <c:forEach var="nft" items="${certainNFT}">
-<h1><c:out value="${nft.name}" /></h1>
+<center><h1><c:out value="${nft.name}" /></h1><center>
     <div align="center">
             <img src = "<c:out value= "${nft.image}" />"width="300" height="400">
             <p><c:out value="${nft.description}" /></p>
