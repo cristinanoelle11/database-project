@@ -9,7 +9,7 @@
 </head>
 <body>
 <jsp:include page="header.jsp" />
-<center><h1>Welcome <c:out value="${currentU.firstName}" />! Transfer NFT?</h1> </center>
+<center><h1>Want To Transfer An NFT?</h1> </center>
 <h3>Your NFTS:</h3>
 		 </center>
 		<div class = "flexcontainer"> 

@@ -52,6 +52,13 @@
         margin-left:auto;
 		margin-right:auto;
 	}
+	.flexcontainer1 {
+		margin:10px;
+	  	display: flex;
+        flex-wrap: wrap;
+        margin-left:auto;
+		margin-right:auto;
+	}
 </style>
 </head>
 <body>
@@ -78,7 +85,11 @@
 			</div>
 		</c:forEach>
 	</div>
-		<div class = "flexcontainer">
+	<br><br>
+	<c:if test="${fn:length(result) > 0}">
+		<h1>${message}</h1>
+	</c:if>
+		<div class = "flexcontainer1">
 		<c:forEach var="history" items="${listHistory}">
 			<c:if test="${history.userID == currentUser.userID}">
 				<c:forEach var="nft" items="${listNFT}">

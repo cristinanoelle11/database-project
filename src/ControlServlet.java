@@ -69,6 +69,9 @@ public class ControlServlet extends HttpServlet {
         	case "/search":
         		search(request,response);
         		break;
+        	case "/searchNFT":
+        		searchNFT(request,response);
+        		break;
         	case "/displayNFT":
         		displayNFT(request,response);
         		break;
@@ -192,6 +195,33 @@ public class ControlServlet extends HttpServlet {
 		        dispatcher.forward(request, response);
 		        System.out.println("sell finished: 111111111111111111111111111111111111");
 	    }
+	    private void searchNFT(HttpServletRequest request, HttpServletResponse response)
+	    		throws SQLException, IOException, ServletException {
+	    	System.out.println("searchNFT started: 00000000000000000000000000000000000");
+	        
+	    	  	List<Nft> listNFT = nftDAO.listAllNFTS();
+	    		request.setAttribute("listNFT", listNFT);   
+	    		
+		        List<MarketPlace> listMarketPlace = marketPlaceDAO.listMarketPlace();
+		        request.setAttribute("listMarketPlace", listMarketPlace); 
+		        
+		        List<History> listHistory = historyDAO.listAllHistory();
+		        request.setAttribute("listHistory", listHistory);
+		        
+		        User user = userDAO.getUser(currentUser);
+		        request.setAttribute("currentUser", user); 
+		        List<History> result = new ArrayList<History>(); 
+		    	listHistory.stream().forEach(i -> {
+		    			if(i.getAction().equals("bought")) {
+		    				result.add(i);
+		    			}
+		    	});      
+		    	request.setAttribute("result", result);
+		    	request.setAttribute("message", "NFT's you have previously bought:");
+		        RequestDispatcher dispatcher = request.getRequestDispatcher("search.jsp");       
+		        dispatcher.forward(request, response);
+		        System.out.println("searchNFT finished: 111111111111111111111111111111111111");
+	    }
 	    private void listHistory(HttpServletRequest request, HttpServletResponse response)
 	        throws SQLException, IOException, ServletException {
 	        System.out.println("listHistory started: 00000000000000000000000000000000000");
@@ -227,18 +257,18 @@ public class ControlServlet extends HttpServlet {
 	    private void search(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
 	    	String name = request.getParameter("name");
 	    	name = name.toLowerCase();
+	    	
 	    	System.out.println("search started: 00000000000000000000000000000000000");
 	    	
 			
 	    	List<Nft> nfts = nftDAO.nftsOnMarketPlace(name);
-	    	
 	    	if(nfts.isEmpty()) {
 	    		request.setAttribute("errorOne","There is no similar NFT, please try again");
 	    	}
 		        request.setAttribute("nfts", nfts);
 		    	request.setAttribute("messageOne","NFT you may be looking for:");
-		        RequestDispatcher dispatcher = request.getRequestDispatcher("search.jsp");       
-		        dispatcher.forward(request, response);
+		    	RequestDispatcher dispatcher = request.getRequestDispatcher("/searchNFT");
+				 dispatcher.forward(request, response); 
 	        
 	        System.out.println("search finished: 111111111111111111111111111111111111");
 	    }
@@ -382,7 +412,7 @@ public class ControlServlet extends HttpServlet {
 			    //	currentOwner = newOwner;	    	
 			    	nftDAO.update(newOwner,certainNFT.owner);
 			    	//delete from marketplace
-			    	
+			   
 			    	marketPlaceDAO.delete(certainNFT.nftID);
 			    	User userUpdate = userDAO.getUser(currentUser);
 				 	request.setAttribute("currentU", userUpdate);

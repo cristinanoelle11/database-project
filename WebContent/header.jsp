@@ -63,12 +63,12 @@
 				</li>
 				<li><a href="searchUsers.jsp"target ="_self" >SEARCH USERS</a></li>
 		 		<li><a href="transfer.jsp"target ="_self" >TRANSFER</a></li>
-				<!-- <li class ="search">
+				<li class ="search">
 				  	<form action="searchNFT" method="post">
 						<input class ="submitHome" type="submit" value="BUY"/>
 					</form>
-				</li> -->
-				<li><a href= "search.jsp"target="_self">BUY</a>
+				</li>
+				
 				<li class ="home">
 				  	<form action="activity" method="post">
 						<input class ="submitHome" type="submit" value="HOME"/>
