@@ -88,6 +88,7 @@ public class NftDAO {
         disconnect();        
         return certainNFT;
     }
+    
     public List<Nft> listUsersNFTs(int owner) throws SQLException {
         List<Nft> nfts = new ArrayList<Nft>();        
         String sql = "SELECT * FROM  NFT WHERE owner = '"+owner+"'";  
@@ -217,6 +218,25 @@ public class NftDAO {
         disconnect();        
         return listNFT;
     } 
+    public List<Nft> nftsOnMarketPlace() throws SQLException {
+        List<Nft> listNFT = new ArrayList<Nft>();        
+        String sql = "SELECT n.*, m.* FROM marketPlace m JOIN NFT n ON m.nftID = n.nftID"; 
+        connect_func();      
+        statement = (Statement) connect.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);        
+        while (resultSet.next()) {
+        	int nftId = resultSet.getInt("nftID");
+            String name = resultSet.getString("name");
+            String description = resultSet.getString("description");
+            String image = resultSet.getString("image");
+            int owner = resultSet.getInt("owner");            
+            Nft nfts = new Nft(nftId, name, description, image, owner);
+            listNFT.add(nfts);
+        }        
+        resultSet.close();
+        disconnect();        
+        return listNFT;
+    } 
     //Function to create NFT
     //copies insert function in userDAO
     public void insertNFT(Nft nfts) throws SQLException {
@@ -277,7 +297,7 @@ public class NftDAO {
         					};
         String[] TUPLES1 = {("insert into NFT( name, description, image, owner)"+
         			"values ('Grass', 'picture of grass', 'https://images.pexels.com/photos/413195/pexels-photo-413195.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', '1'), "+
-			    		 	"('Pear', 'picture of pear','https://media.istockphoto.com/id/186861864/photo/pear-green-with-leaf.jpg?b=1&s=170667a&w=0&k=20&c=0NpzabgUweSG-dLJzHM6fgYCmzsplD9_HY5ujPp1ncs=', '3'),"+
+			    		 	"('Pear', 'picture of pear','https://thumbs.dreamstime.com/b/pear-7682120.jpg', '3'),"+
 			    		 	"('Apple', 'picture of apple','https://image.shutterstock.com/image-photo/red-apple-isolated-on-white-600w-1727544364.jpg', '2'),"+
 			    		 	"('The girl', 'picture of a girl reading a book','https://image.shutterstock.com/image-vector/girl-reading-sit-side-book-600w-1687461220.jpg', '4'),"+
 			    		 	"('Beach', 'a busy day at the beach', 'https://image.shutterstock.com/image-photo/vibrant-aerial-view-people-beach-600w-1268832001.jpg', '6'),"+

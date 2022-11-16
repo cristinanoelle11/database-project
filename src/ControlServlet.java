@@ -230,11 +230,13 @@ public class ControlServlet extends HttpServlet {
 	    	System.out.println("search started: 00000000000000000000000000000000000");
 	    	char firstChar = name.charAt(0);
 			System.out.println(firstChar);
-	    	List<Nft> nfts = nftDAO.listAllNFTS();
+			
+	    	List<Nft> nfts = nftDAO.nftsOnMarketPlace();
 	    	List<Nft> result = new ArrayList<Nft>(); 
 	    	nfts.stream().forEach(i -> {
 	    		String nftName = i.getName();
 	    		String lowercaseName =nftName.toLowerCase();
+	    		
 	    			if(lowercaseName.charAt(0) == firstChar) {
 	    				System.out.println(i.getName());
 	    				result.add(i);
@@ -258,7 +260,7 @@ public class ControlServlet extends HttpServlet {
 		        User user = userDAO.getUser(currentUser);        
 		        request.setAttribute("currentUser", user); 
 	      
-	        	
+
 		        RequestDispatcher dispatcher = request.getRequestDispatcher("NFT.jsp");       
 		        dispatcher.forward(request, response);
 	        
