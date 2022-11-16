@@ -76,9 +76,20 @@ public class UserDAO
             System.out.println(connect);
         }
     }   
+    
     public List<User> listAllUsers() throws SQLException {
-        List<User> listUser = new ArrayList<User>();        
-        String sql = "SELECT * FROM User";      
+    	return  listAllUsers(null);
+    }
+    
+    public List<User> listAllUsers(String pattern) throws SQLException {
+        List<User> listUser = new ArrayList<User>(); 
+        String sql = null;
+        
+        if (pattern == null) {
+        	sql = "SELECT * FROM User";   
+        } else {
+        	sql = "SELECT * FROM User where email like '%" + pattern + "%'";
+        }
         connect_func();      
         statement = (Statement) connect.createStatement();
         ResultSet resultSet = statement.executeQuery(sql);

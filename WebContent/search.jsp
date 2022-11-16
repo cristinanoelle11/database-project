@@ -41,6 +41,17 @@
 		border: 1px solid black;
 		padding:10px;
 	}
+	.usersbox{
+		margin-left:auto;
+		margin-right:auto;
+	}
+	.flexcontainer {
+		margin:10px;
+	  	display: flex;
+        flex-wrap: wrap;
+        margin-left:auto;
+		margin-right:auto;
+	}
 </style>
 </head>
 <body>
@@ -52,21 +63,21 @@
 			<input type="submit" value="Search"/>
 		</form>
 	</div>	
-	<center><h4>NFTs on the MarketPlace:</h4></center>
-		<div class = "flexcontainer2">
-			<c:forEach var="nft" items="${listNFT}">
-			<c:forEach var="market" items="${listMarketPlace}">
-			<c:if test="${nft.nftID == market.nftID}">
-					<div class = "names">
-						<p class = "nftNames"><c:out value="${nft.name}" /></p>
-					</div>
-			</c:if>
-			</c:forEach>
-			</c:forEach>
-		</div>
-		<c:if test="${fn:length(result) > 0}">
+		<c:if test="${empty nfts}">
+		<h1>${errorOne}</h1>
+	</c:if>
+	<c:if test="${fn:length(nfts) > 0}">
 		<h1>${messageOne}</h1>
 	</c:if>
+	<div class = "flexcontainer">
+		<c:forEach var="nfts" items="${nfts}">
+			<div class ="usersbox">
+				<form action="displayNFT" method="post">
+					<input type="submit" name = "name" value="<c:out value="${nfts.name}" />"/>
+				</form>
+			</div>
+		</c:forEach>
+	</div>
 		<div class = "flexcontainer">
 		<c:forEach var="history" items="${listHistory}">
 			<c:if test="${history.userID == currentUser.userID}">

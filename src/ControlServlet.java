@@ -69,11 +69,8 @@ public class ControlServlet extends HttpServlet {
         	case "/search":
         		search(request,response);
         		break;
-        	case "/searchNFT":
-        		searchNFT(request,response);
-        		break;
-        	case "/searchNFT2":
-        		searchNFT2(request, response);
+        	case "/displayNFT":
+        		displayNFT(request,response);
         		break;
         	case "/placeInMarket":
         		placeInMarket(request,response);
@@ -103,9 +100,6 @@ public class ControlServlet extends HttpServlet {
         		break;
         	case "/displayUser":
         		displayUser(request, response);
-        		break;
-        	case "/displayNFT":
-        		displayNFT(request, response);
         		break;
         	case "/logout":
         		logout(request,response);
@@ -143,54 +137,6 @@ public class ControlServlet extends HttpServlet {
 	     
 	        System.out.println("listNFT finished: 111111111111111111111111111111111111");
 
-	    }     
-	    private void searchNFT(HttpServletRequest request, HttpServletResponse response)
-	           throws SQLException, IOException, ServletException {
-	    	  System.out.println("searchNFT started: 00000000000000000000000000000000000");
-		        
-	    	  List<Nft> listNFT = nftDAO.listAllNFTS();
-	    		request.setAttribute("listNFT", listNFT);   
-	    		
-		        List<MarketPlace> listMarketPlace = marketPlaceDAO.listMarketPlace();
-		        request.setAttribute("listMarketPlace", listMarketPlace); 
-		       
-		        List<History> listHistory = historyDAO.listAllHistory();
-		        request.setAttribute("listHistory", listHistory);
-		        
-		        User user = userDAO.getUser(currentUser);
-		        request.setAttribute("currentUser", user); 
-		      
-		    	List<History> result = new ArrayList<History>(); 
-		    	listHistory.stream().forEach(i -> {
-		    			if(i.getAction().equals("bought")) {
-		    				result.add(i);
-		    			}
-		    	});      
-		    	request.setAttribute("result", result);
-		    	request.setAttribute("messageOne", "NFT's you have peviously bought:");
-		    	
-		       
-		        RequestDispatcher dispatcher = request.getRequestDispatcher("search.jsp");       
-		        dispatcher.forward(request, response);
-		        System.out.println("searchNFT finished: 111111111111111111111111111111111111");
-	    }
-	    private void searchNFT2(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
-	 
-	        String name = request.getParameter("nftName");
-	    	System.out.println("searchNFT2 started: 00000000000000000000000000000000000");
-	    	char firstChar = name.charAt(0);
-	    	List<Nft> nfts = nftDAO.listAllNFTS();
-	    	List<Nft> result = new ArrayList<Nft>(); 
-	    	nfts.stream().forEach(i -> {
-	    			if(i.getName().charAt(0) == firstChar) {
-	    				result.add(i);
-	    			}
-	    	});      
-		        request.setAttribute("nftNames", result); 
-		        RequestDispatcher dispatcher = request.getRequestDispatcher("searchNFT.jsp");       
-		        dispatcher.forward(request, response);
-	        
-	        System.out.println("searchNFT2 finished: 111111111111111111111111111111111111");
 	    }
 	    private void sell(HttpServletRequest request, HttpServletResponse response)
 	    		throws SQLException, IOException, ServletException {
@@ -280,22 +226,43 @@ public class ControlServlet extends HttpServlet {
 	    
 	    private void search(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
 	    	String name = request.getParameter("name");
+	    	name = name.toLowerCase();
 	    	System.out.println("search started: 00000000000000000000000000000000000");
+	    	char firstChar = name.charAt(0);
+			System.out.println(firstChar);
+	    	List<Nft> nfts = nftDAO.listAllNFTS();
+	    	List<Nft> result = new ArrayList<Nft>(); 
+	    	nfts.stream().forEach(i -> {
+	    		String nftName = i.getName();
+	    		String lowercaseName =nftName.toLowerCase();
+	    			if(lowercaseName.charAt(0) == firstChar) {
+	    				System.out.println(i.getName());
+	    				result.add(i);
+	    			}
+	    	});      
+	    	if(result.isEmpty()) {
+	    		request.setAttribute("errorOne","There is no similar NFT, please try again");
+	    	}
+		        request.setAttribute("nfts", result);
+		    	request.setAttribute("messageOne","NFT you may be looking for:");
+		        RequestDispatcher dispatcher = request.getRequestDispatcher("search.jsp");       
+		        dispatcher.forward(request, response);
+	        
+	        System.out.println("search finished: 111111111111111111111111111111111111");
+	    }
+	    private void displayNFT(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+	    	String name = request.getParameter("name");
+	    	System.out.println("displayNFT started: 00000000000000000000000000000000000");
 	    	List<Nft> certainNFT = nftDAO.listCertainNFT(name);
 	    		request.setAttribute("certainNFT", certainNFT);  
 		        User user = userDAO.getUser(currentUser);        
 		        request.setAttribute("currentUser", user); 
-	        if(certainNFT.isEmpty()) {
-	        	request.setAttribute("error", "Sorry that is not an NFT listed, please try again");
-	        	RequestDispatcher dispatcher = request.getRequestDispatcher("/searchNFT");
-	        	dispatcher.forward(request, response);
-	        }
-	        else {
+	      
 	        	
 		        RequestDispatcher dispatcher = request.getRequestDispatcher("NFT.jsp");       
 		        dispatcher.forward(request, response);
-	        }
-	        System.out.println("search finished: 111111111111111111111111111111111111");
+	        
+	        System.out.println("displayNFT finished: 111111111111111111111111111111111111");
 	    }
 	    
 	    private void displayUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
@@ -320,32 +287,21 @@ public class ControlServlet extends HttpServlet {
 		        System.out.println("displayUser finished: 111111111111111111111111111111111111");
 	    }
 	    
-	    private void displayNFT(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
-	    	System.out.println("displayNFT started: 000000000000000000000");
-	    	String nftNames = request.getParameter("names");
-		     Nft nfts = nftDAO.getNFT(nftNames);
-		 	 request.setAttribute("nft", nfts);
-		     RequestDispatcher dispatcher = request.getRequestDispatcher("nftDisplay.jsp");       
-		        dispatcher.forward(request, response);
-		        System.out.println("displayNFT finished: 111111111111111111111111111111111111");
-	    }
-	    
-	    
 	    private void searchUsers(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
 	    	String email = request.getParameter("email");
 	    	System.out.println("searchUser started: 00000000000000000000000000000000000");
 	    	char firstChar = email.charAt(0);
-	    	List<User> users = userDAO.listAllUsers();
-	    	List<User> result = new ArrayList<User>(); 
-	    	users.stream().forEach(i -> {
-	    			if(i.getEmail().charAt(0) == firstChar) {
-	    				result.add(i);
-	    			}
-	    	});      
-	    	if(result.isEmpty()) {
-	    		request.setAttribute("errorOne","There is no close user, try again");
+	    	List<User> users = userDAO.listAllUsers(email);
+//	    	List<User> result = new ArrayList<User>(); 
+//	    	users.stream().forEach(i -> {
+//	    			if(i.getEmail().charAt(0) == firstChar) {
+//	    				result.add(i);
+//	    			}
+//	    	});      
+	    	if(users.isEmpty()) {
+	    		request.setAttribute("errorOne","There is no similar user, please try again");
 	    	}
-		        request.setAttribute("users", result);
+		        request.setAttribute("users", users);
 		    	request.setAttribute("messageOne","Users you may be looking for:");
 		        RequestDispatcher dispatcher = request.getRequestDispatcher("searchUsers.jsp");       
 		        dispatcher.forward(request, response);
