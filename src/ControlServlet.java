@@ -228,24 +228,14 @@ public class ControlServlet extends HttpServlet {
 	    	String name = request.getParameter("name");
 	    	name = name.toLowerCase();
 	    	System.out.println("search started: 00000000000000000000000000000000000");
-	    	char firstChar = name.charAt(0);
-			System.out.println(firstChar);
+	    	
 			
-	    	List<Nft> nfts = nftDAO.nftsOnMarketPlace();
-	    	List<Nft> result = new ArrayList<Nft>(); 
-	    	nfts.stream().forEach(i -> {
-	    		String nftName = i.getName();
-	    		String lowercaseName =nftName.toLowerCase();
-	    		
-	    			if(lowercaseName.charAt(0) == firstChar) {
-	    				System.out.println(i.getName());
-	    				result.add(i);
-	    			}
-	    	});      
-	    	if(result.isEmpty()) {
+	    	List<Nft> nfts = nftDAO.nftsOnMarketPlace(name);
+	    	
+	    	if(nfts.isEmpty()) {
 	    		request.setAttribute("errorOne","There is no similar NFT, please try again");
 	    	}
-		        request.setAttribute("nfts", result);
+		        request.setAttribute("nfts", nfts);
 		    	request.setAttribute("messageOne","NFT you may be looking for:");
 		        RequestDispatcher dispatcher = request.getRequestDispatcher("search.jsp");       
 		        dispatcher.forward(request, response);
@@ -294,12 +284,7 @@ public class ControlServlet extends HttpServlet {
 	    	System.out.println("searchUser started: 00000000000000000000000000000000000");
 	    	char firstChar = email.charAt(0);
 	    	List<User> users = userDAO.listAllUsers(email);
-//	    	List<User> result = new ArrayList<User>(); 
-//	    	users.stream().forEach(i -> {
-//	    			if(i.getEmail().charAt(0) == firstChar) {
-//	    				result.add(i);
-//	    			}
-//	    	});      
+     
 	    	if(users.isEmpty()) {
 	    		request.setAttribute("errorOne","There is no similar user, please try again");
 	    	}

@@ -78,7 +78,7 @@ public class UserDAO
     }   
     
     public List<User> listAllUsers() throws SQLException {
-    	return  listAllUsers(null);
+    	return listAllUsers(null);
     }
     
     public List<User> listAllUsers(String pattern) throws SQLException {

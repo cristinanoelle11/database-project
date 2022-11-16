@@ -219,8 +219,18 @@ public class NftDAO {
         return listNFT;
     } 
     public List<Nft> nftsOnMarketPlace() throws SQLException {
-        List<Nft> listNFT = new ArrayList<Nft>();        
-        String sql = "SELECT n.*, m.* FROM marketPlace m JOIN NFT n ON m.nftID = n.nftID"; 
+    	return nftsOnMarketPlace(null);
+    }
+    public List<Nft> nftsOnMarketPlace(String pattern) throws SQLException {
+        List<Nft> listNFT = new ArrayList<Nft>();  
+        String sql = null;
+          
+          if (pattern == null) {
+          	sql = "SELECT n.*, m.* FROM marketPlace m JOIN NFT n ON m.nftID = n.nftID";   
+          } else {
+            sql = "SELECT n.*, m.* FROM marketPlace m JOIN NFT n ON m.nftID = n.nftID where name like '%" + pattern + "%'";   
+
+          }
         connect_func();      
         statement = (Statement) connect.createStatement();
         ResultSet resultSet = statement.executeQuery(sql);        
