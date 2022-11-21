@@ -69,4 +69,37 @@ public CommonDAO(){}
         }
     }
     
+    
+    //number 6:
+    public List<User> diamondHands() throws SQLException {
+        List<User> listUser = new ArrayList<User>(); 
+        String sql = null;
+        	sql = "SELECT DISTINCT U.userID\r\n"
+        			+ "FROM user U, history H, nft N\r\n"
+        			+ "WHERE U.userID = H.userID  AND \r\n"
+        			+ "H.nftID = N.nftID AND\r\n"
+        			+ "H.action = 'bought' AND U.userID NOT IN(SELECT U.userID\r\n"
+        			+ "FROM user U, history H \r\n"
+        			+ "WHERE U.userID = H.userID  AND \r\n"
+        			+ "H.nftID = N.nftID AND\r\n"
+        			+ "H.action  = 'sold');";   
+       
+        connect_func();      
+        statement = (Statement) connect.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+        while (resultSet.next()) {
+        	int userID = resultSet.getInt("userID");
+            String email = resultSet.getString("email");
+            String firstName = resultSet.getString("firstName");
+            String lastName = resultSet.getString("lastName");
+            String password = resultSet.getString("password");
+            String age = resultSet.getString("age");
+            int wallet = resultSet.getInt("wallet"); 
+            User users = new User(userID,email,firstName, lastName, password, age, wallet);
+            listUser.add(users);
+        }        
+        resultSet.close();
+        disconnect();        
+        return listUser;
+    }  
 }
