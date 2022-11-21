@@ -34,10 +34,11 @@
 <div class = "listBlock">
 		 <form action="placeInMarket" method="post">
 		  <p>${errorOne} </p>
+		  <p>${messageNotEqual}</p>
 		 <h4>List NFT onto MarketPlace</h4>
 			NFT Name: <input type="text"  name="name"><br>
 			What Price (ETH) for NFT <input type="number" name="price" ><br>
-			What date would you like it to not be listed anymore?<input type="text" name="date"><br>
+			What date would you like it to not be listed anymore (MM/DD/YYYY)?<input type="text" name="date"><br>
 			<input type="submit" value="List"/>
 		</form>
 		</div>   

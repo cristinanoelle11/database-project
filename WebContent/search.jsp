@@ -64,6 +64,7 @@
 <body>
 <jsp:include page="header.jsp" />
 	<p>${error} </p>
+	<p>${poorError }</p>
 	<div class = "searchBlock">
 		 <form action="search" method="post">
 			Search NFTs By Name: <input type="text" id = "search" name="name">

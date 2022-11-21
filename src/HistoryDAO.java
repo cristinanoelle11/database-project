@@ -139,7 +139,7 @@ public class HistoryDAO {
 			preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
 			preparedStatement.setInt(1,seller.userID);
 			preparedStatement.setInt(2, certainNFT.nftID);
-			preparedStatement.setString(3, seller.firstName + " sold the NFT '" + certainNFT.name + "' (nft id:"+ certainNFT.nftID +") from "+ buyer.firstName );
+			preparedStatement.setString(3, seller.firstName + " sold the NFT '" + certainNFT.name + "' (nft id:"+ certainNFT.nftID +") to "+ buyer.firstName );
 			preparedStatement.setString(4, "sold");
 		preparedStatement.executeUpdate();
         preparedStatement.close();

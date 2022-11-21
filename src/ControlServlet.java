@@ -156,14 +156,12 @@ public class ControlServlet extends HttpServlet {
 		        
 		        User user = userDAO.getUser(currentUser);
 		        request.setAttribute("currentUser", user); 
-		        List<History> result = new ArrayList<History>(); 
-		    	listHistory.stream().forEach(i -> {
-		    			if(i.getAction().equals("sold")) {
-		    				result.add(i);
-		    			}
-		    	});      
-		    	request.setAttribute("result", result);
-		    	request.setAttribute("messageOne", "NFT's you have previously sold:");
+				/*
+				 * List<History> result = new ArrayList<History>();
+				 * listHistory.stream().forEach(i -> { if(i.getAction().equals("sold")) {
+				 * result.add(i); } }); request.setAttribute("result", result);
+				 * request.setAttribute("messageOne", "NFT's you have previously sold:");
+				 */
 		        RequestDispatcher dispatcher = request.getRequestDispatcher("ListNFT.jsp");       
 		        dispatcher.forward(request, response);
 		        System.out.println("sell finished: 111111111111111111111111111111111111");
@@ -211,9 +209,11 @@ public class ControlServlet extends HttpServlet {
 		        User user = userDAO.getUser(currentUser);
 		        request.setAttribute("currentUser", user); 
 		        List<History> result = new ArrayList<History>(); 
+
 		    	listHistory.stream().forEach(i -> {
-		    			if(i.getAction().equals("bought")) {
+		    			if((user.userID == i.userID) && i.getAction().equals("bought")) {
 		    				result.add(i);
+
 		    			}
 		    	});      
 		    	request.setAttribute("result", result);
@@ -331,8 +331,21 @@ public class ControlServlet extends HttpServlet {
 	    	String name = request.getParameter("name");
 	    	String price = request.getParameter("price");
 	    	String date = request.getParameter("date");
+	    	User currentU = userDAO.getUser(currentUser);
 	    	Nft enteredNFT = nftDAO.getNFTbyName(name);
+	    	if(enteredNFT == null) {
+	    		request.setAttribute("messageNotEqual", "Make sure you are entering the EXACT name of the nft, try again");
+	    		 RequestDispatcher dispatcher = request.getRequestDispatcher("/sell");       
+			       dispatcher.forward(request, response);
+	    	}
+	    	if(enteredNFT.owner != currentU.userID) {
+	    		request.setAttribute("messageNotEqual", "You cannot list a NFT that you dont own, try again");
+	    		 RequestDispatcher dispatcher = request.getRequestDispatcher("/sell");       
+			       dispatcher.forward(request, response);
+	    	}
 	    	int enterednftID = enteredNFT.nftID;
+	    	
+	    	
 	    	List<MarketPlace> listings = marketPlaceDAO.listMarketPlace();
 	    	List<History> listHistory = historyDAO.listAllHistory();
 	        request.setAttribute("listHistory", listHistory);
@@ -397,7 +410,10 @@ public class ControlServlet extends HttpServlet {
 	    	User user = userDAO.getUser(currentUser);
 		    	if(user.wallet < listing.price) {
 		    		System.out.println("wallet is less then the price of nft");
-			   		request.setAttribute("errorOne","wallet is less then the price of nft");
+			   		request.setAttribute("poorError","You don't have enough money to buy that NFT, try to buy another one");
+			   		RequestDispatcher dispatcher = request.getRequestDispatcher("/search");
+				 	dispatcher.forward(request, response);
+			   		
 			   		// request.getRequestDispatcher("register.jsp").forward(request, response);
 		    	} else {
 			    	//SUBTRACT TOTAL AND UPDATE
@@ -409,6 +425,9 @@ public class ControlServlet extends HttpServlet {
 			    	//UPDATE NFT OWNER
 			    	int currentOwner = certainNFT.owner;
 			    	User oldOwner = userDAO.getUser(currentOwner);
+			    	int oldOwnerWallet;
+			    	oldOwnerWallet = oldOwner.wallet + listing.price;
+			    	userDAO.updateWallet(currentOwner, oldOwnerWallet);	
 			    //	currentOwner = newOwner;	    	
 			    	nftDAO.update(newOwner,certainNFT.owner);
 			    	//delete from marketplace
