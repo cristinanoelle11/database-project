@@ -27,6 +27,7 @@ public class ControlServlet extends HttpServlet {
 	    private NftDAO nftDAO = new NftDAO();
 	    private HistoryDAO historyDAO = new HistoryDAO();
 	    private MarketPlaceDAO marketPlaceDAO = new MarketPlaceDAO();
+	    private CommonDAO commonDAO = new CommonDAO();
 	    private String currentUser;
 	    private HttpSession session=null;
 	    
@@ -38,6 +39,7 @@ public class ControlServlet extends HttpServlet {
 	    	nftDAO = new NftDAO();
 	    	historyDAO = new HistoryDAO();
 	    	marketPlaceDAO = new MarketPlaceDAO();
+	    	commonDAO = new CommonDAO();
 	    } 
 	    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	        doGet(request, response);
@@ -80,6 +82,21 @@ public class ControlServlet extends HttpServlet {
         		break;
         	case "/sell":
         		sell(request,response);
+        		break;
+        	case "/diamondHands":
+        		diamond(request,response);
+        		break;
+        	case "/paperHands":
+        		paper(request,response);
+        		break;
+        	case "/goodBuyers":
+        		goodBuyers(request,response);
+        		break;
+        	case "/inactiveUsers":
+        		inactiveUsers(request,response);
+        		break;
+        	case "/userStats":
+        		userStats(request,response);
         		break;
         	case "/mint":
         		mint(request,response);
@@ -128,7 +145,68 @@ public class ControlServlet extends HttpServlet {
 	     
 	        System.out.println("listPeople finished: 111111111111111111111111111111111111");
 	    }
-	    
+	    private void diamond(HttpServletRequest request, HttpServletResponse response)
+	            throws SQLException, IOException, ServletException {
+	        System.out.println("diamondHands started: 00000000000000000000000000000000000");
+	        List<User> diamondHands = commonDAO.diamondHands();
+	        request.setAttribute("diamondHands", diamondHands);       
+	        RequestDispatcher dispatcher = request.getRequestDispatcher("statistics.jsp");       
+	        dispatcher.forward(request, response);
+	     
+	        System.out.println("diamondHands finished: 111111111111111111111111111111111111");
+	    }
+	    private void paper(HttpServletRequest request, HttpServletResponse response)
+	            throws SQLException, IOException, ServletException {
+	        System.out.println("paperHands started: 00000000000000000000000000000000000");
+	        List<User> paperHands = commonDAO.paperHands();
+	        request.setAttribute("paperHands", paperHands);       
+	        RequestDispatcher dispatcher = request.getRequestDispatcher("statistics.jsp");       
+	        dispatcher.forward(request, response);
+	     
+	        System.out.println("paperHands finished: 111111111111111111111111111111111111");
+	    }
+	    private void goodBuyers(HttpServletRequest request, HttpServletResponse response)
+	            throws SQLException, IOException, ServletException {
+	        System.out.println("goodBuyers started: 00000000000000000000000000000000000");
+	        List<User> goodBuyers = commonDAO.goodBuyers();
+	        request.setAttribute("goodBuyers", goodBuyers);       
+	        RequestDispatcher dispatcher = request.getRequestDispatcher("statistics.jsp");       
+	        dispatcher.forward(request, response); 
+	        System.out.println("goodBuyers finished: 111111111111111111111111111111111111");
+	    }
+	    private void userStats(HttpServletRequest request, HttpServletResponse response)
+	            throws SQLException, IOException, ServletException {
+	        System.out.println("userStats started: 00000000000000000000000000000000000");
+	        String name = request.getParameter("name");
+	       List<User> closeUser = userDAO.listAllUsers(name);
+	       if (closeUser.isEmpty()) {
+	    	   request.setAttribute("errorMessage", "No similar user, please try again:");
+	    	   RequestDispatcher dispatcher = request.getRequestDispatcher("statistics.jsp");       
+		       dispatcher.forward(request, response);
+	       }
+	       User currentU = closeUser.stream().findFirst().get();
+	    	  
+	      
+	    //	int user = Integer.parseInt(name)
+	       int user = currentU.userID;
+	    	System.out.println(name);
+	    	
+	        List<User> userStats = commonDAO.userStats(user);
+	        request.setAttribute("currentU", currentU);
+	        request.setAttribute("userStats", userStats);       
+	        RequestDispatcher dispatcher = request.getRequestDispatcher("statistics.jsp");       
+	        dispatcher.forward(request, response); 
+	        System.out.println("userStats finished: 111111111111111111111111111111111111");
+	    }
+	    private void inactiveUsers(HttpServletRequest request, HttpServletResponse response)
+	            throws SQLException, IOException, ServletException {
+	        System.out.println("inactiveUsers started: 00000000000000000000000000000000000");
+	        List<User> inactiveUsers = commonDAO.inactiveUsers();
+	        request.setAttribute("inactiveUsers", inactiveUsers);       
+	        RequestDispatcher dispatcher = request.getRequestDispatcher("statistics.jsp");       
+	        dispatcher.forward(request, response); 
+	        System.out.println("inactiveUsers finished: 111111111111111111111111111111111111");
+	    }
 	    private void listNFT(HttpServletRequest request, HttpServletResponse response)
 	            throws SQLException, IOException, ServletException {
 	        System.out.println("listNFT started: 00000000000000000000000000000000000");
@@ -312,7 +390,7 @@ public class ControlServlet extends HttpServlet {
 	    private void searchUsers(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
 	    	String email = request.getParameter("email");
 	    	System.out.println("searchUser started: 00000000000000000000000000000000000");
-	    	char firstChar = email.charAt(0);
+	    	
 	    	List<User> users = userDAO.listAllUsers(email);
      
 	    	if(users.isEmpty()) {

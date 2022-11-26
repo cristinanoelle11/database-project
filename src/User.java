@@ -7,6 +7,8 @@ public class User
 	    protected String lastName;
 	    protected String age;
 	    protected int wallet;
+	    protected String action;
+	    protected int count;
 	    //constructor 
 	    public User(String email) {
 	        this.email = email;
@@ -23,12 +25,29 @@ public class User
 	    	this(email,firstName,lastName,password,age,wallet);
 	    	this.userID = userID;
 	    }
+	    public User(int userID, String action, int count) {
+	    	this.userID = userID;
+	    	this.action = action;
+	    	this.count = count;
+	    }
 	   //getter and setter methods
 	    public String getEmail() {
 	        return email;
 	    }
 	    public void setEmail(String email) {
 	        this.email = email;
+	    }
+	    public String getAction() {
+	        return action;
+	    }
+	    public void setAction(String action) {
+	        this.action = action;
+	    }
+	    public int getCount() {
+	    	return count;
+	    }
+	    public void setCount(int count) {
+	    	this.count = count;
 	    }
 	    public int getuserID() {
 	    	return userID;

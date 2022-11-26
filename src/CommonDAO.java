@@ -68,11 +68,10 @@ public CommonDAO(){}
             System.out.println(connect);
         }
     }
-    
-    
     //number 6:
     public List<User> diamondHands() throws SQLException {
         List<User> listUser = new ArrayList<User>(); 
+        UserDAO user = new UserDAO();
         String sql = null;
         	sql = "SELECT DISTINCT U.userID\r\n"
         			+ "FROM user U, history H, nft N\r\n"
@@ -89,13 +88,114 @@ public CommonDAO(){}
         ResultSet resultSet = statement.executeQuery(sql);
         while (resultSet.next()) {
         	int userID = resultSet.getInt("userID");
-            String email = resultSet.getString("email");
-            String firstName = resultSet.getString("firstName");
-            String lastName = resultSet.getString("lastName");
-            String password = resultSet.getString("password");
-            String age = resultSet.getString("age");
-            int wallet = resultSet.getInt("wallet"); 
-            User users = new User(userID,email,firstName, lastName, password, age, wallet);
+            listUser.add(user.getUser(userID));
+        }        
+        resultSet.close();
+        disconnect();        
+        return listUser;
+    }  
+  //number 7:
+    public List<User> paperHands() throws SQLException {
+        List<User> listUser = new ArrayList<User>(); 
+        UserDAO user = new UserDAO();
+        String sql = null;
+        	sql = "SELECT distinct userID FROM history WHERE action IN('bought') AND userID IN \r\n"
+        			+ "	(SELECT userID FROM user WHERE userID NOT IN(\r\n"
+        			+ "		SELECT distinct owner FROM nft));\r\n";
+        			   
+       
+        connect_func();      
+        statement = (Statement) connect.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+        while (resultSet.next()) {
+        	int userID = resultSet.getInt("userID");
+            listUser.add(user.getUser(userID));
+        }        
+        resultSet.close();
+        disconnect();        
+        return listUser;
+    }  
+    //number 8:
+    public List<User> goodBuyers() throws SQLException {
+        List<User> listUser = new ArrayList<User>(); 
+        UserDAO user = new UserDAO();
+        String sql = null;
+        	sql = "SELECT  U.userID\r\n"
+        			+ "FROM user U, history H, nft N\r\n"
+        			+ "WHERE U.userID = H.userID  AND \r\n"
+        			+ "H.nftID = N.nftID AND\r\n"
+        			+ "H.action = 'bought'\r\n"
+        			+ "HAVING COUNT(H.action = 'bought') >= 3";
+        			   
+       
+        connect_func();      
+        statement = (Statement) connect.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+        while (resultSet.next()) {
+        	int userID = resultSet.getInt("userID");
+            listUser.add(user.getUser(userID));
+        }        
+        resultSet.close();
+        disconnect();        
+        return listUser;
+    }  
+    //number 9:
+    public List<User> inactiveUsers() throws SQLException {
+        List<User> listUser = new ArrayList<User>(); 
+        UserDAO user = new UserDAO();
+        String sql = null;
+        	sql = "SELECT userID \r\n"
+        			+ "From User \r\n"
+        			+ "WHERE userID NOT IN\r\n"
+        			+ "(SELECT U.userID\r\n"
+        			+ "From user U, history H\r\n"
+        			+ " WHERE U.userID = H.userID  AND\r\n"
+        			+ " (H.action = 'bought' OR\r\n"
+        			+ " H.action = 'sold' OR\r\n"
+        			+ " H.action = 'mint' OR\r\n"
+        			+ " H.action = 'transfered'));";
+        			   
+       
+        connect_func();      
+        statement = (Statement) connect.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+        while (resultSet.next()) {
+        	int userID = resultSet.getInt("userID");
+            listUser.add(user.getUser(userID));
+        }        
+        resultSet.close();
+        disconnect();        
+        return listUser;
+    }  
+    
+    //number 10:
+    public List<User> userStats(int userID) throws SQLException {
+        List<User> listUser = new ArrayList<User>(); 
+      //  UserDAO user = new UserDAO();
+      //  UserDAO currentUser = new UserDAO();
+       // int userID = currentUser.getUser(name).userID;
+        
+        String sql = null;
+        	sql = "SELECT U.userID, H.action, COUNT(*) FROM user U, history H WHERE U.userID = H.userID AND U.userID = "+ userID +" AND H.action IN ('bought','sold', 'transfered')  \r\n"
+        			+ "GROUP BY\r\n"
+        			+ "	U.userID, H.action\r\n"
+        			+ "UNION\r\n"
+        			+ "Select owner, 'NFTS currently owned', COUNT(*) FROM nft WHERE owner ="+ userID +" \r\n"
+        			+ "	GROUP BY owner;";
+        			   
+       
+        connect_func();
+        preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+       // preparedStatement.setInt(1, userID); 
+      //  preparedStatement.setInt(2, userID); 
+       
+        statement = (Statement) connect.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+        while (resultSet.next()) {
+        	userID = resultSet.getInt("userID");
+        	String action = resultSet.getString("action");
+        	int count = resultSet.getInt(3); 
+            User users = new User(userID, action, count);
             listUser.add(users);
         }        
         resultSet.close();
