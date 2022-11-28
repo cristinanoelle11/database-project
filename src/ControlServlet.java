@@ -104,6 +104,9 @@ public class ControlServlet extends HttpServlet {
         	case "/transfer":
         		transfer(request, response);
         		break;
+        	case "/transferSetUp":
+        		transferSetUp(request,response);
+        		break;
         	case "/initialize":
         		userDAO.init();
         		nftDAO.init();
@@ -120,6 +123,9 @@ public class ControlServlet extends HttpServlet {
         		break;
         	case "/displayUser":
         		displayUser(request, response);
+        		break;
+        	case "/listMarketPlace":
+        		listMarketPlace(request,response);
         		break;
         	case "/logout":
         		logout(request,response);
@@ -185,8 +191,6 @@ public class ControlServlet extends HttpServlet {
 		       dispatcher.forward(request, response);
 	       }
 	       User currentU = closeUser.stream().findFirst().get();
-	    	  
-	      
 	    //	int user = Integer.parseInt(name)
 	       int user = currentU.userID;
 	    	System.out.println(name);
@@ -234,12 +238,6 @@ public class ControlServlet extends HttpServlet {
 		        
 		        User user = userDAO.getUser(currentUser);
 		        request.setAttribute("currentUser", user); 
-				/*
-				 * List<History> result = new ArrayList<History>();
-				 * listHistory.stream().forEach(i -> { if(i.getAction().equals("sold")) {
-				 * result.add(i); } }); request.setAttribute("result", result);
-				 * request.setAttribute("messageOne", "NFT's you have previously sold:");
-				 */
 		        RequestDispatcher dispatcher = request.getRequestDispatcher("ListNFT.jsp");       
 		        dispatcher.forward(request, response);
 		        System.out.println("sell finished: 111111111111111111111111111111111111");
@@ -271,6 +269,7 @@ public class ControlServlet extends HttpServlet {
 		        dispatcher.forward(request, response);
 		        System.out.println("sell finished: 111111111111111111111111111111111111");
 	    }
+	    
 	    private void searchNFT(HttpServletRequest request, HttpServletResponse response)
 	    		throws SQLException, IOException, ServletException {
 	    	System.out.println("searchNFT started: 00000000000000000000000000000000000");
@@ -337,8 +336,6 @@ public class ControlServlet extends HttpServlet {
 	    	name = name.toLowerCase();
 	    	
 	    	System.out.println("search started: 00000000000000000000000000000000000");
-	    	
-			
 	    	List<Nft> nfts = nftDAO.nftsOnMarketPlace(name);
 	    	if(nfts.isEmpty()) {
 	    		request.setAttribute("errorOne","There is no similar NFT, please try again");
@@ -357,11 +354,8 @@ public class ControlServlet extends HttpServlet {
 	    		request.setAttribute("certainNFT", certainNFT);  
 		        User user = userDAO.getUser(currentUser);        
 		        request.setAttribute("currentUser", user); 
-	      
-
 		        RequestDispatcher dispatcher = request.getRequestDispatcher("NFT.jsp");       
 		        dispatcher.forward(request, response);
-	        
 	        System.out.println("displayNFT finished: 111111111111111111111111111111111111");
 	    }
 	    
@@ -422,8 +416,6 @@ public class ControlServlet extends HttpServlet {
 			       dispatcher.forward(request, response);
 	    	}
 	    	int enterednftID = enteredNFT.nftID;
-	    	
-	    	
 	    	List<MarketPlace> listings = marketPlaceDAO.listMarketPlace();
 	    	List<History> listHistory = historyDAO.listAllHistory();
 	        request.setAttribute("listHistory", listHistory);
@@ -451,12 +443,21 @@ public class ControlServlet extends HttpServlet {
 		    	int priceNFT = Integer.parseInt(price); 
 		    	marketPlaceDAO.insert(dateDB, priceNFT, nftID);	    	
 	    		List<Nft> listNFT = nftDAO.listAllNFTS();
-	    		request.setAttribute("listNFT", listNFT);   
-		        List<MarketPlace> listMarketPlace = marketPlaceDAO.listMarketPlace();
-		        request.setAttribute("listMarketPlace", listMarketPlace);  	        
-		        request.getRequestDispatcher("marketPlaceList.jsp").forward(request, response);     
+	    		request.setAttribute("listNFT", listNFT); 
+	    		RequestDispatcher dispatcher = request.getRequestDispatcher("/listMarketPlace");
+			 	dispatcher.forward(request, response);
 		    	System.out.println("listNFT finished: 00000000000000000000000000000000000");
 	    	}
+	    }
+	    
+	    private void transferSetUp(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+	    	User users = userDAO.getUser(currentUser);
+		 	 request.setAttribute("currentU", users);
+		 	 int owner = users.userID;
+		 	 List<Nft> usersNFTS = nftDAO.listUsersNFTs(owner);
+		     request.setAttribute("usersNFTS", usersNFTS);  
+		    RequestDispatcher dispatcher = request.getRequestDispatcher("transfer.jsp");
+		 	dispatcher.forward(request, response);
 	    }
 	    private void transfer(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
 	    	// Find user to transfer to
@@ -465,18 +466,27 @@ public class ControlServlet extends HttpServlet {
 	    	System.out.println("transferNFT started: 00000000000000000000000000000000000");
 	    	// Create instance for holder and receiver
 		 	User NftHolder = userDAO.getUser(currentUser);
+		 	int owner = NftHolder.userID;
+		 	 List<Nft> usersNFTS = nftDAO.listUsersNFTs(owner);
+		     request.setAttribute("usersNFTS", usersNFTS);  
 		 	User NftReciever = userDAO.getUser(tranferToEmail);
 	    	//get NFT to transfer
 		 	Nft certainNFT = nftDAO.getNFT(nftName);
-	    	//Update NFT
-		 	if (NftHolder.userID == certainNFT.owner) {
-		 		nftDAO.update2(NftReciever.getuserID(), nftName);
-		 		historyDAO.insertTransfer(NftHolder, NftReciever, certainNFT);
+		 	if(certainNFT == null) {
+		 		request.setAttribute("errorMessage", "Sorry, we cannot find that user, try again.");
+		 		RequestDispatcher dispatcher = request.getRequestDispatcher("transfer.jsp");
+			 	dispatcher.forward(request, response);
+		 	}else {
+		    	//Update NFT
+			 	if (NftHolder.userID == certainNFT.owner) {
+			 		nftDAO.update2(NftReciever.getuserID(), nftName);
+			 		historyDAO.insertTransfer(NftHolder, NftReciever, certainNFT);
+			 	}
+			 	request.setAttribute("noNFTStr","You currently own no NFTs.");
+			 	RequestDispatcher dispatcher = request.getRequestDispatcher("/activity");
+			 	dispatcher.forward(request, response);
+		        System.out.println("transferNFT finished: 111111111111111111111111111111111111");
 		 	}
-		 	request.setAttribute("noNFTStr","You currently own no NFTs.");
-		 	RequestDispatcher dispatcher = request.getRequestDispatcher("/activity");
-		 	dispatcher.forward(request, response);
-	        System.out.println("transferNFT finished: 111111111111111111111111111111111111");
 	    }
 
 	    private void buy(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
@@ -490,21 +500,18 @@ public class ControlServlet extends HttpServlet {
 		    		System.out.println("wallet is less then the price of nft");
 			   		request.setAttribute("poorError","You don't have enough money to buy that NFT, try to buy another one");
 			   		RequestDispatcher dispatcher = request.getRequestDispatcher("/search");
-				 	dispatcher.forward(request, response);
-			   		
+				 	dispatcher.forward(request, response);   		
 			   		// request.getRequestDispatcher("register.jsp").forward(request, response);
 		    	} else {
 			    	//SUBTRACT TOTAL AND UPDATE
-			    	int newWallet;
-			    	newWallet = user.wallet - listing.price;
+			    	int newWallet = user.wallet - listing.price;
 		    		userDAO.updateWallet(user.userID, newWallet);		
 			    	int newOwner = user.userID;
 			    	Nft certainNFT = nftDAO.getNFTbyName(name);
 			    	//UPDATE NFT OWNER
 			    	int currentOwner = certainNFT.owner;
 			    	User oldOwner = userDAO.getUser(currentOwner);
-			    	int oldOwnerWallet;
-			    	oldOwnerWallet = oldOwner.wallet + listing.price;
+			    	int oldOwnerWallet = oldOwner.wallet + listing.price;
 			    	userDAO.updateWallet(currentOwner, oldOwnerWallet);	
 			    //	currentOwner = newOwner;	    	
 			    	nftDAO.update(newOwner,certainNFT.owner);
