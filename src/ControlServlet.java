@@ -339,7 +339,6 @@ public class ControlServlet extends HttpServlet {
 		String date = request.getParameter("date");
 		User currentU = userDAO.getUser(currentUser);
 		Nft enteredNFT = nftDAO.getNFTbyName(name);
-		request.setAttribute("enteredNFT", enteredNFT);
 		if (enteredNFT == null) {
 			request.setAttribute("messageNotEqual", "Make sure you are entering the EXACT name of the nft, try again");
 			request.getRequestDispatcher("/sell").forward(request, response);
@@ -348,12 +347,10 @@ public class ControlServlet extends HttpServlet {
 			request.setAttribute("messageNotEqual", "You cannot list a NFT that you dont own, try again");
 			request.getRequestDispatcher("/sell").forward(request, response);
 		}
-		//int enterednftID = enteredNFT.nftID;
 		List<MarketPlace> listings = marketPlaceDAO.listMarketPlace();
 		List<History> listHistory = historyDAO.listAllHistory();
 		request.setAttribute("listHistory", listHistory);
-		User user = userDAO.getUser(currentUser);
-		request.setAttribute("currentUser", user);
+		request.setAttribute("currentUser", currentU);
 		List<History> result = new ArrayList<History>();
 		listHistory.stream().forEach(i -> {if (i.getAction().equals("mint")) {result.add(i);}	});
 		request.setAttribute("result", result);
@@ -369,11 +366,9 @@ public class ControlServlet extends HttpServlet {
 			}catch(ParseException ex) {
 				request.setAttribute("errorDate", "ERROR: Please enter the date in the format: MM/DD/YYYY");
 				request.getRequestDispatcher("/sell").forward(request, response);
-				//request.getRequestDispatcher("ListNFT.jsp").forward(request, response);
 			}
 			java.sql.Date dateDB = new java.sql.Date(dateStr.getTime());
-			Nft thenft = nftDAO.getNFTbyName(name);
-			marketPlaceDAO.insert(dateDB, Integer.parseInt(price), thenft.nftID);
+			marketPlaceDAO.insert(dateDB, Integer.parseInt(price), enteredNFT.nftID);
 			List<Nft> listNFT = nftDAO.listAllNFTS();
 			request.setAttribute("listNFT", listNFT);
 			request.getRequestDispatcher("/listMarketPlace").forward(request, response);
