@@ -9,6 +9,11 @@
 <title>Statistics</title>
 </head>
 <body>
+	<li class ="transfer">
+		<form action="root" method="post">
+			<input class ="submitHome" type="submit" value="BACK"/>
+		</form>
+	</li>
 <h2> ${errorMessage } </h2>
 	<div class = "flexcontainer">
 		<div class = "flexbox">

@@ -256,7 +256,6 @@ public class ControlServlet extends HttpServlet {
 			}
 		});
 		request.setAttribute("result", result);
-		request.setAttribute("message", "NFT's you have previously bought:");
 		request.getRequestDispatcher("search.jsp").forward(request, response);
 		System.out.println("searchNFT finished: 111111111111111111111111111111111111");
 	}
@@ -340,6 +339,7 @@ public class ControlServlet extends HttpServlet {
 		String date = request.getParameter("date");
 		User currentU = userDAO.getUser(currentUser);
 		Nft enteredNFT = nftDAO.getNFTbyName(name);
+		request.setAttribute("enteredNFT", enteredNFT);
 		if (enteredNFT == null) {
 			request.setAttribute("messageNotEqual", "Make sure you are entering the EXACT name of the nft, try again");
 			request.getRequestDispatcher("/sell").forward(request, response);
@@ -348,7 +348,7 @@ public class ControlServlet extends HttpServlet {
 			request.setAttribute("messageNotEqual", "You cannot list a NFT that you dont own, try again");
 			request.getRequestDispatcher("/sell").forward(request, response);
 		}
-		int enterednftID = enteredNFT.nftID;
+		//int enterednftID = enteredNFT.nftID;
 		List<MarketPlace> listings = marketPlaceDAO.listMarketPlace();
 		List<History> listHistory = historyDAO.listAllHistory();
 		request.setAttribute("listHistory", listHistory);
@@ -357,20 +357,23 @@ public class ControlServlet extends HttpServlet {
 		List<History> result = new ArrayList<History>();
 		listHistory.stream().forEach(i -> {if (i.getAction().equals("mint")) {result.add(i);}	});
 		request.setAttribute("result", result);
-		request.setAttribute("messageOne", "NFT's you have previously listed:");
-		boolean ans = listings.stream().filter(o -> o.getnftID() == enterednftID).findFirst().isPresent();
+		boolean ans = listings.stream().filter(o -> o.getnftID() == enteredNFT.nftID).findFirst().isPresent();
 		if (ans) {
-			System.out.println("this product is already listed");
 			request.setAttribute("errorOne", "this product is already listed in the marketplace, try again");
 			request.getRequestDispatcher("ListNFT.jsp").forward(request, response);
 		} else {
-			SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy"); 
-			java.util.Date dateStr = formatter.parse(date);
+			SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+			java.util.Date dateStr = null;
+			try {
+				 dateStr = formatter.parse(date);
+			}catch(ParseException ex) {
+				request.setAttribute("errorDate", "ERROR: Please enter the date in the format: MM/DD/YYYY");
+				request.getRequestDispatcher("/sell").forward(request, response);
+				//request.getRequestDispatcher("ListNFT.jsp").forward(request, response);
+			}
 			java.sql.Date dateDB = new java.sql.Date(dateStr.getTime());
 			Nft thenft = nftDAO.getNFTbyName(name);
-			int nftID = thenft.nftID;
-			int priceNFT = Integer.parseInt(price);
-			marketPlaceDAO.insert(dateDB, priceNFT, nftID);
+			marketPlaceDAO.insert(dateDB, Integer.parseInt(price), thenft.nftID);
 			List<Nft> listNFT = nftDAO.listAllNFTS();
 			request.setAttribute("listNFT", listNFT);
 			request.getRequestDispatcher("/listMarketPlace").forward(request, response);
@@ -438,7 +441,6 @@ public class ControlServlet extends HttpServlet {
 			
 			// UPDATE NFT OWNER
 			int currentOwner = certainNFT.owner;
-			
 			System.out.println("Current owner: " + currentOwner);
 			
 			User oldOwner = userDAO.getUser(currentOwner);
