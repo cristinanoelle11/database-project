@@ -202,10 +202,30 @@ public class ControlServlet extends HttpServlet {
 	    private void commonNfts(HttpServletRequest request, HttpServletResponse response) 
 	    		throws SQLException, IOException, ServletException {
 	    	System.out.println("commonNfts started: 00000000000000000000000000000000000");
-	        List<Nft> commonNfts = commonDAO.commonNFTs();
-	        request.setAttribute("commonNfts", commonNfts);
-	        RequestDispatcher dispatcher = request.getRequestDispatcher("statistics.jsp");
-	        dispatcher.forward(request, response);
+	    	
+	    	//from search nft
+	    	
+	    	List<Nft> listNFT = nftDAO.listAllNFTS();
+			request.setAttribute("listNFT", listNFT);
+
+			List<MarketPlace> listMarketPlace = marketPlaceDAO.listMarketPlace();
+			request.setAttribute("listMarketPlace", listMarketPlace);
+
+			List<History> listHistory = historyDAO.listAllHistory();
+			request.setAttribute("listHistory", listHistory);
+
+			User user = userDAO.getUser(currentUser);
+			request.setAttribute("currentUser", user);
+			List<History> result = new ArrayList<History>();
+
+			listHistory.stream().forEach(i -> {
+				if ((user.userID == i.userID) && i.getAction().equals("bought")) {
+					result.add(i);
+
+				}
+			});
+			request.setAttribute("result", result);
+			request.getRequestDispatcher("search.jsp").forward(request, response);
 	        
 	        System.out.println("commonNfts finished: 111111111111111111111111111111111111");
 	    }

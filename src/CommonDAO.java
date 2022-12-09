@@ -73,17 +73,26 @@ public CommonDAO(){}
     	List<User> listUser = new ArrayList<User>();
     	UserDAO user = new UserDAO();
     	String sql = null;
-    		sql = "SELECT owner, COUNT(*)\r\n"
-    				+ "FROM NFT\r\n"
-    				+ "GROUP BY owner\r\n"
-    				+ "ORDER BY COUNT(*) DESC;";
+    		sql = "select action, userID, COUNT(*) \r\n"
+    				+ "from history \r\n"
+    				+ "where action = \"mint\"\r\n"
+    				+ "order by COUNT(*) DESC;";
     	
     		connect_func();
     		statement = (Statement) connect.createStatement();
     		ResultSet resultSet = statement.executeQuery(sql);
+    		
+    		resultSet.next();
+        	int count = resultSet.getInt("count(*)");
+        	int userID = resultSet.getInt("userID");
+    		listUser.add(user.getUser(userID));
+        	//System.out.println("Count pulled before if statement: " + count);
+    		
     		while (resultSet.next()) {
-    			int userID = resultSet.getInt("owner");
-    			listUser.add(user.getUser(userID));
+	    		if (resultSet.getInt("count(*)") >= count) {
+	    			userID = resultSet.getInt("userID");
+	    			listUser.add(user.getUser(userID));
+	    		}
     		}
     		resultSet.close();
     		disconnect();
@@ -101,9 +110,18 @@ public CommonDAO(){}
     		connect_func();
     		statement = (Statement) connect.createStatement();
     		ResultSet resultSet = statement.executeQuery(sql);
+    		
+    		resultSet.next();
+        	int count = resultSet.getInt("count(*)");
+        	int userID = resultSet.getInt("userID");
+    		listUser.add(user.getUser(userID));
+        	//System.out.println("Count pulled before if statement: " + count);
+    		
     		while (resultSet.next()) {
-    			int userID = resultSet.getInt("userID");
+	    		if (resultSet.getInt("count(*)") >= count) {
+    			userID = resultSet.getInt("userID");
     			listUser.add(user.getUser(userID));
+	    		}
     		}
     		resultSet.close();
     		disconnect();
@@ -122,9 +140,18 @@ public CommonDAO(){}
     		connect_func();
     		statement = (Statement) connect.createStatement();
     		ResultSet resultSet = statement.executeQuery(sql);
+    		
+    		resultSet.next();
+        	int count = resultSet.getInt("count(*)");
+        	int userID = resultSet.getInt("userID");
+    		listUser.add(user.getUser(userID));
+        	//System.out.println("Count pulled before if statement: " + count);
+    		
     		while (resultSet.next()) {
-    			int userID = resultSet.getInt("userID");
+	    		if (resultSet.getInt("count(*)") >= count) {
+    			userID = resultSet.getInt("userID");
     			listUser.add(user.getUser(userID));
+	    		}
     		}
     		resultSet.close();
     		disconnect();
@@ -142,14 +169,24 @@ public CommonDAO(){}
     				+ "  sum(if(action = 'transfered', 1, 0)),\r\n"
     				+ "  sum(if(action = 'gifted', 1, 0))\r\n"
     				+ "from history\r\n"
-    				+ "GROUP BY nftID;";
+    				+ "GROUP BY nftID\r\n"
+    				+ "ORDER BY count(*) DESC;";
     		
     	connect_func();
     	statement = (Statement) connect.createStatement();
     	ResultSet resultSet = statement.executeQuery(sql);
+    	
+    	resultSet.next();
+    	int count = resultSet.getInt("count(*)");
+    	int nftID = resultSet.getInt("nftID");
+		listNft.add(nft.getNFT(nftID));
+    	//System.out.println("Count pulled before if statement: " + count);
+
     	while (resultSet.next()) {
-    		int nftID = resultSet.getInt("nftID");
-    		listNft.add(nft.getNFT(nftID));
+	    		if (resultSet.getInt("count(*)") >= count) {
+	    		nftID = resultSet.getInt("nftID");
+	    		listNft.add(nft.getNFT(nftID));
+	    	}
     	}
     	resultSet.close();
     	disconnect();

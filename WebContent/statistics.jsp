@@ -100,40 +100,47 @@
 			            <caption><h2>List of Hottest Nfts</h2></caption>
 			            <tr>
 			            	<th>nftID</th>  
+			            	<th>name</th>
 			                
 			            </tr>
 			            <c:forEach var="Nfts" items="${hottestNfts}">
 			                <tr style="text-align:center">
 			               		<td><c:out value="${Nfts.nftID}" /></td>
+			               		<td><c:out value="${Nfts.name}" /></td>
+			               		
 			            </c:forEach>
 			        </table>
 				</div>
 			</c:if>
 		</div>
 		
-		<div class = "flexbox">
-			<p>5.  Click to list the users who sold the most number of NFTs. </p>
-			<form action = "commonNfts">
-					<input type = "submit" value = "commonNfts"/>
-			</form>
-			<c:if test="${fn:length(commonNfts) > 0}">
-				<div align="center">
-			        <table border="1" cellpadding="6">
-			            <caption><h2>List of Users</h2></caption>
-			            <tr>
-			            	<th>UserID</th>
-			                <th>Email</th>  
-			                
-			            </tr>
-			            <c:forEach var="users" items="${commonNfts}">
-			                <tr style="text-align:center">
-			               		<td><c:out value="${users.userID}" /></td>
-			               		 <td><c:out value="${users.email}" /></td>
-			            </c:forEach>
-			        </table>
-				</div>
-			</c:if>
+		<div class="flexbox">
+			<p>5.  Submit to find common NFTs between users. </p>
+		    <form action="list" method="post">
+		        Select user 1:&nbsp;
+		        <select name="category">
+		            <c:forEach items="${listUser}" var="users">
+		                <option value="${users.userID}">
+		                    ${users.firstName}
+		                </option>
+		            </c:forEach>
+		        </select>
+				Select user 2:&nbsp;
+		        <select name="category">
+		            <c:forEach items="${listCategory}" var="category">
+		                <option value="${category.id}"
+		                    <c:if test="${category.id eq selectedCatId}">selected="selected"</c:if>
+		                    >
+		                    ${category.name}
+		                </option>
+		            </c:forEach>
+		        </select>
+		        <br/><br/>
+		        <input type="submit" value="Submit" />
+		    </form>
 		</div>
+			
+		
 		<div class = "flexbox">
 			<p>6. Click to list the users who purchased some NFTs and then have never sold them afterwards. </p>
 			<form action = "diamondHands">
