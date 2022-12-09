@@ -6,24 +6,30 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Transfer</title>
+	<style>
+		.flexcontainer {
+			margin:10px;
+		  	display: flex;
+	        flex-wrap: wrap;
+	        margin-left:auto;
+			margin-right:auto;
+		}
+		.nftImage{
+			width:150px;
+			height:150px;
+		}
+		.nftC{
+			margin-left:auto;
+			margin-right:auto;
+		}
+	</style>
 </head>
 <body>
 <jsp:include page="header.jsp" />
 <center><h1>Want To Transfer An NFT?</h1> </center>
-<h3>Your NFTS:</h3>
-		 </center>
-		<div class = "flexcontainer"> 
-			<c:forEach var="nfts" items="${usersNFTS}">
-	    	<div class ="nftC">
-	   			<h4 class ="nftName"><c:out value="${nfts.name}" /></h1>
-	            <img class ="nftImage" src = "<c:out value= "${nfts.image}" />">
-	            <p class ="nftDescrip"><c:out value="${nfts.description}" /></p>
-	        </div>
-	         </c:forEach>
-	     </div>
+
 		<div align="center">
-		<p> ${errorOne } </p>
-		<p> ${errorTwo } </p>
+		<p> ${errorMessage } </p>
 		<form action="transfer">
 			<table border="1" cellpadding="5">
 				<tr>
@@ -47,6 +53,16 @@
 			</table>
 		</form>
 	</div>
-
+<h3>Your NFTS:</h3>
+		 </center>
+		<div class = "flexcontainer"> 
+			<c:forEach var="nfts" items="${usersNFTS}">
+	    	<div class ="nftC">
+	   			<h4 class ="nftName"><c:out value="${nfts.name}" /> (nftID: <c:out value="${nfts.nftID}" />)</h4>
+	            <img class ="nftImage" src = "<c:out value= "${nfts.image}" />">
+	            <p class ="nftDescrip"><c:out value="${nfts.description}" /></p>
+	        </div>
+	         </c:forEach>
+	     </div>
 </body>
 </html>

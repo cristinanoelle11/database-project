@@ -219,8 +219,7 @@ public CommonDAO(){}
         	sql = "SELECT  U.userID\r\n"
         			+ "FROM user U, history H, nft N\r\n"
         			+ "WHERE U.userID = H.userID  AND \r\n"
-        			+ "H.nftID = N.nftID AND\r\n"
-        			+ "H.action = 'bought'\r\n"
+        			+ "H.nftID = N.nftID \r\n"
         			+ "HAVING COUNT(H.action = 'bought') >= 3";
         			   
        

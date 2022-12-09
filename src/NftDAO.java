@@ -108,12 +108,13 @@ public class NftDAO {
         disconnect();        
         return nfts;
     }
-    public boolean update(int newOwner, int oldOwner) throws SQLException {
-        String sql = "update NFT set owner= ? where owner =?";
+    public boolean update(String NFTname, int newOwner, int oldOwner) throws SQLException {
+        String sql = "update NFT set owner= ? where owner =? AND name =?";
         connect_func();
         preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
         preparedStatement.setInt(1, newOwner);
         preparedStatement.setInt(2, oldOwner);
+        preparedStatement.setString(3, NFTname);
         boolean rowUpdated = preparedStatement.executeUpdate()>0;
         preparedStatement.close();
         return rowUpdated;

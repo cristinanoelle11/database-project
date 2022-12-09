@@ -62,8 +62,18 @@
 					</form>
 				</li>
 				<li><a href="searchUsers.jsp"target ="_self" >SEARCH USERS</a></li>
-		 		<li><a href="transfer.jsp"target ="_self" >TRANSFER</a></li>
-				<li class ="search">
+				<li class ="transfer">
+				  	<form action="transferSetUp" method="post">
+						<input class ="submitHome" type="submit" value="TRANSFER"/>
+					</form>
+				</li>
+				<li class ="market">
+				  	<form action="listMarketPlace" method="post">
+						<input class ="submitHome" type="submit" value="MARKET"/>
+					</form>
+				</li>
+<!-- 		 		<li><a href="transfer.jsp"target ="_self" >TRANSFER</a></li>
+ -->				<li class ="search">
 				  	<form action="searchNFT" method="post">
 						<input class ="submitHome" type="submit" value="BUY"/>
 					</form>
