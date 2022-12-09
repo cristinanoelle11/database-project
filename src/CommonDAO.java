@@ -134,14 +134,22 @@ public CommonDAO(){}
     //number 4:
     public List<Nft> hottestNfts() throws SQLException {
     	List<Nft> listNft = new ArrayList<Nft>();
+    	NftDAO nft = new NftDAO();
     	String sql = null;
-    		sql = "";
+    		sql = "select\r\n"
+    				+ "  nftID, count(*),\r\n"
+    				+ "  sum(if(action = 'bought', 1, 0)),\r\n"
+    				+ "  sum(if(action = 'transfered', 1, 0)),\r\n"
+    				+ "  sum(if(action = 'gifted', 1, 0))\r\n"
+    				+ "from history\r\n"
+    				+ "GROUP BY nftID;";
     		
     	connect_func();
     	statement = (Statement) connect.createStatement();
     	ResultSet resultSet = statement.executeQuery(sql);
     	while (resultSet.next()) {
-    		
+    		int nftID = resultSet.getInt("nftID");
+    		listNft.add(nft.getNFT(nftID));
     	}
     	resultSet.close();
     	disconnect();
