@@ -68,6 +68,147 @@ public CommonDAO(){}
             System.out.println(connect);
         }
     }
+    //number 1:
+    public List<User> bigCreators() throws SQLException {
+    	List<User> listUser = new ArrayList<User>();
+    	UserDAO user = new UserDAO();
+    	String sql = null;
+    		sql = "select action, userID, COUNT(*) \r\n"
+    				+ "from history \r\n"
+    				+ "where action = \"mint\"\r\n"
+    				+ "order by COUNT(*) DESC;";
+    	
+    		connect_func();
+    		statement = (Statement) connect.createStatement();
+    		ResultSet resultSet = statement.executeQuery(sql);
+    		
+    		resultSet.next();
+        	int count = resultSet.getInt("count(*)");
+        	int userID = resultSet.getInt("userID");
+    		listUser.add(user.getUser(userID));
+        	//System.out.println("Count pulled before if statement: " + count);
+    		
+    		while (resultSet.next()) {
+	    		if (resultSet.getInt("count(*)") >= count) {
+	    			userID = resultSet.getInt("userID");
+	    			listUser.add(user.getUser(userID));
+	    		}
+    		}
+    		resultSet.close();
+    		disconnect();
+    		return listUser;
+    }
+    //number 2:
+    public List<User> bigSellers() throws SQLException {
+    	List<User> listUser = new ArrayList<User>();
+    	UserDAO user = new UserDAO();    	
+    	String sql = null;
+    		sql = "select action, userID, COUNT(*) \r\n"
+    				+ "from history \r\n"
+    				+ "where action = \"sold\"";
+    	
+    		connect_func();
+    		statement = (Statement) connect.createStatement();
+    		ResultSet resultSet = statement.executeQuery(sql);
+    		
+    		resultSet.next();
+        	int count = resultSet.getInt("count(*)");
+        	int userID = resultSet.getInt("userID");
+    		listUser.add(user.getUser(userID));
+        	//System.out.println("Count pulled before if statement: " + count);
+    		
+    		while (resultSet.next()) {
+	    		if (resultSet.getInt("count(*)") >= count) {
+    			userID = resultSet.getInt("userID");
+    			listUser.add(user.getUser(userID));
+	    		}
+    		}
+    		resultSet.close();
+    		disconnect();
+    		return listUser;
+
+    }
+    //number 3:
+    public List<User> bigBuyers() throws SQLException {
+    	List<User> listUser = new ArrayList<User>();
+    	UserDAO user = new UserDAO();    	
+    	String sql = null;
+    		sql = "select action, userID, COUNT(*) \r\n"
+    				+ "from history \r\n"
+    				+ "where action = \"bought\";";
+    	
+    		connect_func();
+    		statement = (Statement) connect.createStatement();
+    		ResultSet resultSet = statement.executeQuery(sql);
+    		
+    		resultSet.next();
+        	int count = resultSet.getInt("count(*)");
+        	int userID = resultSet.getInt("userID");
+    		listUser.add(user.getUser(userID));
+        	//System.out.println("Count pulled before if statement: " + count);
+    		
+    		while (resultSet.next()) {
+	    		if (resultSet.getInt("count(*)") >= count) {
+    			userID = resultSet.getInt("userID");
+    			listUser.add(user.getUser(userID));
+	    		}
+    		}
+    		resultSet.close();
+    		disconnect();
+    		return listUser;
+
+    }
+    //number 4:
+    public List<Nft> hottestNfts() throws SQLException {
+    	List<Nft> listNft = new ArrayList<Nft>();
+    	NftDAO nft = new NftDAO();
+    	String sql = null;
+    		sql = "select\r\n"
+    				+ "  nftID, count(*),\r\n"
+    				+ "  sum(if(action = 'bought', 1, 0)),\r\n"
+    				+ "  sum(if(action = 'transfered', 1, 0)),\r\n"
+    				+ "  sum(if(action = 'gifted', 1, 0))\r\n"
+    				+ "from history\r\n"
+    				+ "GROUP BY nftID\r\n"
+    				+ "ORDER BY count(*) DESC;";
+    		
+    	connect_func();
+    	statement = (Statement) connect.createStatement();
+    	ResultSet resultSet = statement.executeQuery(sql);
+    	
+    	resultSet.next();
+    	int count = resultSet.getInt("count(*)");
+    	int nftID = resultSet.getInt("nftID");
+		listNft.add(nft.getNFT(nftID));
+    	//System.out.println("Count pulled before if statement: " + count);
+
+    	while (resultSet.next()) {
+	    		if (resultSet.getInt("count(*)") >= count) {
+	    		nftID = resultSet.getInt("nftID");
+	    		listNft.add(nft.getNFT(nftID));
+	    	}
+    	}
+    	resultSet.close();
+    	disconnect();
+    	return listNft;
+    }
+    //number 5:
+    public List<Nft> commonNFTs() throws SQLException {
+    	List<Nft> listNft = new ArrayList<Nft>();
+    	String sql = null;
+    		sql = "";
+    		
+    	connect_func();
+    	statement = (Statement) connect.createStatement();
+    	ResultSet resultSet = statement.executeQuery(sql);
+    	while (resultSet.next()) {
+    		
+    	}
+    	resultSet.close();
+    	disconnect();
+    	return listNft;
+    }
+
     //number 6:
     public List<User> diamondHands() throws SQLException {
         List<User> listUser = new ArrayList<User>(); 

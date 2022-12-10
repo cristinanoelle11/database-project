@@ -55,61 +55,76 @@ public class ControlServlet extends HttpServlet {
 
 		try {
 			switch (action) {
-			case "/buy":
-				buy(request, response);
-				break;
-			case "/activity":
-				activity(request, response);
-				break;
-			case "/cancel":
-				cancel(request, response);
-				break;
-			case "/login":
-				login(request, response);
-				break;
-			case "/mintNFT":
-				mintNFT(request, response);
-				break;
-			case "/register":
-				register(request, response);
-				break;
-			case "/search":
-				search(request, response);
-				break;
-			case "/searchNFT":
-				searchNFT(request, response);
-				break;
-			case "/displayNFT":
-				displayNFT(request, response);
-				break;
-			case "/placeInMarket":
-				placeInMarket(request, response);
-				break;
-			case "/sell":
-				sell(request, response);
-				break;
-			case "/diamondHands":
-				diamond(request, response);
-				break;
-			case "/paperHands":
-				paper(request, response);
-				break;
-			case "/goodBuyers":
-				goodBuyers(request, response);
-				break;
-			case "/inactiveUsers":
-				inactiveUsers(request, response);
-				break;
-			case "/userStats":
-				userStats(request, response);
-				break;
-			case "/mint":
-				mint(request, response);
-				break;
-			case "/transfer":
-				transfer(request, response);
-				break;
-			case "/transferSetUp":
+			case"/buy":
+        		buy(request,response);
+        		break;
+        	case"/activity":
+        		activity(request,response);
+        		break;
+        	case "/cancel":
+        		cancel(request, response);
+        		break;
+        	case "/login":
+        		login(request,response);
+        		break;
+        	case "/mintNFT":
+        		mintNFT(request,response);
+        		break;
+        	case "/register":
+        		register(request, response);
+        		break;
+        	case "/search":
+        		search(request,response);
+        		break;
+        	case "/searchNFT":
+        		searchNFT(request,response);
+        		break;
+        	case "/displayNFT":
+        		displayNFT(request,response);
+        		break;
+        	case "/placeInMarket":
+        		placeInMarket(request,response);
+        		break;
+        	case "/sell":
+        		sell(request,response);
+        		break;
+        	case "/bigCreators":
+        		bigC(request,response);
+        		break;
+        	case "/bigSellers":
+        		bigS(request,response);
+        		break;
+        	case "/bigBuyers":
+        		bigB(request,response);
+        		break;
+        	case "/hottestNfts":
+        		hottestNfts(request,response);
+        		break;
+        	case "/commonNfts":
+        		commonNfts(request,response);
+        		break;
+        	case "/diamondHands":
+        		diamond(request,response);
+        		break;
+        	case "/paperHands":
+        		paper(request,response);
+        		break;
+        	case "/goodBuyers":
+        		goodBuyers(request,response);
+        		break;
+        	case "/inactiveUsers":
+        		inactiveUsers(request,response);
+        		break;
+        	case "/userStats":
+        		userStats(request,response);
+        		break;
+        	case "/mint":
+        		mint(request,response);
+        		break;
+        	case "/transfer":
+        		transfer(request, response);
+        		break;
+        	case "/transferSetUp":
 				transferSetUp(request, response);
 				break;
 			case "/initialize":
@@ -120,26 +135,101 @@ public class ControlServlet extends HttpServlet {
 				System.out.println("Database successfully initialized!");
 				rootPage(request, response, "");
 				break;
-			case "/root":
-				rootPage(request, response, "");
-				break;
-			case "/searchUsers":
-				searchUsers(request, response);
-				break;
-			case "/displayUser":
-				displayUser(request, response);
-				break;
-			case "/listMarketPlace":
+        	case "/root":
+        		rootPage(request,response, "");
+        		break;
+        	case "/searchUsers":
+        		searchUsers(request, response);
+        		break;
+        	case "/displayUser":
+        		displayUser(request, response);
+        		break;
+        	case "/listMarketPlace":
 				listMarketPlace(request, response);
 				break;
-			case "/logout":
-				logout(request, response);
-				break;
+        	case "/logout":
+        		logout(request,response);
+        		break;
 			}
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
 		}
 	}
+	 private void bigC(HttpServletRequest request, HttpServletResponse response)
+	    		throws SQLException, IOException, ServletException {
+	        System.out.println("bigCreator started: 00000000000000000000000000000000000");
+	        List<User> bigCreators = commonDAO.bigCreators();
+	        request.setAttribute("bigCreators", bigCreators);
+	        RequestDispatcher dispatcher = request.getRequestDispatcher("statistics.jsp");
+	        dispatcher.forward(request, response);
+	        
+	        System.out.println("bigCreator finished: 111111111111111111111111111111111111");
+	    }
+	    
+	    private void bigS(HttpServletRequest request, HttpServletResponse response) 
+	    		throws SQLException, IOException, ServletException {
+	    	System.out.println("bigSeller started: 00000000000000000000000000000000000");
+	        List<User> bigSellers = commonDAO.bigSellers();
+	        request.setAttribute("bigSellers", bigSellers);
+	        RequestDispatcher dispatcher = request.getRequestDispatcher("statistics.jsp");
+	        dispatcher.forward(request, response);
+	        
+	        System.out.println("bigSellers finished: 111111111111111111111111111111111111");
+	    }
+	    
+	    private void bigB(HttpServletRequest request, HttpServletResponse response) 
+	    		throws SQLException, IOException, ServletException {
+	    	System.out.println("bigBuyers started: 00000000000000000000000000000000000");
+	        List<User> bigBuyers = commonDAO.bigBuyers();
+	        request.setAttribute("bigBuyers", bigBuyers);
+	        RequestDispatcher dispatcher = request.getRequestDispatcher("statistics.jsp");
+	        dispatcher.forward(request, response);
+	        
+	        System.out.println("bigBuyers finished: 111111111111111111111111111111111111");
+	    }
+
+	    private void hottestNfts(HttpServletRequest request, HttpServletResponse response) 
+	    		throws SQLException, IOException, ServletException {
+	    	System.out.println("hottestNfts started: 00000000000000000000000000000000000");
+	        List<Nft> hottestNfts = commonDAO.hottestNfts();
+	        request.setAttribute("hottestNfts", hottestNfts);
+	        RequestDispatcher dispatcher = request.getRequestDispatcher("statistics.jsp");
+	        dispatcher.forward(request, response);
+	        
+	        System.out.println("hottestNfts finished: 111111111111111111111111111111111111");
+	    }
+	    
+	    private void commonNfts(HttpServletRequest request, HttpServletResponse response) 
+	    		throws SQLException, IOException, ServletException {
+	    	System.out.println("commonNfts started: 00000000000000000000000000000000000");
+	    	
+	    	//from search nft
+	    	
+	    	List<Nft> listNFT = nftDAO.listAllNFTS();
+			request.setAttribute("listNFT", listNFT);
+
+			List<MarketPlace> listMarketPlace = marketPlaceDAO.listMarketPlace();
+			request.setAttribute("listMarketPlace", listMarketPlace);
+
+			List<History> listHistory = historyDAO.listAllHistory();
+			request.setAttribute("listHistory", listHistory);
+
+			User user = userDAO.getUser(currentUser);
+			request.setAttribute("currentUser", user);
+			List<History> result = new ArrayList<History>();
+
+			listHistory.stream().forEach(i -> {
+				if ((user.userID == i.userID) && i.getAction().equals("bought")) {
+					result.add(i);
+
+				}
+			});
+			request.setAttribute("result", result);
+			request.getRequestDispatcher("search.jsp").forward(request, response);
+	        
+	        System.out.println("commonNfts finished: 111111111111111111111111111111111111");
+	    }
+	    
 	private void diamond(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
 		System.out.println("diamondHands started: 00000000000000000000000000000000000");
