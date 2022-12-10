@@ -30,6 +30,10 @@ public class User
 	    	this.action = action;
 	    	this.count = count;
 	    }
+	    public User(int userID, int count) {
+	    	this.userID = userID;
+	    	this.count = count;
+	    }
 	   //getter and setter methods
 	    public String getEmail() {
 	        return email;

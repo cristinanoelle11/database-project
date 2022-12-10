@@ -16,6 +16,142 @@
 	</li>
 <h2> ${errorMessage } </h2>
 	<div class = "flexcontainer">
+	
+	<div class = "flexbox">
+			<p>1.  Click to list the users who created the most number of NFTs. </p>
+			<form action = "bigCreators">
+					<input type = "submit" value = "bigCreators"/>
+			</form>
+			<c:if test="${fn:length(bigCreators) > 0}">
+				<div align="center">
+			        <table border="1" cellpadding="6">
+			            <caption><h2>List of Users</h2></caption>
+			            <tr>
+			            	<th>UserID</th>
+			                <th>Email</th>  
+			                
+			            </tr>
+			            <c:forEach var="users" items="${bigCreators}">
+			                <tr style="text-align:center">
+			               		<td><c:out value="${users.userID}" /></td>
+			               		 <td><c:out value="${users.email}" /></td>
+			            </c:forEach>
+			        </table>
+				</div>
+			</c:if>
+		</div>
+		
+		<div class = "flexbox">
+			<p>2.  Click to list the users who sold the most number of NFTs. </p>
+			<form action = "bigSellers">
+					<input type = "submit" value = "bigSellers"/>
+			</form>
+			<c:if test="${fn:length(bigSellers) > 0}">
+				<div align="center">
+			        <table border="1" cellpadding="6">
+			            <caption><h2>List of Users</h2></caption>
+			            <tr>
+			            	<th>UserID</th>
+			                <th>Email</th>  
+			                
+			            </tr>
+			            <c:forEach var="users" items="${bigSellers}">
+			                <tr style="text-align:center">
+			               		<td><c:out value="${users.userID}" /></td>
+			               		 <td><c:out value="${users.email}" /></td>
+			            </c:forEach>
+			        </table>
+				</div>
+			</c:if>
+		</div>
+		
+		<div class = "flexbox">
+			<p>3.  Click to list the users who sold the most number of NFTs. </p>
+			<form action = "bigBuyers">
+					<input type = "submit" value = "bigBuyers"/>
+			</form>
+			<c:if test="${fn:length(bigBuyers) > 0}">
+				<div align="center">
+			        <table border="1" cellpadding="6">
+			            <caption><h2>List of Users</h2></caption>
+			            <tr>
+			            	<th>UserID</th>
+			                <th>Email</th>  
+			                
+			            </tr>
+			            <c:forEach var="users" items="${bigBuyers}">
+			                <tr style="text-align:center">
+			               		<td><c:out value="${users.userID}" /></td>
+			               		 <td><c:out value="${users.email}" /></td>
+			            </c:forEach>
+			        </table>
+				</div>
+			</c:if>
+		</div>
+		
+		<div class = "flexbox">
+			<p>4.  Click to list the hottest NFTs. </p>
+			<form action = "hottestNfts">
+					<input type = "submit" value = "hottestNfts"/>
+			</form>
+			<c:if test="${fn:length(hottestNfts) > 0}">
+				<div align="center">
+			        <table border="1" cellpadding="6">
+			            <h2>List of Hottest Nfts</h2>
+			            <tr>
+			            	<th>nftID</th>  
+			            	<th>name</th>
+			                
+			            </tr>
+			            <c:forEach var="Nfts" items="${hottestNfts}">
+			                <tr style="text-align:center">
+			               		<td><c:out value="${Nfts.nftID}" /></td>
+			               		<td><c:out value="${Nfts.name}" /></td>
+			               		
+			            </c:forEach>
+			        </table>
+				</div>
+			</c:if>
+		</div>
+		
+		<div class="flexbox">
+			<p>5.  Submit to find common NFTs between users. </p>
+			<form action="commonNfts" method="post">
+	    		Select first user:&nbsp;
+	   			 <select name="user1">
+			        <c:forEach items="${listUser}" var="category">
+			            <option value="${category.userID}"><c:out value="${category.userID}" /></option>
+			        </c:forEach>
+	   			</select>
+	   			Select second user:&nbsp;
+	   			  <select name="user2">
+			        <c:forEach items="${listUser}" var="category">
+			            <option value="${category.userID}"><c:out value="${category.userID}" /></option>
+			        </c:forEach>
+	   			</select>
+	    		<br/><br/>
+	    		<input type="submit" value="Submit" />
+			</form>
+			<c:if test="${fn:length(commonNFTS) > 0}">
+				<div align="center">
+			        <table border="1" cellpadding="6">
+			            <h2>NFTs that both <c:out value="${user1.firstName}" /> (userID: <c:out value="${user1.userID}" />) AND <c:out value="${user2.firstName}" /> (userID: <c:out value="${user2.userID}" />) have owned</h2>
+			            <tr>
+			            	<th>nftID</th>  
+			            	<th>name</th>
+			            </tr>
+			            <c:forEach var="Nfts" items="${commonNFTS}">
+			                <tr style="text-align:center">
+			               		<td><c:out value="${Nfts.nftID}" /></td>
+			               		<td><c:out value="${Nfts.name}" /></td>
+			               		
+			            </c:forEach>
+			        </table>
+				</div>
+			</c:if>
+		</div>
+			
+		
 		<div class = "flexbox">
 			<p>6. Click to list the users who purchased some NFTs and then have never sold them afterwards. </p>
 			<form action = "diamondHands">

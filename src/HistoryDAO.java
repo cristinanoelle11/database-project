@@ -94,12 +94,12 @@ public class HistoryDAO {
     public void insertExpired(User users, Nft nfts)throws SQLException{
     	connect_func();
     	
-	    	String sql1 = "insert into History(userID, nftID, details, action, date) values (?, ?, ?,?, NOW())";
+	    	String sql1 = "insert into History(userID, nftID, details, action, date) values (-1, ?, ?,?, NOW())";
 	  			preparedStatement = (PreparedStatement) connect.prepareStatement(sql1);
-	  			preparedStatement.setInt(1,users.userID);
-	  			preparedStatement.setInt(2, nfts.nftID);
-	  			preparedStatement.setString(3, nfts.name +" (nft id: "+nfts.nftID+ ") has left the marketplace");
-	  			preparedStatement.setString(4, "expired");
+	  			//preparedStatement.setInt(1,users.userID);
+	  			preparedStatement.setInt(1, nfts.nftID);
+	  			preparedStatement.setString(2, nfts.name +" (nft id: "+nfts.nftID+ ") has left the marketplace");
+	  			preparedStatement.setString(3, "expired");
 	  		preparedStatement.executeUpdate();
 	        preparedStatement.close();
     }
