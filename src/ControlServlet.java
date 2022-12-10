@@ -58,6 +58,9 @@ public class ControlServlet extends HttpServlet {
 			case"/buy":
         		buy(request,response);
         		break;
+			case "/stats":
+				stats(request,response);
+				break;
         	case"/activity":
         		activity(request,response);
         		break;
@@ -160,19 +163,21 @@ public class ControlServlet extends HttpServlet {
 	        System.out.println("bigCreator started: 00000000000000000000000000000000000");
 	        List<User> bigCreators = commonDAO.bigCreators();
 	        request.setAttribute("bigCreators", bigCreators);
-	        RequestDispatcher dispatcher = request.getRequestDispatcher("statistics.jsp");
-	        dispatcher.forward(request, response);
+	        request.getRequestDispatcher("/stats").forward(request, response);
 	        
 	        System.out.println("bigCreator finished: 111111111111111111111111111111111111");
 	    }
-	    
+	 private void stats(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException, SQLException {
+			System.out.println("stats view");
+			request.setAttribute("listUser", userDAO.listAllUsers());
+			request.getRequestDispatcher("statistics.jsp").forward(request, response);
+		}
 	    private void bigS(HttpServletRequest request, HttpServletResponse response) 
 	    		throws SQLException, IOException, ServletException {
 	    	System.out.println("bigSeller started: 00000000000000000000000000000000000");
 	        List<User> bigSellers = commonDAO.bigSellers();
 	        request.setAttribute("bigSellers", bigSellers);
-	        RequestDispatcher dispatcher = request.getRequestDispatcher("statistics.jsp");
-	        dispatcher.forward(request, response);
+	        request.getRequestDispatcher("/stats").forward(request, response);
 	        
 	        System.out.println("bigSellers finished: 111111111111111111111111111111111111");
 	    }
@@ -182,8 +187,7 @@ public class ControlServlet extends HttpServlet {
 	    	System.out.println("bigBuyers started: 00000000000000000000000000000000000");
 	        List<User> bigBuyers = commonDAO.bigBuyers();
 	        request.setAttribute("bigBuyers", bigBuyers);
-	        RequestDispatcher dispatcher = request.getRequestDispatcher("statistics.jsp");
-	        dispatcher.forward(request, response);
+	        request.getRequestDispatcher("/stats").forward(request, response);
 	        
 	        System.out.println("bigBuyers finished: 111111111111111111111111111111111111");
 	    }
@@ -193,8 +197,7 @@ public class ControlServlet extends HttpServlet {
 	    	System.out.println("hottestNfts started: 00000000000000000000000000000000000");
 	        List<Nft> hottestNfts = commonDAO.hottestNfts();
 	        request.setAttribute("hottestNfts", hottestNfts);
-	        RequestDispatcher dispatcher = request.getRequestDispatcher("statistics.jsp");
-	        dispatcher.forward(request, response);
+	        request.getRequestDispatcher("/stats").forward(request, response);
 	        
 	        System.out.println("hottestNfts finished: 111111111111111111111111111111111111");
 	    }
@@ -202,31 +205,17 @@ public class ControlServlet extends HttpServlet {
 	    private void commonNfts(HttpServletRequest request, HttpServletResponse response) 
 	    		throws SQLException, IOException, ServletException {
 	    	System.out.println("commonNfts started: 00000000000000000000000000000000000");
-	    	
-	    	//from search nft
-	    	
-	    	List<Nft> listNFT = nftDAO.listAllNFTS();
-			request.setAttribute("listNFT", listNFT);
-
-			List<MarketPlace> listMarketPlace = marketPlaceDAO.listMarketPlace();
-			request.setAttribute("listMarketPlace", listMarketPlace);
-
-			List<History> listHistory = historyDAO.listAllHistory();
-			request.setAttribute("listHistory", listHistory);
-
-			User user = userDAO.getUser(currentUser);
-			request.setAttribute("currentUser", user);
-			List<History> result = new ArrayList<History>();
-
-			listHistory.stream().forEach(i -> {
-				if ((user.userID == i.userID) && i.getAction().equals("bought")) {
-					result.add(i);
-
-				}
-			});
-			request.setAttribute("result", result);
-			request.getRequestDispatcher("search.jsp").forward(request, response);
-	        
+	    	UserDAO user = new UserDAO();   
+	    	int user1 = Integer.parseInt(request.getParameter("user1"));
+	    	int user2 = Integer.parseInt(request.getParameter("user2"));
+	        System.out.println("user 1 = "+ user1);
+	    	System.out.println("user 2 = "+ user2);
+	        List<Nft> commonNFTS = commonDAO.commonNFTs(user1, user2);
+	        request.setAttribute("user1", user.getUser(user1));
+	        request.setAttribute("user2", user.getUser(user2));
+	        request.setAttribute("commonNFTS", commonNFTS);
+			request.setAttribute("listUser", userDAO.listAllUsers());
+			request.getRequestDispatcher("/stats").forward(request, response);
 	        System.out.println("commonNfts finished: 111111111111111111111111111111111111");
 	    }
 	    
@@ -235,7 +224,7 @@ public class ControlServlet extends HttpServlet {
 		System.out.println("diamondHands started: 00000000000000000000000000000000000");
 		List<User> diamondHands = commonDAO.diamondHands();
 		request.setAttribute("diamondHands", diamondHands);
-		request.getRequestDispatcher("statistics.jsp").forward(request, response);
+		request.getRequestDispatcher("/stats").forward(request, response);
 
 		System.out.println("diamondHands finished: 111111111111111111111111111111111111");
 	}
@@ -243,7 +232,7 @@ public class ControlServlet extends HttpServlet {
 		System.out.println("paperHands started: 00000000000000000000000000000000000");
 		List<User> paperHands = commonDAO.paperHands();
 		request.setAttribute("paperHands", paperHands);
-		request.getRequestDispatcher("statistics.jsp").forward(request, response);
+		request.getRequestDispatcher("/stats").forward(request, response);
 
 		System.out.println("paperHands finished: 111111111111111111111111111111111111");
 	}
@@ -251,7 +240,7 @@ public class ControlServlet extends HttpServlet {
 		System.out.println("goodBuyers started: 00000000000000000000000000000000000");
 			List<User> goodBuyers = commonDAO.goodBuyers();
 			request.setAttribute("goodBuyers", goodBuyers);
-			request.getRequestDispatcher("statistics.jsp").forward(request, response);
+			request.getRequestDispatcher("/stats").forward(request, response);
 		
 		System.out.println("goodBuyers finished: 111111111111111111111111111111111111");
 	}
@@ -269,7 +258,7 @@ public class ControlServlet extends HttpServlet {
 		List<User> userStats = commonDAO.userStats(user);
 		request.setAttribute("currentU", currentU);
 		request.setAttribute("userStats", userStats);
-		request.getRequestDispatcher("statistics.jsp").forward(request, response);
+		request.getRequestDispatcher("/stats").forward(request, response);
 		System.out.println("userStats finished: 111111111111111111111111111111111111");
 	}
 
@@ -277,7 +266,7 @@ public class ControlServlet extends HttpServlet {
 		System.out.println("inactiveUsers started: 00000000000000000000000000000000000");
 		List<User> inactiveUsers = commonDAO.inactiveUsers();
 		request.setAttribute("inactiveUsers", inactiveUsers);
-		request.getRequestDispatcher("statistics.jsp").forward(request, response);
+		request.getRequestDispatcher("/stats").forward(request, response);
 		System.out.println("inactiveUsers finished: 111111111111111111111111111111111111");
 	}
 	private void sell(HttpServletRequest request, HttpServletResponse response)throws SQLException, IOException, ServletException {

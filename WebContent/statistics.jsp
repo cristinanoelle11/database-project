@@ -97,7 +97,7 @@
 			<c:if test="${fn:length(hottestNfts) > 0}">
 				<div align="center">
 			        <table border="1" cellpadding="6">
-			            <caption><h2>List of Hottest Nfts</h2></caption>
+			            <h2>List of Hottest Nfts</h2>
 			            <tr>
 			            	<th>nftID</th>  
 			            	<th>name</th>
@@ -116,28 +116,39 @@
 		
 		<div class="flexbox">
 			<p>5.  Submit to find common NFTs between users. </p>
-		    <form action="list" method="post">
-		        Select user 1:&nbsp;
-		        <select name="category">
-		            <c:forEach items="${listUser}" var="users">
-		                <option value="${users.userID}">
-		                    ${users.firstName}
-		                </option>
-		            </c:forEach>
-		        </select>
-				Select user 2:&nbsp;
-		        <select name="category">
-		            <c:forEach items="${listCategory}" var="category">
-		                <option value="${category.id}"
-		                    <c:if test="${category.id eq selectedCatId}">selected="selected"</c:if>
-		                    >
-		                    ${category.name}
-		                </option>
-		            </c:forEach>
-		        </select>
-		        <br/><br/>
-		        <input type="submit" value="Submit" />
-		    </form>
+			<form action="commonNfts" method="post">
+	    		Select first user:&nbsp;
+	   			 <select name="user1">
+			        <c:forEach items="${listUser}" var="category">
+			            <option value="${category.userID}"><c:out value="${category.userID}" /></option>
+			        </c:forEach>
+	   			</select>
+	   			Select second user:&nbsp;
+	   			  <select name="user2">
+			        <c:forEach items="${listUser}" var="category">
+			            <option value="${category.userID}"><c:out value="${category.userID}" /></option>
+			        </c:forEach>
+	   			</select>
+	    		<br/><br/>
+	    		<input type="submit" value="Submit" />
+			</form>
+			<c:if test="${fn:length(commonNFTS) > 0}">
+				<div align="center">
+			        <table border="1" cellpadding="6">
+			            <h2>NFTs that both <c:out value="${user1.firstName}" /> (userID: <c:out value="${user1.userID}" />) AND <c:out value="${user2.firstName}" /> (userID: <c:out value="${user2.userID}" />) have owned</h2>
+			            <tr>
+			            	<th>nftID</th>  
+			            	<th>name</th>
+			            </tr>
+			            <c:forEach var="Nfts" items="${commonNFTS}">
+			                <tr style="text-align:center">
+			               		<td><c:out value="${Nfts.nftID}" /></td>
+			               		<td><c:out value="${Nfts.name}" /></td>
+			               		
+			            </c:forEach>
+			        </table>
+				</div>
+			</c:if>
 		</div>
 			
 		

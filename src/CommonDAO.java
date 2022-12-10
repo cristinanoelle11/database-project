@@ -73,136 +73,155 @@ public CommonDAO(){}
     	List<User> listUser = new ArrayList<User>();
     	UserDAO user = new UserDAO();
     	String sql = null;
-    		sql = "select action, userID, COUNT(*) \r\n"
-    				+ "from history \r\n"
-    				+ "where action = \"mint\"\r\n"
-    				+ "order by COUNT(*) DESC;";
-    	
-    		connect_func();
-    		statement = (Statement) connect.createStatement();
-    		ResultSet resultSet = statement.executeQuery(sql);
-    		
-    		resultSet.next();
-        	int count = resultSet.getInt("count(*)");
-        	int userID = resultSet.getInt("userID");
-    		listUser.add(user.getUser(userID));
-        	//System.out.println("Count pulled before if statement: " + count);
-    		
-    		while (resultSet.next()) {
-	    		if (resultSet.getInt("count(*)") >= count) {
-	    			userID = resultSet.getInt("userID");
-	    			listUser.add(user.getUser(userID));
-	    		}
-    		}
-    		resultSet.close();
-    		disconnect();
-    		return listUser;
-    }
+    	sql = "WITH results as (\r\n"
+    			+ "SELECT H.userID ,COUNT(H.userID) AS `value_occurrence` \r\n"
+    			+ "FROM  history H\r\n"
+    			+ "WHERE  H.action = 'mint'\r\n"
+    			+ "GROUP BY H.userID\r\n"
+    			+ "ORDER BY `value_occurrence` DESC\r\n"
+    			+ "),\r\n"
+    			+ "mvalue as (\r\n"
+    			+ "   select max(value_occurrence) as mCnt from results\r\n"
+    			+ ")\r\n"
+    			+ "select * from results where value_occurrence = (select mCnt from mvalue);\r\n"
+    			+ ";";
+	
+		 connect_func();
+	        preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+	       // preparedStatement.setInt(1, userID); 
+	      //  preparedStatement.setInt(2, userID); 
+	       
+	        statement = (Statement) connect.createStatement();
+	        ResultSet resultSet = statement.executeQuery(sql);
+	        while (resultSet.next()) {
+	        	int userID = resultSet.getInt("userID");
+	            listUser.add(user.getUser(userID));
+	        }        
+	        resultSet.close();
+	        disconnect();        
+	        return listUser;
+	    }  
+    
     //number 2:
     public List<User> bigSellers() throws SQLException {
     	List<User> listUser = new ArrayList<User>();
     	UserDAO user = new UserDAO();    	
     	String sql = null;
-    		sql = "select action, userID, COUNT(*) \r\n"
-    				+ "from history \r\n"
-    				+ "where action = \"sold\"";
-    	
-    		connect_func();
-    		statement = (Statement) connect.createStatement();
-    		ResultSet resultSet = statement.executeQuery(sql);
-    		
-    		resultSet.next();
-        	int count = resultSet.getInt("count(*)");
-        	int userID = resultSet.getInt("userID");
-    		listUser.add(user.getUser(userID));
-        	//System.out.println("Count pulled before if statement: " + count);
-    		
-    		while (resultSet.next()) {
-	    		if (resultSet.getInt("count(*)") >= count) {
-    			userID = resultSet.getInt("userID");
-    			listUser.add(user.getUser(userID));
-	    		}
-    		}
-    		resultSet.close();
-    		disconnect();
-    		return listUser;
+    		sql = "WITH results as (\r\n"
+    				+ "SELECT H.userID ,COUNT(H.userID) AS `value_occurrence` \r\n"
+    				+ "FROM  history H\r\n"
+    				+ "WHERE  H.action = 'sold'\r\n"
+    				+ "GROUP BY H.userID\r\n"
+    				+ "ORDER BY `value_occurrence` DESC\r\n"
+    				+ "),\r\n"
+    				+ "mvalue as (\r\n"
+    				+ "   select max(value_occurrence) as mCnt from results\r\n"
+    				+ ")\r\n"
+    				+ "select * from results where value_occurrence = (select mCnt from mvalue);\r\n"
+    				+ ";";
+    		 connect_func();
+    	        preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+    	       // preparedStatement.setInt(1, userID); 
+    	      //  preparedStatement.setInt(2, userID); 
+    	       
+    	        statement = (Statement) connect.createStatement();
+    	        ResultSet resultSet = statement.executeQuery(sql);
+    	        while (resultSet.next()) {
+    	        	int userID = resultSet.getInt("userID");
+    	            listUser.add(user.getUser(userID));
+    	        }        
+    	        resultSet.close();
+    	        disconnect();        
+    	        return listUser;
+    	    }  
 
-    }
+    
     //number 3:
     public List<User> bigBuyers() throws SQLException {
     	List<User> listUser = new ArrayList<User>();
     	UserDAO user = new UserDAO();    	
     	String sql = null;
-    		sql = "select action, userID, COUNT(*) \r\n"
-    				+ "from history \r\n"
-    				+ "where action = \"bought\";";
-    	
-    		connect_func();
-    		statement = (Statement) connect.createStatement();
-    		ResultSet resultSet = statement.executeQuery(sql);
-    		
-    		resultSet.next();
-        	int count = resultSet.getInt("count(*)");
-        	int userID = resultSet.getInt("userID");
-    		listUser.add(user.getUser(userID));
-        	//System.out.println("Count pulled before if statement: " + count);
-    		
-    		while (resultSet.next()) {
-	    		if (resultSet.getInt("count(*)") >= count) {
-    			userID = resultSet.getInt("userID");
-    			listUser.add(user.getUser(userID));
-	    		}
-    		}
-    		resultSet.close();
-    		disconnect();
-    		return listUser;
-
-    }
+    	sql = "WITH results as (\r\n"
+    			+ "SELECT H.userID ,COUNT(H.userID) AS `value_occurrence` \r\n"
+    			+ "FROM  history H\r\n"
+    			+ "WHERE  H.action = 'bought'\r\n"
+    			+ "GROUP BY H.userID\r\n"
+    			+ "ORDER BY `value_occurrence` DESC\r\n"
+    			+ "),\r\n"
+    			+ "mvalue as (\r\n"
+    			+ "   select max(value_occurrence) as mCnt from results\r\n"
+    			+ ")\r\n"
+    			+ "select * from results where value_occurrence = (select mCnt from mvalue);\r\n"
+    			+ ";";
+	
+		 connect_func();
+	        preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+	       // preparedStatement.setInt(1, userID); 
+	      //  preparedStatement.setInt(2, userID); 
+	       
+	        statement = (Statement) connect.createStatement();
+	        ResultSet resultSet = statement.executeQuery(sql);
+	        while (resultSet.next()) {
+	        	int userID = resultSet.getInt("userID");
+	            listUser.add(user.getUser(userID));
+	        }        
+	        resultSet.close();
+	        disconnect();        
+	        return listUser;
+	    }  
     //number 4:
     public List<Nft> hottestNfts() throws SQLException {
     	List<Nft> listNft = new ArrayList<Nft>();
     	NftDAO nft = new NftDAO();
     	String sql = null;
-    		sql = "select\r\n"
-    				+ "  nftID, count(*),\r\n"
-    				+ "  sum(if(action = 'bought', 1, 0)),\r\n"
-    				+ "  sum(if(action = 'transfered', 1, 0)),\r\n"
-    				+ "  sum(if(action = 'gifted', 1, 0))\r\n"
-    				+ "from history\r\n"
-    				+ "GROUP BY nftID\r\n"
-    				+ "ORDER BY count(*) DESC;";
+    		sql = "WITH results as (\r\n"
+    				+ "select nftID, COUNT(userID) AS `value_occurrence` \r\n"
+    				+ " from history \r\n"
+    				+ " where action IN ('bought','gifted', 'mint', 'create')\r\n"
+    				+ " GROUP BY nftID\r\n"
+    				+ "),\r\n"
+    				+ "mvalue as (\r\n"
+    				+ "   select max(value_occurrence) as mCnt from results\r\n"
+    				+ ")\r\n"
+    				+ "select * from results where value_occurrence = (select mCnt from mvalue);\r\n"
+    				+ ";";
     		
-    	connect_func();
-    	statement = (Statement) connect.createStatement();
-    	ResultSet resultSet = statement.executeQuery(sql);
-    	
-    	resultSet.next();
-    	int count = resultSet.getInt("count(*)");
-    	int nftID = resultSet.getInt("nftID");
-		listNft.add(nft.getNFT(nftID));
-    	//System.out.println("Count pulled before if statement: " + count);
-
-    	while (resultSet.next()) {
-	    		if (resultSet.getInt("count(*)") >= count) {
-	    		nftID = resultSet.getInt("nftID");
-	    		listNft.add(nft.getNFT(nftID));
-	    	}
-    	}
-    	resultSet.close();
-    	disconnect();
-    	return listNft;
-    }
+    		connect_func();
+	        preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+	       // preparedStatement.setInt(1, userID); 
+	      //  preparedStatement.setInt(2, userID); 
+	       
+	        statement = (Statement) connect.createStatement();
+	        ResultSet resultSet = statement.executeQuery(sql);
+	        while (resultSet.next()) {
+	        	int nftID = resultSet.getInt("nftId");
+	        	listNft.add(nft.getNFT(nftID));
+	        }        
+	        resultSet.close();
+	        disconnect();        
+	        return listNft;
+	    }  
     //number 5:
-    public List<Nft> commonNFTs() throws SQLException {
+    public List<Nft> commonNFTs(int user1, int user2) throws SQLException {
     	List<Nft> listNft = new ArrayList<Nft>();
+    	NftDAO nft = new NftDAO();
     	String sql = null;
-    		sql = "";
+    		sql = "With commonnfts AS (\r\n"
+    				+ "select H.nftID, GROUP_CONCAT(H.userID) userID\r\n"
+    				+ "from history H \r\n"
+    				+ "WHERE \r\n"
+    				+ "	(H.userID =" + user1 + " OR\r\n"
+    				+ "	H.userID =" + user2 + ") AND \r\n"
+    				+ "	H.action IN ('bought','gifted', 'mint', 'create')\r\n"
+    				+ "    GROUP BY H.nftID)\r\n"
+    				+ "    Select * from commonnfts where userID LIKE '%,%';";
     		
     	connect_func();
     	statement = (Statement) connect.createStatement();
     	ResultSet resultSet = statement.executeQuery(sql);
     	while (resultSet.next()) {
-    		
+    		int nftID = resultSet.getInt("nftId");
+        	listNft.add(nft.getNFT(nftID));
     	}
     	resultSet.close();
     	disconnect();
@@ -214,15 +233,11 @@ public CommonDAO(){}
         List<User> listUser = new ArrayList<User>(); 
         UserDAO user = new UserDAO();
         String sql = null;
-        	sql = "SELECT DISTINCT U.userID\r\n"
-        			+ "FROM user U, history H, nft N\r\n"
-        			+ "WHERE U.userID = H.userID  AND \r\n"
-        			+ "H.nftID = N.nftID AND\r\n"
-        			+ "H.action = 'bought' AND U.userID NOT IN(SELECT U.userID\r\n"
-        			+ "FROM user U, history H \r\n"
-        			+ "WHERE U.userID = H.userID  AND \r\n"
-        			+ "H.nftID = N.nftID AND\r\n"
-        			+ "H.action  = 'sold');";   
+        	sql = "SELECT DISTINCT H.userID\r\n"
+        			+ "FROM  history H WHERE\r\n"
+        			+ "H.action = 'bought' AND H.userID NOT IN(SELECT H.userID\r\n"
+        			+ "FROM history H \r\n"
+        			+ "WHERE H.action  = 'sold');";   
        
         connect_func();      
         statement = (Statement) connect.createStatement();
@@ -261,11 +276,11 @@ public CommonDAO(){}
         List<User> listUser = new ArrayList<User>(); 
         UserDAO user = new UserDAO();
         String sql = null;
-        	sql = "SELECT  U.userID\r\n"
-        			+ "FROM user U, history H, nft N\r\n"
-        			+ "WHERE U.userID = H.userID  AND \r\n"
-        			+ "H.nftID = N.nftID \r\n"
-        			+ "HAVING COUNT(H.action = 'bought') >= 3";
+        	sql = "SELECT  H.userID\r\n"
+        			+ "FROM  history H\r\n"
+        			+ "WHERE H.action = 'bought'\r\n"
+        			+ "GROUP BY H.userID, H.action \r\n"
+        			+ "HAVING COUNT(*) >= 3;";
         			   
        
         connect_func();      
@@ -287,9 +302,8 @@ public CommonDAO(){}
         	sql = "SELECT userID \r\n"
         			+ "From User \r\n"
         			+ "WHERE userID NOT IN\r\n"
-        			+ "(SELECT U.userID\r\n"
-        			+ "From user U, history H\r\n"
-        			+ " WHERE U.userID = H.userID  AND\r\n"
+        			+ "(SELECT H.userID\r\n"
+        			+ "From  history H WHERE\r\n"
         			+ " (H.action = 'bought' OR\r\n"
         			+ " H.action = 'sold' OR\r\n"
         			+ " H.action = 'mint' OR\r\n"
