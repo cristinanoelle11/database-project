@@ -21,6 +21,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 //import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 /**
  * Servlet implementation class Connect
@@ -193,17 +194,44 @@ public CommonDAO(){}
     	return listNft;
     }
     //number 5:
-    public List<Nft> commonNFTs() throws SQLException {
+    public List<Nft> commonNFTs(int userID1, int userID2) throws SQLException {
     	List<Nft> listNft = new ArrayList<Nft>();
+    	NftDAO nft = new NftDAO();
     	String sql = null;
-    		sql = "";
+    		sql = "select userID, nftID\r\n"
+    				+ "from history;";
+    		
+    	HashSet<Integer> user1nft = new HashSet<Integer>(); 
+    	HashSet<Integer> user2nft = new HashSet<Integer>(); 
+
     		
     	connect_func();
     	statement = (Statement) connect.createStatement();
     	ResultSet resultSet = statement.executeQuery(sql);
     	while (resultSet.next()) {
+    		if (userID1 == resultSet.getInt("userID")) {
+    			user1nft.add(resultSet.getInt("nftID"));
+    		}
     		
+    		if (userID2 == resultSet.getInt("userID")) {
+    			user2nft.add(resultSet.getInt("nftID"));
+    		}
     	}
+    	
+    	//System.out.println(user1nft.toString());
+    	//System.out.println(user2nft.toString());
+    	user1nft.retainAll(user2nft);
+    	//System.out.println(user1nft.toString());
+    	
+    	List<Integer> nfts = new ArrayList<Integer>();
+    	nfts.addAll(user1nft);
+    	
+    	for (int i = 0; i < user1nft.size(); i++) {
+    		listNft.add(nft.getNFT(nfts.get(i)));
+    		//System.out.println(listNft.toString());
+    	}
+    	
+    	
     	resultSet.close();
     	disconnect();
     	return listNft;

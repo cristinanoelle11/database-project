@@ -115,30 +115,27 @@
 		</div>
 		
 		<div class="flexbox">
-			<p>5.  Submit to find common NFTs between users. </p>
-		    <form action="list" method="post">
-		        Select user 1:&nbsp;
-		        <select name="category">
-		            <c:forEach items="${listUser}" var="users">
-		                <option value="${users.userID}">
-		                    ${users.firstName}
-		                </option>
-		            </c:forEach>
-		        </select>
-				Select user 2:&nbsp;
-		        <select name="category">
-		            <c:forEach items="${listCategory}" var="category">
-		                <option value="${category.id}"
-		                    <c:if test="${category.id eq selectedCatId}">selected="selected"</c:if>
-		                    >
-		                    ${category.name}
-		                </option>
-		            </c:forEach>
-		        </select>
-		        <br/><br/>
-		        <input type="submit" value="Submit" />
-		    </form>
-		</div>
+			<p>5.  Submit to find common NFTs between users.</p>
+		   <div class = "searchBlock">
+		 <form action="commonNfts" method="post">
+			Enter users email: <input type="text" id = "search" name="name">
+			User 2: <input type="text" id = "search" name="name">
+			<input type="submit" value="commonNfts"/>
+		</form>
+	<c:if test="${fn:length(commonNfts) > 0}">
+				<div align="center">
+			        <table border="1" cellpadding="6">
+			            <caption><h2>Common Nfts</h2></caption>
+			            <tr>
+			            	<th>nftID</th>
+			            </tr>
+			            <c:forEach var="Nfts" items="${commonNfts}">
+			                <tr style="text-align:center">
+			               		<td><c:out value="${Nfts.nftID}" /></td>
+			            </c:forEach>
+			        </table>
+				</div>
+			</c:if>
 			
 		
 		<div class = "flexbox">

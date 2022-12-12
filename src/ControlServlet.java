@@ -203,29 +203,28 @@ public class ControlServlet extends HttpServlet {
 	    		throws SQLException, IOException, ServletException {
 	    	System.out.println("commonNfts started: 00000000000000000000000000000000000");
 	    	
-	    	//from search nft
+	    	UserDAO userAccess = new UserDAO();
+//			String name1 = request.getParameter("user1");
+//			String name2 = request.getParameter("user2");
+
+//			User user1 = userAccess.getUserByName(name1);
+//			User user2 = userAccess.getUserByName(name2);
 	    	
-	    	List<Nft> listNFT = nftDAO.listAllNFTS();
-			request.setAttribute("listNFT", listNFT);
+	    	String names[] = request.getParameterValues("name");
+	    	//System.out.println(names[1]);
 
-			List<MarketPlace> listMarketPlace = marketPlaceDAO.listMarketPlace();
-			request.setAttribute("listMarketPlace", listMarketPlace);
+			User user1 = userAccess.getUser(names[0]);
+			User user2 = userAccess.getUser(names[1]);
+	    	List<Nft> commonNfts = commonDAO.commonNFTs(user1.userID, user2.userID);
+			//int user1ID = user1.userID;
+			//int user2ID = user2.userID;
 
-			List<History> listHistory = historyDAO.listAllHistory();
-			request.setAttribute("listHistory", listHistory);
-
-			User user = userDAO.getUser(currentUser);
-			request.setAttribute("currentUser", user);
-			List<History> result = new ArrayList<History>();
-
-			listHistory.stream().forEach(i -> {
-				if ((user.userID == i.userID) && i.getAction().equals("bought")) {
-					result.add(i);
-
-				}
-			});
-			request.setAttribute("result", result);
-			request.getRequestDispatcher("search.jsp").forward(request, response);
+			request.setAttribute("user1", user1);
+			request.setAttribute("user2", user2);
+		    request.setAttribute("commonNfts", commonNfts);
+		    
+		    RequestDispatcher dispatcher = request.getRequestDispatcher("statistics.jsp");
+		    dispatcher.forward(request, response);
 	        
 	        System.out.println("commonNfts finished: 111111111111111111111111111111111111");
 	    }
