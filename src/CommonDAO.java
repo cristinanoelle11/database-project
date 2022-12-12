@@ -135,7 +135,6 @@ public CommonDAO(){}
     	        return listUser;
     	    }  
 
-    
     //number 3:
     public List<User> bigBuyers() throws SQLException {
     	List<User> listUser = new ArrayList<User>();
@@ -259,7 +258,6 @@ public CommonDAO(){}
         			+ "	(SELECT userID FROM user WHERE userID NOT IN(\r\n"
         			+ "		SELECT distinct owner FROM nft));\r\n";
         			   
-       
         connect_func();      
         statement = (Statement) connect.createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
@@ -282,9 +280,7 @@ public CommonDAO(){}
         			+ "WHERE H.action = 'bought'\r\n"
         			+ "GROUP BY H.userID, H.action \r\n"
         			+ "HAVING COUNT(*) >= 3;";
-
-        			   
-       
+        	
         connect_func();      
         statement = (Statement) connect.createStatement();
         ResultSet resultSet = statement.executeQuery(sql);

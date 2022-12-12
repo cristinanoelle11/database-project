@@ -66,7 +66,7 @@
 		</div>
 		
 		<div class = "flexbox">
-			<p>3.  Click to list the users who sold the most number of NFTs. </p>
+			<p>3.  Click to list the users who bought the most number of NFTs. </p>
 			<form action = "bigBuyers">
 					<input type = "submit" value = "bigBuyers"/>
 			</form>

@@ -16,7 +16,7 @@
 		<input type = "submit" value = "Initialize the Database"/>
 	</form>
 	<a href="login.jsp"target ="_self" > logout</a><br><br> 
-	<a href="statistics.jsp" target ="_self">statistics</a>
+	
 	<li class =stats>
 		<form action="stats" method="post">
 			<input class ="submitHome" type="submit" value="statistics"/>
